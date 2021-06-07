@@ -3,9 +3,9 @@ package com.caletateam.caletapp.app.babyList;
 public class BabyModel {
     private String name;
     private int id;
-    private String photo;
+    private Object photo;
 
-    public BabyModel(String name, int id, String photo) {
+    public BabyModel(String name, int id, Object photo) {
         this.name = name;
         this.id = id;
         this.photo = photo;
@@ -27,11 +27,11 @@ public class BabyModel {
         this.id = id;
     }
 
-    public String getPhoto() {
+    public Object getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(Object photo) {
         this.photo = photo;
     }
 }
