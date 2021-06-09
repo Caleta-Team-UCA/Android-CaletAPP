@@ -18,20 +18,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.babyList.BabyModel;
+import com.caletateam.caletapp.app.utils.Functions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityMD extends AppCompatActivity {
+public class MainActivityMD extends AppCompatActivity implements Functions.DevolucionDatos {
     HorizontalScrollView babylist;
     List<BabyModel> babys;
     LinearLayout linearbabys;
     TabLayout tabLayout; //= findViewById(R.id.tabs);
     ViewPager2 viewPager2; //= findViewById(R.id.view_pager);
+    public static String GET_EVENTS_REQUEST="1";
+    public static String GET_BABYS_REQUEST="2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +84,7 @@ public class MainActivityMD extends AppCompatActivity {
 
                 }).attach();
 
-        initBabys();
+        //initBabys();
     }
 
 
@@ -83,14 +92,15 @@ public class MainActivityMD extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        addBabys(babys);
+        //addBabys(babys);
+        Functions.consumeService(this,"http://192.168.0.17:5000/baby","GET",GET_BABYS_REQUEST);
     }
 
-    private void initBabys(){
+    /*private void initBabys(){
         for(int i=0; i < 10;i++) {
             babys.add(new BabyModel("Baby "+i, i,R.drawable.baby));
         }
-    }
+    }*/
 
 
     public void addBabys(List<BabyModel> babys){
@@ -103,7 +113,8 @@ public class MainActivityMD extends AppCompatActivity {
             //content.setBackgroundColor(Color.parseColor("#ff0000"));
             //else content.setBackgroundColor(Color.parseColor("#00ff00"));
             ImageView img = view.findViewById(R.id.babyimg);
-            img.setImageResource((Integer) babys.get(i).getPhoto());
+            //img.setImageResource((Integer) babys.get(i).getPhoto());
+            Glide.with(this).load(babys.get(i).getPhoto()).into(img);
             TextView text = (TextView) view.findViewById(R.id.babyname);
             text.setText(babys.get(i).getName());
             linearbabys.addView(view);
@@ -119,5 +130,22 @@ public class MainActivityMD extends AppCompatActivity {
 
     public void selectedBaby(int position){
         Log.e("SELECCIONADO",position+"");
+    }
+
+    @Override
+    public void RespuestaLlamadaServicio(String peticion, String data) {
+        if(peticion.equals(GET_BABYS_REQUEST)){
+            babys = new ArrayList<>();
+            try {
+                JSONArray items = new JSONObject(data).getJSONArray("payload");
+                for(int i=0; i < items.length();i++){
+                    babys.add(new BabyModel(items.getJSONObject(i).getString("name")+ " "+items.getJSONObject(i).getString("lastname"),
+                            items.getJSONObject(i).getInt("idbaby"),items.getJSONObject(i).getString("photo")));
+                }
+                addBabys(babys);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
