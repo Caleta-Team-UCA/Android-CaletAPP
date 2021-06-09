@@ -6,9 +6,79 @@
     tools:context=".app.md.fragments.streamming">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="streaming" />
+        android:layout_height="match_parent" android:weightSum="1"
+        android:orientation="vertical" android:layout_margin="10dp">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            />    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:orientation="horizontal" android:weightSum="1" android:gravity="center">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="match_parent" android:orientation="vertical" android:weightSum="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:textSize="32sp"
+                    android:textColor="#535353" android:textStyle="bold" android:text="Heart Rate" android:gravity="center"></TextView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:scaleType="fitCenter"
+                    android:layout_weight="0.5" android:src="@drawable/heart"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.2" android:textSize="44sp"
+                    android:textColor="@color/appcolor" android:textStyle="bold" android:text="96" android:gravity="center"></TextView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="match_parent" android:orientation="vertical" android:weightSum="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:textSize="32sp"
+                    android:textColor="#535353" android:textStyle="bold" android:text="Resp. Rate" android:gravity="center"></TextView>
+                <ImageView
+                    android:layout_width="match_parent" android:scaleType="fitCenter"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" android:src="@drawable/lungs"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.2" android:textSize="44sp"
+                    android:textColor="@color/appcolor" android:textStyle="bold" android:text="30" android:gravity="center"></TextView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="match_parent" android:orientation="vertical" android:weightSum="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:textSize="32sp"
+                    android:textColor="#535353" android:textStyle="bold" android:text="Oxy. Sat." android:gravity="center"></TextView>
+                <ImageView
+                    android:layout_width="match_parent" android:scaleType="fitCenter"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" android:src="@drawable/o2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.2" android:textSize="44sp"
+                    android:textColor="@color/appcolor" android:textStyle="bold" android:text="98" android:gravity="center"></TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    
+
 
 </FrameLayout>
