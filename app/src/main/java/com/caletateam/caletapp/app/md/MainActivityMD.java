@@ -40,7 +40,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     ViewPager2 viewPager2; //= findViewById(R.id.view_pager);
     public static String GET_EVENTS_REQUEST="1";
     public static String GET_BABYS_REQUEST="2";
-    public static int anInt;
+    public static int anInt=5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
