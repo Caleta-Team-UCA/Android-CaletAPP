@@ -95,7 +95,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     protected void onStart() {
         super.onStart();
         //addBabys(babys);
-        Functions.consumeService(this,"http://192.168.0.17:5000/baby","GET",GET_BABYS_REQUEST);
+        Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",GET_BABYS_REQUEST);
     }
 
     /*private void initBabys(){
@@ -106,6 +106,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
 
     public void addBabys(List<BabyModel> babys){
+        linearbabys.removeAllViews();
         for(int i=0; i < babys.size();i++){
             View view;
             LayoutInflater inflater = (LayoutInflater)   this.getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

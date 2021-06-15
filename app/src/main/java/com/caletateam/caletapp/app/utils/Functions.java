@@ -20,7 +20,7 @@ public class Functions {
     public static int EVENT_TYPE_ACTIVITY=0;
     public static int EVENT_TYPE_RESPIRATION=1;
     public static int EVENT_TYPE_PAIN=2;
-
+    public static String HOST_URL = "http://47.61.212.108:5000/";
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
     }

@@ -93,7 +93,7 @@ public class logs extends Fragment  {
     public void onStart() {
         super.onStart();
         Log.e("LOGS","!SERVICIO CONSUMIDO");
-        Functions.consumeService(getActivity(),"http://192.168.0.17:5000/event","GET",MainActivityMD.GET_EVENTS_REQUEST);
+        Functions.consumeService(getActivity(),Functions.HOST_URL+"/event","GET",MainActivityMD.GET_EVENTS_REQUEST);
     }
 
     public void addEvents(List<EventModel> events){
@@ -159,6 +159,7 @@ public class logs extends Fragment  {
     }*/
     public void processEvents(String data){
         events = new ArrayList<>();
+        linearscroll.removeAllViews();
         try {
             JSONArray items = new JSONObject(data).getJSONArray("payload");
             Log.e("LOGS","Aqui 1");

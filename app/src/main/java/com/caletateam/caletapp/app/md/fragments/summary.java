@@ -75,7 +75,7 @@ public class summary extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_summary, container, false);
-        LineChart lineChart;
+        /*LineChart lineChart;
         LineData lineData;
         List<Entry> entryList = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class summary extends Fragment {
         lineData = new LineData(lineDataSet);
         lineChart.setData(lineData);
         lineChart.setVisibleXRangeMaximum(10);
-        lineChart.invalidate();
+        lineChart.invalidate();*/
         return v;
     }
 }

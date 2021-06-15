@@ -6,9 +6,23 @@
     tools:context=".app.md.fragments.monitoring">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="monitoring" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:weightSum="1" android:gravity="center">
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chartActivity"
+            android:layout_width="200dp"
+            android:layout_weight="0.3"
+            android:layout_height="0dp" />
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chartRespiration"
+            android:layout_width="200dp"
+            android:layout_weight="0.3"
+            android:layout_height="0dp" />
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chartPain"
+            android:layout_width="200dp"
+            android:layout_weight="0.3"
+            android:layout_height="0dp" />
+    </LinearLayout>
 
 </FrameLayout>
