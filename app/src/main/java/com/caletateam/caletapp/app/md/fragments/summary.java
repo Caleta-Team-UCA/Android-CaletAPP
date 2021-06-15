@@ -9,6 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.caletateam.caletapp.R;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,12 +63,34 @@ public class summary extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summary, container, false);
+        View v=inflater.inflate(R.layout.fragment_summary, container, false);
+        LineChart lineChart;
+        LineData lineData;
+        List<Entry> entryList = new ArrayList<>();
+
+        lineChart = v.findViewById(R.id.lineChart);
+        entryList.add(new Entry(10,20));
+        entryList.add(new Entry(5,10));
+        entryList.add(new Entry(7,31));
+        entryList.add(new Entry(3,14));
+        LineDataSet lineDataSet = new LineDataSet(entryList,"country");
+        lineDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        lineDataSet.setFillAlpha(110);
+        lineData = new LineData(lineDataSet);
+        lineChart.setData(lineData);
+        lineChart.setVisibleXRangeMaximum(10);
+        lineChart.invalidate();
+        return v;
     }
 }
