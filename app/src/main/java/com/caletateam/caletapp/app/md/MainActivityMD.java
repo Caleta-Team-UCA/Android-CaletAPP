@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.caletateam.caletapp.R;
+import com.caletateam.caletapp.app.EventList.EventModel;
 import com.caletateam.caletapp.app.babyList.BabyModel;
 import com.caletateam.caletapp.app.utils.Functions;
 import com.google.android.material.tabs.TabLayout;
@@ -41,7 +42,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     public static String GET_EVENTS_REQUEST="1";
     public static String GET_BABYS_REQUEST="2";
     public static int anInt=5;
-
+    ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         linearbabys = findViewById(R.id.linearBabys);
         viewPager2 = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tab_layout);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        adapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2,
@@ -147,6 +148,10 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        if(peticion.equals(GET_EVENTS_REQUEST)){
+            Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);
+           adapter.getLogs().processEvents(data);
         }
     }
 }

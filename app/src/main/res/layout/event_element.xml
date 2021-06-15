@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/babycontent"
     android:layout_width="match_parent"
     android:layout_height="100dp"
@@ -12,27 +13,49 @@
 
     android:background="@drawable/circle" android:id="@+id/babyimg"
     android:src="@drawable/logocaletapp"/>-->
-    <com.taolibrary.widget.view.round.RoundView
-        android:id="@+id/rdv_certify_submit"
-        android:layout_width="0dp"
-        android:layout_weight="0.2"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleEvent"
+        android:layout_width="0dp" android:layout_weight="0.3"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        app:roundAll="5dp"
-        app:isClickEffect="true"
-        app:text="bbb"
-        app:backgroudColor="#34a7f2"
-        app:colorPress="#008FED">
-    </com.taolibrary.widget.view.round.RoundView>
-
-    <TextView
-        android:id="@+id/babyname"
-        android:layout_width="120dp"
-        android:layout_height="20dp"
         android:layout_gravity="center"
-        android:gravity="center" android:textSize="16sp"
-        android:text=""
-        android:textColor="@color/appcolor"
-        android:textStyle="bold"></TextView>
+        android:src="@drawable/activity"
+
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent" android:layout_weight="0.7" android:orientation="vertical">
+        <TextView
+            android:id="@+id/eventname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:gravity="left" android:textSize="16sp"
+            android:text=""
+            android:textColor="@color/appcolor"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_gravity="left"
+            android:gravity="left" android:textSize="14sp"
+            android:text=""
+            android:textColor="#000000"
+            android:textStyle="italic"></TextView>
+        <TextView
+            android:id="@+id/comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_gravity="left"
+            android:gravity="left" android:textSize="14sp"
+            android:text="" android:ellipsize="end"
+            android:textColor="@color/appcolor"
+            android:textStyle="italic"></TextView>
+        <TextView
+            android:layout_width="match_parent"  android:textColor="#ff0000" android:textStyle="bold"
+            android:layout_height="wrap_content" android:text="Anomaly" android:id="@+id/anomaly"></TextView>
+    </LinearLayout>
+
+
 
 </LinearLayout>

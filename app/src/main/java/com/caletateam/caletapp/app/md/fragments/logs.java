@@ -1,25 +1,41 @@
 package com.caletateam.caletapp.app.md.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.EventList.EventModel;
 import com.caletateam.caletapp.app.babyList.BabyModel;
+import com.caletateam.caletapp.app.md.MainActivityMD;
+import com.caletateam.caletapp.app.utils.Functions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link logs#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class logs extends Fragment {
+public class logs extends Fragment  {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +45,8 @@ public class logs extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private List<EventModel> events;
+    private LinearLayout linearscroll;
     public logs() {
         // Required empty public constructor
     }
@@ -65,10 +82,93 @@ public class logs extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_logs, container, false);
+        View v=inflater.inflate(R.layout.fragment_logs, container, false);
+        linearscroll = v.findViewById(R.id.linearScroll);
+        return v;
     }
 
-    public void addEvents(List<EventModel> babys){
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("LOGS","!SERVICIO CONSUMIDO");
+        Functions.consumeService(getActivity(),"http://192.168.0.17:5000/event","GET",MainActivityMD.GET_EVENTS_REQUEST);
     }
+
+    public void addEvents(List<EventModel> events){
+        LayoutInflater inflater = getLayoutInflater();
+
+
+        for(int i=0; i < events.size();i++){
+            //Log.e("DATA EVENTS",events.get(i).getName());
+            View myLayout = inflater.inflate(R.layout.event_element, linearscroll, false);
+            TextView name = myLayout.findViewById(R.id.eventname);
+            name.setText(events.get(i).getName());
+            TextView time = myLayout.findViewById(R.id.time);
+            time.setText(new Date(events.get(i).getCreationtime()).toGMTString());
+            TextView anomaly = myLayout.findViewById(R.id.anomaly);
+            if(!events.get(i).getAnomaly()){
+                anomaly.setVisibility(View.INVISIBLE);
+            }
+            ImageView img  = myLayout.findViewById(R.id.circleEvent);
+            //circle.setTex(events.get(i).getType()+"");
+            if(events.get(i).getType()==Functions.EVENT_TYPE_ACTIVITY){
+                //circle.setBackgroundColor(getResources().getColor(R.color.activity));
+                //circle.setBackgroundResource(R.drawable.activity);
+                //circle.setBorderColor(getResources().getColor(R.color.activity));
+                img.setImageResource(R.drawable.activity);
+                ((CircleImageView) img).setBorderColor(getResources().getColor(R.color.activity));
+            }
+            else if(events.get(i).getType()==Functions.EVENT_TYPE_RESPIRATION){
+                //circle.setBackgroundResource(R.drawable.respiration);
+                //circle.setBorderColor(getResources().getColor(R.color.respiration));
+                img.setImageResource(R.drawable.respiration);
+                ((CircleImageView) img).setBorderColor(getResources().getColor(R.color.respiration));
+
+
+            }
+            else {
+                //circle.setBackgroundColor(getResources().getColor(R.color.pain));
+                img.setImageResource(R.drawable.pain);
+                ((CircleImageView) img).setBorderColor(getResources().getColor(R.color.pain));
+            }
+            TextView comments = myLayout.findViewById(R.id.comments);
+            comments.setText(events.get(i).getComments());
+            int finalI = i;
+            myLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Log.e("SELECCIONADO EVENT",events.get(finalI).getEventID()+"");
+                    openEvent(finalI);
+                }
+            });
+            linearscroll.addView(myLayout);
+        }
+    }
+
+    public void openEvent(int posevent){
+        if(events.get(posevent).getType()==Functions.EVENT_TYPE_ACTIVITY){
+
+        }
+    }
+    public void processEvents(String data){
+        events = new ArrayList<>();
+        try {
+            JSONArray items = new JSONObject(data).getJSONArray("payload");
+            Log.e("LOGS","Aqui 1");
+            //int eventID, int type, String comments, int anomaly, String name, long creationtime
+            for(int i=0; i < items.length();i++){
+                events.add(new EventModel(items.getJSONObject(i).getInt("idevent"),
+                        items.getJSONObject(i).getInt("type"),items.getJSONObject(i).getString("comments"),items.getJSONObject(i).getBoolean("anomaly"),
+                        items.getJSONObject(i).getString("name"),items.getJSONObject(i).getLong("time")));
+
+            }
+            addEvents(events);
+            Log.e("LOGS","Aqui 2:"+events.size());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

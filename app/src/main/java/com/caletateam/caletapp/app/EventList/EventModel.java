@@ -4,9 +4,18 @@ public class EventModel {
     private int eventID;
     private int type;
     private String comments;
-    private int anomaly;
+    private boolean anomaly;
     private String name;
     private long creationtime;
+
+    public EventModel(int eventID, int type, String comments, boolean anomaly, String name, long creationtime) {
+        this.eventID = eventID;
+        this.type = type;
+        this.comments = comments;
+        this.anomaly = anomaly;
+        this.name = name;
+        this.creationtime = creationtime;
+    }
 
     public int getEventID() {
         return eventID;
@@ -32,11 +41,11 @@ public class EventModel {
         this.comments = comments;
     }
 
-    public int getAnomaly() {
+    public boolean getAnomaly() {
         return anomaly;
     }
 
-    public void setAnomaly(int anomaly) {
+    public void setAnomaly(boolean anomaly) {
         this.anomaly = anomaly;
     }
 

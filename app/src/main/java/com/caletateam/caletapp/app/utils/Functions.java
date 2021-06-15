@@ -17,6 +17,9 @@ import java.util.Map;
 import static com.android.volley.Request.*;
 
 public class Functions {
+    public static int EVENT_TYPE_ACTIVITY=0;
+    public static int EVENT_TYPE_RESPIRATION=1;
+    public static int EVENT_TYPE_PAIN=2;
 
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
