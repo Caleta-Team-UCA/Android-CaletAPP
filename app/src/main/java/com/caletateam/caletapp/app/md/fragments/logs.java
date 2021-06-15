@@ -1,5 +1,6 @@
 package com.caletateam.caletapp.app.md.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.EventList.EventModel;
 import com.caletateam.caletapp.app.babyList.BabyModel;
+import com.caletateam.caletapp.app.md.EventViewActivity;
 import com.caletateam.caletapp.app.md.MainActivityMD;
 import com.caletateam.caletapp.app.utils.Functions;
 
@@ -138,18 +140,23 @@ public class logs extends Fragment  {
                 @Override
                 public void onClick(View v) {
                     //Log.e("SELECCIONADO EVENT",events.get(finalI).getEventID()+"");
-                    openEvent(finalI);
+                    //openEvent(finalI);
+                    Intent intent = new Intent(getActivity(), EventViewActivity.class);
+                    intent.putExtra("type",events.get(finalI).getType());
+                    Log.e("TYPE",events.get(finalI).getType()+"");
+                    startActivity(intent);
                 }
             });
             linearscroll.addView(myLayout);
         }
     }
 
-    public void openEvent(int posevent){
+    /*public void openEvent(int posevent){
         if(events.get(posevent).getType()==Functions.EVENT_TYPE_ACTIVITY){
 
+            //startActivity(intent);
         }
-    }
+    }*/
     public void processEvents(String data){
         events = new ArrayList<>();
         try {
