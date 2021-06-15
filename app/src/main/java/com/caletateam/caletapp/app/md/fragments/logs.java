@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.caletateam.caletapp.R;
+import com.caletateam.caletapp.app.EventList.EventModel;
+import com.caletateam.caletapp.app.babyList.BabyModel;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,5 +66,9 @@ public class logs extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_logs, container, false);
+    }
+
+    public void addEvents(List<EventModel> babys){
+
     }
 }
