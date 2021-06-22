@@ -1,5 +1,6 @@
 package com.caletateam.caletapp.app.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -10,9 +11,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.android.volley.Request.*;
 
@@ -20,7 +29,12 @@ public class Functions {
     public static int EVENT_TYPE_ACTIVITY=0;
     public static int EVENT_TYPE_RESPIRATION=1;
     public static int EVENT_TYPE_PAIN=2;
-    public static String HOST_URL = "http://47.61.212.108:5000/";
+    public static String HOST_URL = "http://192.168.0.17:5000/";
+    public static final String BROKER_MQTT = "tcp://192.168.0.17:1883";
+    public static String[] MQTT_TOPICS = {"caleta/topic1"};
+    public static String getClientID(){
+        return UUID.randomUUID().toString();
+    }
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
     }
@@ -67,4 +81,31 @@ public class Functions {
 
         mRequestQueue.add(mStringRequest);
     }
+
+    public static void subscribeMQTTChannel(MqttAndroidClient cliente, String topic) {
+        try {
+            cliente.subscribe(topic, 1);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Método para publicar un mensaje a través de un canal en MQTT
+     *
+     * @param cliente Cliente de Mqtt
+     * @param topic Canal al que deseamos suscribirnos
+     * @param mensaje Mensaje que deseamos enviar
+     * @return --
+     */
+    public static void sendMqttMsg(MqttAndroidClient cliente, String topic,String mensaje) {
+        MqttMessage msg = new MqttMessage();
+        msg.setPayload(mensaje.getBytes());
+        try {
+            cliente.publish(topic,msg);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

@@ -26,6 +26,14 @@ import com.caletateam.caletapp.app.utils.Functions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +41,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityMD extends AppCompatActivity implements Functions.DevolucionDatos {
+public class MainActivityMD extends AppCompatActivity implements Functions.DevolucionDatos, MqttCallback, IMqttActionListener {
     HorizontalScrollView babylist;
     List<BabyModel> babys;
     LinearLayout linearbabys;
@@ -43,6 +51,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     public static String GET_BABYS_REQUEST="2";
     public static int anInt=5;
     ViewPagerAdapter adapter;
+    MqttAndroidClient clientMQTT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +67,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         tabLayout = findViewById(R.id.tab_layout);
         adapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(adapter);
+        initMqttClient(Functions.BROKER_MQTT,Functions.getClientID());
 
         new TabLayoutMediator(tabLayout, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy() {
@@ -85,17 +95,30 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
 
                 }).attach();
-
         //initBabys();
     }
 
 
+    public void initMqttClient(String broker, String clienteID){
+        clientMQTT = new MqttAndroidClient(this, broker, clienteID);
+        clientMQTT.setCallback(this);
+        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setCleanSession(false);
+        try {
+            clientMQTT.connect(mqttConnectOptions, null, this);
+            //Log.e("CONNECTADOCORRECTAMENTE","ESO");
+        } catch (MqttException ex){
+            Log.e("Error", "onCreate: ", ex);
+        }
+
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
         //addBabys(babys);
         Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",GET_BABYS_REQUEST);
+
     }
 
     /*private void initBabys(){
@@ -154,5 +177,34 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);
            adapter.getLogs().processEvents(data);
         }
+    }
+
+    @Override
+    public void onSuccess(IMqttToken asyncActionToken) {
+        Log.e("SUCCESS","ESO");
+        for(int i=0; i < Functions.MQTT_TOPICS.length;i++) {
+            Log.e("TEST1", (clientMQTT == null) + "");
+            Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS[i]);
+        }
+    }
+
+    @Override
+    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+        Log.e("ERROR","ESO:"+exception.getMessage());
+    }
+
+    @Override
+    public void connectionLost(Throwable cause) {
+
+    }
+
+    @Override
+    public void messageArrived(String topic, MqttMessage message) throws Exception {
+        Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
+    }
+
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken token) {
+
     }
 }

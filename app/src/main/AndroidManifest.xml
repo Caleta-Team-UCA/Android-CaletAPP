@@ -3,6 +3,7 @@
     package="com.caletateam.caletapp">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +14,8 @@
         android:theme="@style/Theme.CaletAPP">
         <activity android:name=".app.md.MainActivityMD"></activity>
         <activity android:name=".app.md.EventViewActivity"></activity>
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+
         <activity
             android:name=".app.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
