@@ -49,6 +49,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     ViewPager2 viewPager2; //= findViewById(R.id.view_pager);
     public static String GET_EVENTS_REQUEST="1";
     public static String GET_BABYS_REQUEST="2";
+    public static String GET_VIDEO_STREAMING="3";
     public static int anInt=5;
     ViewPagerAdapter adapter;
     MqttAndroidClient clientMQTT;
@@ -96,6 +97,35 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
                 }).attach();
         //initBabys();
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition()==3){
+                    try {
+                        Functions.consumeService(getApplication(),Functions.HOST_URL+"/video_feed","GET",GET_VIDEO_STREAMING);
+                        clientMQTT.subscribe("caleta/streaming",1);
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                if(tab.getPosition()==3){
+                    try {
+                        clientMQTT.unsubscribe("caleta/streaming");
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 
@@ -190,7 +220,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     @Override
     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-        Log.e("ERROR","ESO:"+exception.getMessage());
+        //Log.e("ERROR","ESO:"+exception.getMessage());
     }
 
     @Override
@@ -200,10 +230,11 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
-        JSONObject a = new JSONObject(new String(message.getPayload()));
+        //Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
 
-        adapter.getSummary().addChartValues(a.getDouble("value"),System.currentTimeMillis());
+        //JSONObject a = new JSONObject(new String(message.getPayload()));
+        adapter.getStreaming().setImage(message.getPayload());
+        //adapter.getSummary().addChartValues(a.getDouble("value"),System.currentTimeMillis());
     }
 
     @Override

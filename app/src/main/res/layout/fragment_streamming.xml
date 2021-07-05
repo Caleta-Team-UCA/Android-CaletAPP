@@ -31,7 +31,7 @@
                     android:layout_height="0dp" android:layout_weight="0.3" android:textSize="32sp"
                     android:textColor="#535353" android:textStyle="bold" android:text="Heart Rate" android:gravity="center"></TextView>
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="match_parent" android:id="@+id/textstreaming"
                     android:layout_height="0dp" android:scaleType="fitCenter"
                     android:layout_weight="0.5" android:src="@drawable/heart"/>
                 <TextView

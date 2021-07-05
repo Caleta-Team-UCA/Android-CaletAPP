@@ -17,6 +17,11 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     streamming streaming;
     logs logs;
 
+    public void setImage(byte[] buffer){
+
+    }
+
+
     public com.caletateam.caletapp.app.md.fragments.summary getSummary() {
         return summary;
     }
@@ -36,6 +41,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public streamming getStreaming() {
         return streaming;
     }
+
 
     public void setStreaming(streamming streaming) {
         this.streaming = streaming;
