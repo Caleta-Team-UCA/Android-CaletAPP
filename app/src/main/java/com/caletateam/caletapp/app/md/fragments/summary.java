@@ -1,18 +1,24 @@
 package com.caletateam.caletapp.app.md.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.caletateam.caletapp.R;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -33,7 +39,8 @@ public class summary extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    LineChart linechart;
+    Handler handler;
     public summary() {
         // Required empty public constructor
     }
@@ -65,9 +72,85 @@ public class summary extends Fragment {
         }
 
 
+        handler = new Handler() {
 
 
+            @Override
 
+            public void handleMessage(Message msg) {
+                Log.e("MSG HANDLER",msg.getData().getDouble("value")+"");
+                addEntry((float) msg.getData().getDouble("value"));
+
+            }
+
+        };
+
+    }
+    private LineDataSet createSet() {
+
+        LineDataSet set = new LineDataSet(null, "DataSet 1");
+        set.setLineWidth(2.5f);
+        set.setCircleRadius(4.5f);
+        set.setColor(Color.rgb(240, 99, 99));
+        set.setCircleColor(Color.rgb(240, 99, 99));
+        set.setHighLightColor(Color.rgb(190, 190, 190));
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setValueTextSize(10f);
+
+        return set;
+    }
+
+    private void addEntry(float val) {
+
+        LineData data = linechart.getData();
+
+        if (data == null) {
+            data = new LineData();
+            linechart.setData(data);
+        }
+
+        ILineDataSet set = data.getDataSetByIndex(0);
+        // set.addEntry(...); // can be called as well
+
+        if (set == null) {
+            set = createSet();
+            data.addDataSet(set);
+        }
+
+        // choose a random dataSet
+        int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
+        ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex);
+        //float value = (float) (Math.random() * 50) + 50f * (randomDataSetIndex + 1);
+
+        data.addEntry(new Entry(randomSet.getEntryCount(), val), randomDataSetIndex);
+        data.notifyDataChanged();
+
+        // let the chart know it's data has changed
+        linechart.notifyDataSetChanged();
+
+        linechart.setVisibleXRangeMaximum(6);
+        //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
+//
+//            // this automatically refreshes the chart (calls invalidate())
+        linechart.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
+
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    public void addChartValues(double value, long timestamp){
+        Log.e("ADD CHART",value + " "+timestamp);
+        Message msg = new Message();
+        Bundle bld = new Bundle();
+        bld.putDouble("value",value);
+        bld.putLong("timestamp",timestamp);
+        msg.setData(bld);
+        handler.sendMessage(msg);
     }
 
     @Override
@@ -75,6 +158,7 @@ public class summary extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_summary, container, false);
+        linechart = v.findViewById(R.id.lineChart);
         /*LineChart lineChart;
         LineData lineData;
         List<Entry> entryList = new ArrayList<>();

@@ -201,6 +201,9 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
+        JSONObject a = new JSONObject(new String(message.getPayload()));
+
+        adapter.getSummary().addChartValues(a.getDouble("value"),System.currentTimeMillis());
     }
 
     @Override
