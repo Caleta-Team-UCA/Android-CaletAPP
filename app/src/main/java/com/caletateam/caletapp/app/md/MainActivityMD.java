@@ -75,7 +75,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                         //tab.setText("Tab " + (position + 1));
-                        Log.e("POSITION",position+"");
+                        //Log.e("POSITION",position+"");
                         if (position==0) {
                             tab.setText("Summary");
                             tab.setIcon(R.drawable.summary);
@@ -206,6 +206,10 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         if(peticion.equals(GET_EVENTS_REQUEST)){
             Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);
            adapter.getLogs().processEvents(data);
+        }
+
+        if(peticion.equals(GET_VIDEO_STREAMING)){
+            //adapter.getStreaming().setImage();
         }
     }
 

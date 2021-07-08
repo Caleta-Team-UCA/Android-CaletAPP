@@ -1,9 +1,11 @@
 package com.caletateam.caletapp.app.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,12 +31,14 @@ public class Functions {
     public static int EVENT_TYPE_ACTIVITY=0;
     public static int EVENT_TYPE_RESPIRATION=1;
     public static int EVENT_TYPE_PAIN=2;
-    public static String HOST_URL = "http://192.168.0.17:5000/";
-    public static final String BROKER_MQTT = "tcp://192.168.0.17:1883";
-    public static String[] MQTT_TOPICS = {"caleta/topic1"};
+    public static String HOST_URL = "http://192.168.0.17:5000";
+    public static String[] MQTT_TOPICS = {"caleta/topic1","caleta/streaming"};
+    public static final String BROKER_MQTT = "tcp://broker.hivemq.com:1883";
     public static String getClientID(){
         return UUID.randomUUID().toString();
     }
+
+
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
     }
@@ -44,6 +48,7 @@ public class Functions {
         StringRequest mStringRequest;
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(ctx);
+        Log.e("VOLLEY",url+"   "+verbo);
         int verb=-1;
 
         switch(verbo.toUpperCase()){
@@ -55,7 +60,8 @@ public class Functions {
                 verb = Method.DELETE;
             default:
                 verb = Method.GET;
-        }mStringRequest = new StringRequest(verb, url, new Response.Listener<String>() {
+        };
+        mStringRequest = new StringRequest(verb, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Utils.imprimirenConsola(response +"   "+idpeticion);
@@ -69,13 +75,14 @@ public class Functions {
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("Error","Error :" + error.toString());
+
             }
         }){    //this is the part, that adds the header to the request
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("token", "Z9893PvQrHTHkLOgLI4T");
-                //params.put("content-type", "application/json");
+                params.put("content-type", "application/json");
                 return params;
             }};
 
