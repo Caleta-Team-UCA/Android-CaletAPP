@@ -31,9 +31,9 @@ public class Functions {
     public static int EVENT_TYPE_ACTIVITY=0;
     public static int EVENT_TYPE_RESPIRATION=1;
     public static int EVENT_TYPE_PAIN=2;
-    public static String HOST_URL = "http://192.168.0.17:5000";
+    public static String HOST_URL = "http://vai.uca.es:5000";
     public static String[] MQTT_TOPICS = {"caleta/topic1","caleta/streaming"};
-    public static final String BROKER_MQTT = "tcp://broker.hivemq.com:1883";
+    public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
     public static String getClientID(){
         return UUID.randomUUID().toString();
     }

@@ -147,7 +147,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     protected void onStart() {
         super.onStart();
         //addBabys(babys);
-        Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",GET_BABYS_REQUEST);
+        //Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",GET_BABYS_REQUEST);
 
     }
 
@@ -234,7 +234,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        //Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
+        Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
 
         //JSONObject a = new JSONObject(new String(message.getPayload()));
         adapter.getStreaming().setImage(message.getPayload());
