@@ -102,8 +102,8 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition()==3){
                     try {
-                        Functions.consumeService(getApplication(),Functions.HOST_URL+"/video_feed","GET",GET_VIDEO_STREAMING);
-                        clientMQTT.subscribe("caleta/streaming",1);
+                        //Functions.consumeService(getApplication(),Functions.HOST_URL+"/video_feed","GET",GET_VIDEO_STREAMING);
+                        clientMQTT.subscribe("caleta/streaming",0);
                     } catch (MqttException e) {
                         e.printStackTrace();
                     }

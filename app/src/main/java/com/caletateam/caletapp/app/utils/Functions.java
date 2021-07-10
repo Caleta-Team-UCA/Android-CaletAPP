@@ -44,6 +44,8 @@ public class Functions {
     }
 
     public static void consumeService(Context ctx, String url, String verbo, String idpeticion){
+        if(1==1)
+            return;
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
         //RequestQueue initialized
