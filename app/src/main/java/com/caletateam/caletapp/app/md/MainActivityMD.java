@@ -134,7 +134,10 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         clientMQTT.setCallback(this);
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setUserName(Functions.USER_MQTT);
+        mqttConnectOptions.setPassword(Functions.PASSWORD_MQTT.toCharArray());
         try {
+
             clientMQTT.connect(mqttConnectOptions, null, this);
             //Log.e("CONNECTADOCORRECTAMENTE","ESO");
         } catch (MqttException ex){
@@ -147,7 +150,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     protected void onStart() {
         super.onStart();
         //addBabys(babys);
-        //Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",GET_BABYS_REQUEST);
+        Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",GET_BABYS_REQUEST);
 
     }
 

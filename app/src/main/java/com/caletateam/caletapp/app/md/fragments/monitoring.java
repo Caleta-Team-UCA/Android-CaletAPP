@@ -5,9 +5,11 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.caletateam.caletapp.R;
 import com.github.mikephil.charting.animation.Easing;
@@ -17,7 +19,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,8 @@ public class monitoring extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private PieChart activity,respiration,pain;
+    private PieChart activity,respiration, stress;
+    private LinearLayout linearActivity, linearRespiration, linearStress;
 
     public monitoring() {
         // Required empty public constructor
@@ -77,7 +79,11 @@ public class monitoring extends Fragment {
         View v =inflater.inflate(R.layout.fragment_monitoring, container, false);
         activity = v.findViewById(R.id.chartActivity);
         respiration = v.findViewById(R.id.chartRespiration);
-        pain = v.findViewById(R.id.chartPain);
+        stress = v.findViewById(R.id.chartPain);
+        linearActivity = v.findViewById(R.id.linearActivity);
+        linearRespiration = v.findViewById(R.id.linearRespiration);
+        linearStress = v.findViewById(R.id.linearStress);
+
         return v;
     }
 
@@ -85,37 +91,59 @@ public class monitoring extends Fragment {
     public void onStart() {
         super.onStart();
         List<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#ff0000"));
+        colors.add(getResources().getColor(R.color.activity));
         colors.add(Color.parseColor("#dddddd"));
 
         initChartActivity(activity,72,"Activity", colors);
 
         colors = new ArrayList<>();
-        colors.add(Color.parseColor("#00ff00"));
+        colors.add(getResources().getColor(R.color.respiration));
         colors.add(Color.parseColor("#dddddd"));
 
         initChartActivity(respiration,98,"Respiration", colors);
 
         colors = new ArrayList<>();
-        colors.add(Color.parseColor("#ff0000"));
+        colors.add(getResources().getColor(R.color.pain));
         colors.add(Color.parseColor("#dddddd"));
 
-        initChartActivity(pain,5,"Pain", colors);
+        initChartActivity(stress,5,"Stress", colors);
+
+        linearActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("CLICK","activity");
+            }
+        });
+
+        linearRespiration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("CLICK","respiration");
+            }
+        });
+
+        linearStress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("CLICK","stress");
+            }
+        });
+
     }
 
     private void initChartActivity(PieChart activity, int value,String label, List<Integer> colors){
         activity.setBackgroundColor(Color.WHITE);
 
-
-
         activity.setUsePercentValues(true);
         activity.getDescription().setEnabled(false);
-
+        Legend l = activity.getLegend();
+        l.setEnabled(false);
         //chart.setCenterTextTypeface(tfLight);
         activity.setCenterText(value+"%");
         activity.setCenterTextSize(30);
         activity.setDrawHoleEnabled(true);
         activity.setHoleColor(Color.WHITE);
+        activity.setCenterTextColor(colors.get(0));
 
         activity.setTransparentCircleColor(Color.WHITE);
         activity.setTransparentCircleAlpha(110);
@@ -130,15 +158,6 @@ public class monitoring extends Fragment {
 
         activity.setMaxAngle(180f); // HALF CHART
         activity.setRotationAngle(180f);
-        //activity.setCenterTextOffset(0, -20);
-
-        //setData(4, 100);
-
-        /*
-
-
-
-         */
 
 
         ArrayList<PieEntry> values = new ArrayList<>();
@@ -170,6 +189,12 @@ public class monitoring extends Fragment {
 
         activity.animateY(1400, Easing.EaseInOutQuad);
 
+        activity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         /*Legend l = activity.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);

@@ -22,15 +22,16 @@
         <activity
             android:name=".app.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_login"
-            android:theme="@style/Theme.CaletAPP.Fullscreen">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.CaletAPP.Fullscreen"
+            android:icon="@drawable/logocaletapp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+        <!--<activity
             android:name=".app.login.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
@@ -38,7 +39,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
     </application>
 
 </manifest>
