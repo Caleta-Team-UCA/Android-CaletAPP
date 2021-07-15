@@ -2,10 +2,12 @@ package com.caletateam.caletapp.app.md.fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,25 @@ import android.widget.ImageView;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.utils.Functions;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.rtmp.RtmpDataSource;
+import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+
+
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,8 +51,15 @@ public class streamming extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    // creating a variable for exoplayerview.
+    PlayerView playerView;
 
-    private WebView webview;
+    // creating a variable for exoplayer
+    SimpleExoPlayer exoPlayer;
+
+    // url of video which we are loading.
+    String videoURL = "rtmp://vai.uca.es/vod/test1.mp4";
+
     public void setImage(byte[] buffer){
         Bitmap bmp = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
         streaming.setImageBitmap(bmp);
@@ -60,6 +88,12 @@ public class streamming extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        initRTMPPlayer();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -75,12 +109,39 @@ public class streamming extends Fragment {
         // Inflate the layout for this fragment
 
         View v= inflater.inflate(R.layout.fragment_streamming, container, false);
-        webview = v.findViewById(R.id.webview);
-        streaming = v.findViewById(R.id.textstreaming);
+        //webview = v.findViewById(R.id.webview);
+        //streaming = v.findViewById(R.id.textstreaming);
+        playerView = v.findViewById(R.id.simple_player);
         //webview.loadUrl(Functions.HOST_URL+"oak");
-        String data ="<!doctype html> <html lang='en'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <title>Caleta Live Streaming</title> </head> <body> <div style='width:100%; height:100%'> <img src='"+Functions.HOST_URL+"video_feed' width='100%'> </div> </body> </html>";
-        webview.loadData(data, "text/html", null);
+        //String data ="<!doctype html> <html lang='en'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <title>Caleta Live Streaming</title> </head> <body> <div style='width:100%; height:100%'> <img src='"+Functions.HOST_URL+"video_feed' width='100%'> </div> </body> </html>";
+        //webview.loadData(data, "text/html", null);
 
         return v;
+    }
+
+    public void initRTMPPlayer(){
+
+
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
+
+       // PlayerView playerView = findViewById(R.id.simple_player);
+
+        playerView.setPlayer(player);
+
+        // Create RTMP Data Source
+        RtmpDataSourceFactory rtmpDataSourceFactory = new RtmpDataSourceFactory();
+
+        MediaSource videoSource = new ExtractorMediaSource
+                .Factory(rtmpDataSourceFactory)
+                .createMediaSource(Uri.parse(videoURL));
+
+        player.prepare(videoSource);
+        player.setPlayWhenReady(true);
+
+
+
     }
 }

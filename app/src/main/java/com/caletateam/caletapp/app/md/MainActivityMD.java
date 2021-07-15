@@ -103,8 +103,8 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                 if(tab.getPosition()==3){
                     try {
                         //Functions.consumeService(getApplication(),Functions.HOST_URL+"/video_feed","GET",GET_VIDEO_STREAMING);
-                        clientMQTT.subscribe("caleta/streaming",0);
-                    } catch (MqttException e) {
+                        //clientMQTT.subscribe("caleta/streaming",0);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -114,8 +114,8 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             public void onTabUnselected(TabLayout.Tab tab) {
                 if(tab.getPosition()==3){
                     try {
-                        clientMQTT.unsubscribe("caleta/streaming");
-                    } catch (MqttException e) {
+                       // clientMQTT.unsubscribe("caleta/streaming");
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

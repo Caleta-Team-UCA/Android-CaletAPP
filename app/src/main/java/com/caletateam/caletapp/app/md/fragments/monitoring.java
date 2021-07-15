@@ -15,10 +15,13 @@ import com.caletateam.caletapp.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +129,43 @@ public class monitoring extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.e("CLICK","stress");
+            }
+        });
+
+        activity.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Log.e("CLICKADO ","NIVEL DE ACTIVIDAD");
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+
+        respiration.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Log.e("CLICKADO ","NIVEL DE respiracion");
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        stress.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Log.e("CLICKADO ","NIVEL DE stress");
+            }
+
+            @Override
+            public void onNothingSelected() {
+
             }
         });
 
