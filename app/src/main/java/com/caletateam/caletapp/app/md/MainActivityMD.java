@@ -227,7 +227,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     @Override
     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-        //Log.e("ERROR","ESO:"+exception.getMessage());
+        Log.e("ERROR","ESO:"+exception.getMessage());
     }
 
     @Override
@@ -240,7 +240,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
 
         //JSONObject a = new JSONObject(new String(message.getPayload()));
-        adapter.getStreaming().setImage(message.getPayload());
+         adapter.getStreaming().setImage(message.getPayload());
         //adapter.getSummary().addChartValues(a.getDouble("value"),System.currentTimeMillis());
     }
 

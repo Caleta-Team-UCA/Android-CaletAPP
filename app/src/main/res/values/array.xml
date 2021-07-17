@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="options_array">
+        <item id="0">Last hour</item>
+        <item id="1">Last 6 hours</item>
+        <item id="2">Last 12 hours</item>
+        <item id="3">Last 24 hours</item>
+        <item id="4">Last week</item>
+        <item id="5">Last Month</item>
+        <item id="6">Custom..</item>
+    </string-array>
+</resources>

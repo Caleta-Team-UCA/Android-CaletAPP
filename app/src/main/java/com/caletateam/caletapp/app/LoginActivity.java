@@ -22,6 +22,7 @@ import android.widget.EditText;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.md.MainActivityMD;
+import com.caletateam.caletapp.app.md.Monitoring;
 import com.caletateam.caletapp.app.utils.Functions;
 
 
@@ -140,8 +141,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
+                /*Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
                 intent.putExtra("userid",userid);
+                startActivity(intent);*/
+                Intent intent = new Intent(LoginActivity.this, Monitoring.class);
+                intent.putExtra("event","act");
                 startActivity(intent);
             }
         });

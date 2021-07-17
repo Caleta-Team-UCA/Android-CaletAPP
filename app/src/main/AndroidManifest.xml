@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaletAPP"
         android:usesCleartextTraffic="true">
+        <activity android:name=".app.md.Monitoring"></activity>
         <activity android:name=".app.md.MainActivityMD" />
         <activity android:name=".app.md.EventViewActivity" />
 

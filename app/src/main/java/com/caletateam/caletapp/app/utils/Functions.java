@@ -32,7 +32,7 @@ public class Functions {
     public static int EVENT_TYPE_RESPIRATION=1;
     public static int EVENT_TYPE_PAIN=2;
     public static String HOST_URL = " http://192.168.0.17:5000";//"http://vai.uca.es:5000";
-    public static String[] MQTT_TOPICS = {"caleta/topic1","caleta/streaming"};
+    public static String[] MQTT_TOPICS = {"caleta/topic1","caleta/stream"};
     public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
     public static final String USER_MQTT="caleta";
     public static final String PASSWORD_MQTT="caleta123";
@@ -47,6 +47,11 @@ public class Functions {
         void RespuestaLlamadaServicio(String peticion,String data);
     }
 
+    public static String getDatePart(int n){
+        if(n<10)
+            return "0"+n;
+        else return String.valueOf(n);
+    }
     public static void consumeService(Context ctx, String url, String verbo, String idpeticion){
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;

@@ -90,7 +90,7 @@ public class streamming extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        initRTMPPlayer();
+        //initRTMPPlayer();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class streamming extends Fragment {
 
         View v= inflater.inflate(R.layout.fragment_streamming, container, false);
         //webview = v.findViewById(R.id.webview);
-        //streaming = v.findViewById(R.id.textstreaming);
+        streaming = v.findViewById(R.id.textstreaming);
         playerView = v.findViewById(R.id.simple_player);
         //webview.loadUrl(Functions.HOST_URL+"oak");
         //String data ="<!doctype html> <html lang='en'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <title>Caleta Live Streaming</title> </head> <body> <div style='width:100%; height:100%'> <img src='"+Functions.HOST_URL+"video_feed' width='100%'> </div> </body> </html>";
