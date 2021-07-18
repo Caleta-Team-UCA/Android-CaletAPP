@@ -47,9 +47,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     LinearLayout linearbabys;
     TabLayout tabLayout; //= findViewById(R.id.tabs);
     ViewPager2 viewPager2; //= findViewById(R.id.view_pager);
-    public static String GET_EVENTS_REQUEST="1";
-    public static String GET_BABYS_REQUEST="2";
-    public static String GET_VIDEO_STREAMING="3";
+
     public static int anInt=5;
     ViewPagerAdapter adapter;
     MqttAndroidClient clientMQTT;
@@ -150,7 +148,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     protected void onStart() {
         super.onStart();
         //addBabys(babys);
-        Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",GET_BABYS_REQUEST);
+        Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",Functions.GET_BABYS_REQUEST);
 
     }
 
@@ -193,7 +191,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     @Override
     public void RespuestaLlamadaServicio(String peticion, String data) {
-        if(peticion.equals(GET_BABYS_REQUEST)){
+        if(peticion.equals(Functions.GET_BABYS_REQUEST)){
             babys = new ArrayList<>();
             try {
                 JSONArray items = new JSONObject(data).getJSONArray("payload");
@@ -206,12 +204,12 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                 e.printStackTrace();
             }
         }
-        if(peticion.equals(GET_EVENTS_REQUEST)){
+        if(peticion.equals(Functions.GET_EVENTS_REQUEST)){
             Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);
            adapter.getLogs().processEvents(data);
         }
 
-        if(peticion.equals(GET_VIDEO_STREAMING)){
+        if(peticion.equals(Functions.GET_VIDEO_STREAMING)){
             //adapter.getStreaming().setImage();
         }
     }
@@ -240,7 +238,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
 
         //JSONObject a = new JSONObject(new String(message.getPayload()));
-         adapter.getStreaming().setImage(message.getPayload());
+        // adapter.getStreaming().setImage(message.getPayload());
         //adapter.getSummary().addChartValues(a.getDouble("value"),System.currentTimeMillis());
     }
 

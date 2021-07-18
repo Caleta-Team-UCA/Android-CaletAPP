@@ -143,7 +143,7 @@ public class summary extends Fragment {
 
     }
 
-    public void addChartValues(double value, long timestamp){
+   public void addChartValues(double value, long timestamp){
         Log.e("ADD CHART",value + " "+timestamp);
         Message msg = new Message();
         Bundle bld = new Bundle();

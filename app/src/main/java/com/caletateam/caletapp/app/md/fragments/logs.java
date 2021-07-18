@@ -93,7 +93,7 @@ public class logs extends Fragment  {
     public void onStart() {
         super.onStart();
         Log.e("LOGS","!SERVICIO CONSUMIDO");
-        Functions.consumeService(getActivity(),Functions.HOST_URL+"/event","GET",MainActivityMD.GET_EVENTS_REQUEST);
+        Functions.consumeService(getActivity(),Functions.HOST_URL+"/event","GET",Functions.GET_EVENTS_REQUEST);
     }
 
     public void addEvents(List<EventModel> events){

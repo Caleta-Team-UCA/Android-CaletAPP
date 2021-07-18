@@ -21,6 +21,9 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.Console;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -42,7 +45,10 @@ public class Functions {
     public static String TYPE_ACTIVITY="act";
     public static String TYPE_RESPIRATION="resp";
     public static String TYPE_STRESS="stress";
-
+    public static String GET_EVENTS_REQUEST="1";
+    public static String GET_BABYS_REQUEST="2";
+    public static String GET_VIDEO_STREAMING="3";
+    public static String GET_EVENTS_FILTER="4";
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
     }
@@ -51,6 +57,18 @@ public class Functions {
         if(n<10)
             return "0"+n;
         else return String.valueOf(n);
+    }
+
+    public static long getTimeStampFromDate(String date){
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            Date parsedDate = dateFormat.parse(date);
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+            return timestamp.getTime();
+        } catch(Exception e) { //this generic but you can control another types of exception
+            // look the origin of excption
+        }
+        return -1;
     }
     public static void consumeService(Context ctx, String url, String verbo, String idpeticion){
         RequestQueue mRequestQueue;

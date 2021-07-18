@@ -2,6 +2,7 @@ package com.caletateam.caletapp.app.md.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,16 +16,29 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.utils.Functions;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +59,9 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
     private EditText startdate,enddate;
     int day, month, year, hour, minute;
     int myday, myMonth, myYear, myHour, myMinute;
+    ImageButton search, filters;
+    String type="act";
+    private LineChart linechart;
     public LogMonitoring() {
         // Required empty public constructor
     }
@@ -75,7 +92,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    boolean start=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +101,9 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         list = v.findViewById(R.id.optionspinner);
         linearcustom = v.findViewById(R.id.linearSelectDate);
         startdate = v.findViewById(R.id.startdate);
+        enddate = v.findViewById(R.id.enddate);
+        search = v.findViewById(R.id.search);
+        linechart = v.findViewById(R.id.lineChart);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.options_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
@@ -137,6 +157,36 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                 day = calendar.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), LogMonitoring.this,year, month,day);
                 datePickerDialog.show();
+                start = true;
+            }
+        });
+
+        enddate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                /*new DatePickerDialog(getContext(), date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();*/
+                Calendar calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), LogMonitoring.this,year, month,day);
+                datePickerDialog.show();
+                start = false;
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long stard = Functions.getTimeStampFromDate(startdate.getText().toString());
+                long endd = Functions.getTimeStampFromDate(enddate.getText().toString());
+                Log.e("Startdate timestamp: ",""+Functions.getTimeStampFromDate(startdate.getText().toString()));
+                Log.e("Enddate timestamp: ",""+Functions.getTimeStampFromDate(enddate.getText().toString()));
+                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+type+"/"+stard+"/"+endd,"GET", Functions.GET_EVENTS_FILTER);
             }
         });
         return v;
@@ -159,11 +209,117 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         myHour = hourOfDay;
         myMinute = minute;
-        startdate.setText(Functions.getDatePart(myday)+"/"+Functions.getDatePart(myMonth)+"/"+Functions.getDatePart(myYear)+ " "+Functions.getDatePart(myHour)+":"+Functions.getDatePart(myMinute));
+        if(start)
+            startdate.setText(Functions.getDatePart(myday)+"/"+Functions.getDatePart(myMonth)+"/"+Functions.getDatePart(myYear)+ " "+Functions.getDatePart(myHour)+":"+Functions.getDatePart(myMinute));
+        else  enddate.setText(Functions.getDatePart(myday)+"/"+Functions.getDatePart(myMonth)+"/"+Functions.getDatePart(myYear)+ " "+Functions.getDatePart(myHour)+":"+Functions.getDatePart(myMinute));
+
                 /*"Year: " + myYear + "\n" +
                 "Month: " + myMonth + "\n" +
                 "Day: " + myday + "\n" +
                 "Hour: " + myHour + "\n" +
                 "Minute: " + myMinute);*/
     }
+
+    private LineDataSet createSet(String type) {
+
+        LineDataSet set = new LineDataSet(null, type);
+        set.setLineWidth(2.5f);
+        set.setCircleRadius(4.5f);
+        set.setColor(Color.rgb(240, 99, 99));
+        set.setCircleColor(Color.rgb(240, 99, 99));
+        set.setHighLightColor(Color.rgb(190, 190, 190));
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setValueTextSize(10f);
+
+        return set;
+    }
+/*
+    private void addEntry(float val) {
+
+        LineData data = linechart.getData();
+
+        if (data == null) {
+            data = new LineData();
+            linechart.setData(data);
+        }
+
+        ILineDataSet set = data.getDataSetByIndex(0);
+        // set.addEntry(...); // can be called as well
+
+        if (set == null) {
+            set = createSet("Activity");
+            data.addDataSet(set);
+        }
+
+        // choose a random dataSet
+        int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
+        ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex);
+        //float value = (float) (Math.random() * 50) + 50f * (randomDataSetIndex + 1);
+
+        data.addEntry(new Entry(randomSet.getEntryCount(), val), randomDataSetIndex);
+        data.notifyDataChanged();
+
+        // let the chart know it's data has changed
+        linechart.notifyDataSetChanged();
+
+        linechart.setVisibleXRangeMaximum(6);
+        //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
+//
+//            // this automatically refreshes the chart (calls invalidate())
+        linechart.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
+
+    }*/
+
+    public void initChartActivity(String label,ArrayList<Float> values,  List<Long> times){
+        try {
+            linechart.setBackgroundColor(Color.WHITE);
+            linechart.setVisibleXRangeMaximum(20);
+            linechart.moveViewToX(10);
+            LineData data = linechart.getData();
+
+            if (data == null) {
+                data = new LineData();
+                linechart.setData(data);
+            }
+
+            ILineDataSet set = data.getDataSetByIndex(0);
+            // set.addEntry(...); // can be called as well
+
+            if (set == null) {
+                set = createSet("Activity");
+                data.addDataSet(set);
+            }
+            long starttimestamp = times.get(0);
+            SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+            for (int i = 0; i < values.size(); i++) {
+                data.addEntry(new Entry(times.get(i)-starttimestamp, values.get(i)),0);
+                Log.e("TIME "+i,mFormat.format(new Date(times.get(i)-starttimestamp)));
+                data.notifyDataChanged();
+            }
+
+
+            linechart.notifyDataSetChanged();
+            XAxis xAxis = linechart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setLabelRotationAngle(-45);
+            xAxis.setValueFormatter(new ValueFormatter() {
+
+                private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+
+                @Override
+                public String getFormattedValue(float value) {
+
+                    //long millis = TimeUnit.MINUTES.toMillis((long) value);
+                    return mFormat.format(new Date((long)value));
+                }
+            });
+
+            // let the chart know it's data has changed
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }
