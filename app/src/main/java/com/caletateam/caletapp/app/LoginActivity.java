@@ -143,9 +143,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 /*Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
                 intent.putExtra("userid",userid);
-                startActivity(intent);*/
-                Intent intent = new Intent(LoginActivity.this, Monitoring.class);
-                intent.putExtra("event","act");
+                startActivity(intent);
+                */Intent intent = new Intent(LoginActivity.this, Monitoring.class);
+                intent.putExtra("event",Functions.TYPE_STRESS);
                 startActivity(intent);
             }
         });

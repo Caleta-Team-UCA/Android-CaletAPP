@@ -24,14 +24,18 @@ import android.widget.TimePicker;
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.utils.Functions;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,18 +53,16 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
     private Spinner list;
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String event;
     private LinearLayout linearcustom;
     private EditText startdate,enddate;
     int day, month, year, hour, minute;
     int myday, myMonth, myYear, myHour, myMinute;
     ImageButton search, filters;
-    String type="act";
+    String type=Functions.TYPE_STRESS;
     private LineChart linechart;
     public LogMonitoring() {
         // Required empty public constructor
@@ -70,16 +72,15 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment LogMonitoring.
      */
     // TODO: Rename and change types and number of parameters
-    public static LogMonitoring newInstance(String param1, String param2) {
+    public static LogMonitoring newInstance(String event) {
         LogMonitoring fragment = new LogMonitoring();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("event", event);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,8 +89,8 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            event = getArguments().getString("event");
+
         }
     }
     boolean start=false;
@@ -186,12 +187,32 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                 long endd = Functions.getTimeStampFromDate(enddate.getText().toString());
                 Log.e("Startdate timestamp: ",""+Functions.getTimeStampFromDate(startdate.getText().toString()));
                 Log.e("Enddate timestamp: ",""+Functions.getTimeStampFromDate(enddate.getText().toString()));
+                resetChart();
+
+
                 Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+type+"/"+stard+"/"+endd,"GET", Functions.GET_EVENTS_FILTER);
             }
         });
         return v;
     }
 
+
+    private void resetChart() {
+        try {
+            linechart.fitScreen();
+            linechart.getLineData().clearValues();
+            linechart.getData().clearValues();
+            linechart.getXAxis().setValueFormatter(null);
+            //linechart.notifyDataSetChanged();
+            linechart.clear();
+            linechart.invalidate();
+
+        }catch(Exception e){
+            Log.e("ERROR ",e.getMessage());
+        }
+
+
+    }
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         myYear = year;
@@ -224,12 +245,16 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
         LineDataSet set = new LineDataSet(null, type);
         set.setLineWidth(2.5f);
-        set.setCircleRadius(4.5f);
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set.setDrawCircles(false);
         set.setColor(Color.rgb(240, 99, 99));
-        set.setCircleColor(Color.rgb(240, 99, 99));
+        //set.setCircleColor(Color.rgb(240, 99, 99));
         set.setHighLightColor(Color.rgb(190, 190, 190));
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setValueTextSize(10f);
+        set.setDrawValues(false);
+        set.setDrawFilled(true);
+        set.setFillColor(Color.rgb(250,175,175));
 
         return set;
     }
@@ -274,45 +299,82 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         try {
             linechart.setBackgroundColor(Color.WHITE);
             linechart.setVisibleXRangeMaximum(20);
-            linechart.moveViewToX(10);
+
+
+            //linechart.moveViewToX(10);
+            linechart.getLegend().setEnabled(false);
             LineData data = linechart.getData();
 
             if (data == null) {
+                Log.e("DATA NULL","ES NULO");
                 data = new LineData();
                 linechart.setData(data);
             }
 
             ILineDataSet set = data.getDataSetByIndex(0);
+
             // set.addEntry(...); // can be called as well
 
             if (set == null) {
-                set = createSet("Activity");
+                Log.e("SET NULL","ES NULO");
+                set = createSet(label);
                 data.addDataSet(set);
             }
-            long starttimestamp = times.get(0);
-            SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+
+            //set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            Long start = times.get(0);//start
+            Long end = times.get(times.size()-1);//end
+            List<Long> mList = new ArrayList<>(); //Decimal list which holds timestamps
+            int count = 0;
+            Log.e("START AND END:",start+"  --  "+end);
+            for (Long i = start; i <= end; i++) {
+                if (times.get(count).equals(i)) {
+                    mList.add(new Long(i));
+                    data.addEntry(new Entry(count, values.get(count)),0);
+                    count++;
+                }
+
+            }
+
+            //long starttimestamp = 0;//+times.get(0);
+            //float to = times.get(0) + times.get(times.size()-1);
+            /*int i=0;
+            for (float x = times.get(0); x < to; x++) {
+
+                //float y = getRandom(range, 50);
+                data.addEntry(new Entry(x, values.get(i)),0); // add one entry per hour
+                i++;
+            }*/
+            /*SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
             for (int i = 0; i < values.size(); i++) {
                 data.addEntry(new Entry(times.get(i)-starttimestamp, values.get(i)),0);
                 Log.e("TIME "+i,mFormat.format(new Date(times.get(i)-starttimestamp)));
                 data.notifyDataChanged();
-            }
+            }*/
 
-
+            linechart.getDescription().setEnabled(false);
             linechart.notifyDataSetChanged();
             XAxis xAxis = linechart.getXAxis();
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setLabelRotationAngle(-45);
+            xAxis.setLabelRotationAngle(-90);
+            //xAxis.setGranularity(1f); // one hour
             xAxis.setValueFormatter(new ValueFormatter() {
 
-                private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+                private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM HH:mm:ss", Locale.ENGLISH);
 
                 @Override
                 public String getFormattedValue(float value) {
 
-                    //long millis = TimeUnit.MINUTES.toMillis((long) value);
-                    return mFormat.format(new Date((long)value));
+                    return mFormat.format(new Date(mList.get((int)value)));
+
                 }
+
+
+
+
             });
+            linechart.animateX(2000);
+
 
             // let the chart know it's data has changed
 

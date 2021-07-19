@@ -44,11 +44,11 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
         try{
             event = getIntent().getStringExtra("event");
         }catch(Exception e){
-
+            event = Functions.TYPE_RESPIRATION;
         }
         viewPager2 = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tab_layout);
-        adapter = new ViewPagerAdapterMonitoring(this);
+        adapter = new ViewPagerAdapterMonitoring(this,event);
         viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2,
@@ -75,29 +75,29 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
     @Override
     public void RespuestaLlamadaServicio(String peticion, String data) {
         if(peticion.equals(Functions.GET_EVENTS_FILTER)){
-
-
             ArrayList<Float> values = new ArrayList<>();
             ArrayList<Long> times = new ArrayList<>();
-            Log.e("LENGTH STRING:",data.toCharArray().length+"");
             try {
                 JSONArray items = new JSONObject(data).getJSONArray("payload");
 
-                Log.e("ITEMS ARRAY",items.length()+"");
                 JSONObject obj;
                 for(int i=0; i < items.length();i++){
-
                    obj = items.getJSONObject(i);
-                    Log.e("ELEMENT "+i+":",obj.toString());
-                   values.add((float) obj.getDouble("value"));
+                    //Log.e("ELEMENT "+i,obj.toString() +"  "+obj.getString("value"));
+                   JSONObject value = new JSONObject(obj.getString("value"));
+                   //Log.e("AA","1");
+                   values.add((float) value.getInt("value"));
+                   // Log.e("AA","2");
                    times.add(obj.getLong("time"));
-                   Log.e("OBJ :",obj.getDouble("value")+ "   "+obj.getLong("time"));
+                   // Log.e("AA","3");
                 }
 
             } catch (JSONException e) {
+                Log.e("AA","ERKRPR:"+e.getMessage());
                 e.printStackTrace();
             }
-            adapter.getLogmonitoring().initChartActivity("Activity",values,times);
+
+            adapter.getLogmonitoring().initChartActivity(event,values,times);
         }
 
     }

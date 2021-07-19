@@ -40,7 +40,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:maxLines="1" android:textAlignment="textStart"
-                 android:hint="dd/mm/yyyy" android:textSize="16sp"
+                 android:hint="dd/mm/yyyy" android:textSize="16sp" android:text="19/07/2021 16:30"
                 android:textStyle="bold" android:id="@+id/startdate"></EditText>
             </LinearLayout>
             <LinearLayout
@@ -54,7 +54,7 @@
                     android:layout_height="match_parent" android:inputType="date"
                     android:focusable="false"
                     android:clickable="true"  android:textAlignment="textStart"
-                    android:maxLines="1"
+                    android:maxLines="1" android:text="19/07/2021 18:30"
                     android:hint="dd/mm/yyyy" android:textSize="16sp"
                     android:textStyle="bold" android:id="@+id/enddate"></EditText>
             </LinearLayout>
@@ -63,7 +63,7 @@
         <com.github.mikephil.charting.charts.LineChart
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:id="@+id/lineChart"/>
     </LinearLayout>
 

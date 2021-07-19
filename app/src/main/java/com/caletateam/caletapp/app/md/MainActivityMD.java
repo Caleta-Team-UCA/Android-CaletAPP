@@ -216,9 +216,9 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     @Override
     public void onSuccess(IMqttToken asyncActionToken) {
-        Log.e("SUCCESS","ESO");
+        //Log.e("SUCCESS","ESO");
         for(int i=0; i < Functions.MQTT_TOPICS.length;i++) {
-            Log.e("TEST1", (clientMQTT == null) + "");
+            //Log.e("TEST1", (clientMQTT == null) + "");
             Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS[i]);
         }
     }

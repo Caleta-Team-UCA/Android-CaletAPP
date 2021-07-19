@@ -34,14 +34,8 @@ public class Functions {
     public static int EVENT_TYPE_ACTIVITY=0;
     public static int EVENT_TYPE_RESPIRATION=1;
     public static int EVENT_TYPE_PAIN=2;
-    public static String HOST_URL = " http://192.168.0.17:5000";//"http://vai.uca.es:5000";
-    public static String[] MQTT_TOPICS = {"caleta/topic1","caleta/stream"};
-    public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
-    public static final String USER_MQTT="caleta";
-    public static final String PASSWORD_MQTT="caleta123";
-    public static String getClientID(){
-        return UUID.randomUUID().toString();
-    }
+    public static String HOST_URL = " http://vai.uca.es:5000";//"http://vai.uca.es:5000";
+
     public static String TYPE_ACTIVITY="act";
     public static String TYPE_RESPIRATION="resp";
     public static String TYPE_STRESS="stress";
@@ -49,6 +43,13 @@ public class Functions {
     public static String GET_BABYS_REQUEST="2";
     public static String GET_VIDEO_STREAMING="3";
     public static String GET_EVENTS_FILTER="4";
+    public static String[] MQTT_TOPICS = {"caleta/"+TYPE_ACTIVITY,"caleta/"+TYPE_RESPIRATION,"caleta/"+TYPE_STRESS};
+    public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
+    public static final String USER_MQTT="caleta";
+    public static final String PASSWORD_MQTT="caleta123";
+    public static String getClientID(){
+        return UUID.randomUUID().toString();
+    }
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
     }
@@ -150,6 +151,8 @@ public class Functions {
             e.printStackTrace();
         }
     }
+
+
 
 
 }

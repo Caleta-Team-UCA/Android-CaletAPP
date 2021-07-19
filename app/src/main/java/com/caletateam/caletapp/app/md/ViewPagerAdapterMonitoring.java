@@ -16,7 +16,7 @@ import com.caletateam.caletapp.app.md.fragments.summary;
 public class ViewPagerAdapterMonitoring extends FragmentStateAdapter {
     LogMonitoring logmonitoring;
     RealTimeMonitoring realTimeMonitoring;
-
+    String event;
     public void setImage(byte[] buffer){
 
     }
@@ -37,9 +37,10 @@ public class ViewPagerAdapterMonitoring extends FragmentStateAdapter {
         this.realTimeMonitoring = realTimeMonitoring;
     }
 
-    public ViewPagerAdapterMonitoring(@NonNull FragmentActivity fragmentActivity)
+    public ViewPagerAdapterMonitoring(@NonNull FragmentActivity fragmentActivity,String event)
     {
         super(fragmentActivity);
+        this.event = event;
     }
 
     @NonNull
@@ -48,10 +49,10 @@ public class ViewPagerAdapterMonitoring extends FragmentStateAdapter {
 
         switch (position) {
             case 0:
-                realTimeMonitoring = new RealTimeMonitoring();
+                realTimeMonitoring =  RealTimeMonitoring.newInstance(event);
                 return realTimeMonitoring;
             default:
-                logmonitoring = new LogMonitoring();
+                logmonitoring = LogMonitoring.newInstance(event);
                 return logmonitoring;
         }
     }

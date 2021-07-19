@@ -15,7 +15,7 @@
             android:layout_width="0dp" android:gravity="center" android:layout_gravity="left"
             android:layout_height="match_parent"
             android:layout_weight="0.5" android:text="Activity" android:textSize="20sp"
-            android:textStyle="bold" android:textColor="@color/activity" android:id="@+id/activityname"></TextView>
+            android:textStyle="bold" android:textColor="@color/activity" android:id="@+id/eventname"></TextView>
         <Button
             android:layout_width="0dp" android:layout_weight="0.5" android:text="Clean chart"
             android:layout_height="match_parent" android:id="@+id/cleanchart"></Button>
