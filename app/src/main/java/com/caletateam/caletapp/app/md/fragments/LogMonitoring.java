@@ -1,28 +1,39 @@
 package com.caletateam.caletapp.app.md.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.caletateam.caletapp.R;
+import com.caletateam.caletapp.app.md.models.ValueModel;
+import com.caletateam.caletapp.app.utils.CustomMarkerView;
 import com.caletateam.caletapp.app.utils.Functions;
+import com.caletateam.caletapp.app.utils.MyMarkerView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -33,6 +44,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.math.BigDecimal;
@@ -64,6 +76,8 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
     ImageButton search, filters;
     String type=Functions.TYPE_STRESS;
     private LineChart linechart;
+    private long starttimestamp,endtimestamp;
+    int selectedOption=0;
     public LogMonitoring() {
         // Required empty public constructor
     }
@@ -114,10 +128,38 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position==0){
+                    starttimestamp = System.currentTimeMillis();
+                    endtimestamp = starttimestamp-(60*60*1000);
+                }
+                if(position==1){
+                    starttimestamp = System.currentTimeMillis();
+                    endtimestamp = starttimestamp-(86400000L/4);
+                }
+                if(position==2){
+                    starttimestamp = System.currentTimeMillis();
+                    endtimestamp = starttimestamp-(86400000L/2);
+                }
+                if(position==3){
+                    starttimestamp = System.currentTimeMillis();
+                    endtimestamp = starttimestamp-(86400000L);
+                }
+                if(position==4){
+                    starttimestamp = System.currentTimeMillis();
+                    endtimestamp = starttimestamp-(7*86400000L);
+                }
+                if(position==5){
+                    starttimestamp = System.currentTimeMillis();
+                    endtimestamp = starttimestamp-(86400000L * 30);
+                }
                 if(position==6){
                     linearcustom.setVisibility(View.VISIBLE);
                 }
-                else linearcustom.setVisibility(View.GONE);
+                if(position!=6)
+                    linearcustom.setVisibility(View.GONE);
+
+                selectedOption = position;
+
             }
 
             @Override
@@ -183,33 +225,40 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long stard = Functions.getTimeStampFromDate(startdate.getText().toString());
-                long endd = Functions.getTimeStampFromDate(enddate.getText().toString());
-                Log.e("Startdate timestamp: ",""+Functions.getTimeStampFromDate(startdate.getText().toString()));
-                Log.e("Enddate timestamp: ",""+Functions.getTimeStampFromDate(enddate.getText().toString()));
+                if(selectedOption==6) {
+                    starttimestamp = Functions.getTimeStampFromDate(startdate.getText().toString());
+                    endtimestamp = Functions.getTimeStampFromDate(enddate.getText().toString());
+                }
+                Log.e("Startdate timestamp: ",""+starttimestamp + "  "+new Date(starttimestamp));
+                Log.e("Enddate timestamp: ",""+endtimestamp+"   "+new Date(endtimestamp));
                 resetChart();
 
 
-                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+type+"/"+stard+"/"+endd,"GET", Functions.GET_EVENTS_FILTER);
+                setProgressDialog();
+                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+type+"/"+endtimestamp+"/"+starttimestamp,"GET", Functions.GET_EVENTS_FILTER);
             }
         });
         return v;
     }
 
 
+
     private void resetChart() {
-        try {
+        //try {
+        if(linechart!=null) {
             linechart.fitScreen();
-            linechart.getLineData().clearValues();
-            linechart.getData().clearValues();
+            if(linechart.getLineData()!=null)
+                linechart.getLineData().clearValues();
+            if(linechart.getData()!=null)
+                linechart.getData().clearValues();
             linechart.getXAxis().setValueFormatter(null);
             //linechart.notifyDataSetChanged();
             linechart.clear();
             linechart.invalidate();
-
-        }catch(Exception e){
-            Log.e("ERROR ",e.getMessage());
         }
+        /*}catch(Exception e){
+            Log.e("ERROR ",e.getMessage());
+        }*/
 
 
     }
@@ -248,14 +297,17 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setDrawCircles(false);
         set.setColor(Color.rgb(240, 99, 99));
-        //set.setCircleColor(Color.rgb(240, 99, 99));
         set.setHighLightColor(Color.rgb(190, 190, 190));
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setValueTextSize(10f);
         set.setDrawValues(false);
         set.setDrawFilled(true);
         set.setFillColor(Color.rgb(250,175,175));
+        set.setHighlightEnabled(true); // allow highlighting for DataSet
 
+        // set this to false to disable the drawing of highlight indicator (lines)
+        set.setDrawHighlightIndicators(true);
+        set.setHighLightColor(Color.BLACK);
         return set;
     }
 /*
@@ -295,12 +347,15 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
     }*/
 
-    public void initChartActivity(String label,ArrayList<Float> values,  List<Long> times){
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void initChartActivity(String label, ArrayList<ValueModel> values) {
         try {
             linechart.setBackgroundColor(Color.WHITE);
-            linechart.setVisibleXRangeMaximum(20);
-
-
+            //linechart.setVisibleXRangeMaximum(20);
+            linechart.setAutoScaleMinMaxEnabled(true);
+            linechart.setTouchEnabled(true);
+            CustomMarkerView mv = new CustomMarkerView (getActivity(), R.layout.tvcontent);
+            linechart.setMarkerView(mv);
             //linechart.moveViewToX(10);
             linechart.getLegend().setEnabled(false);
             LineData data = linechart.getData();
@@ -322,15 +377,30 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
             }
 
             //set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            Long start = times.get(0);//start
-            Long end = times.get(times.size()-1);//end
+            Long start = values.get(0).getTimestamp();//start
+            Long end = values.get(values.size()-1).getTimestamp();//end
             List<Long> mList = new ArrayList<>(); //Decimal list which holds timestamps
             int count = 0;
             Log.e("START AND END:",start+"  --  "+end);
             for (Long i = start; i <= end; i++) {
-                if (times.get(count).equals(i)) {
+                if (new Long(values.get(count).getTimestamp()).equals(i)) {
                     mList.add(new Long(i));
-                    data.addEntry(new Entry(count, values.get(count)),0);
+                    float valaux = (float) 1.0;
+                    if (event.equals(Functions.TYPE_ACTIVITY)) {
+                        //do something
+                    }
+                    else
+                        valaux = (float) values.get(count).getValues();
+
+                    data.addEntry(new Entry(count, valaux),0);
+                    if(values.get(count).isAnomaly()){
+                        Log.e("ANOMALY","TRUE");
+                        linechart.highlightValue(count,0);
+
+                        set.getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+
+                        //linechart.highlightValue();
+                    }
                     count++;
                 }
 
@@ -381,6 +451,55 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
         }catch(Exception e){
             e.printStackTrace();
+        }
+    }
+    AlertDialog dialog;
+    public AlertDialog getDialog(){
+        return dialog;
+    }
+    public void setProgressDialog() {
+
+        int llPadding = 30;
+        LinearLayout ll = new LinearLayout(getActivity());
+        ll.setOrientation(LinearLayout.HORIZONTAL);
+        ll.setPadding(llPadding, llPadding, llPadding, llPadding);
+        ll.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams llParam = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        llParam.gravity = Gravity.CENTER;
+        ll.setLayoutParams(llParam);
+
+        ProgressBar progressBar = new ProgressBar(getContext());
+        progressBar.setIndeterminate(true);
+        progressBar.setPadding(0, 0, llPadding, 0);
+        progressBar.setLayoutParams(llParam);
+
+        llParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        llParam.gravity = Gravity.CENTER;
+        TextView tvText = new TextView(getActivity());
+        tvText.setText("Loading ...");
+        tvText.setTextColor(Color.parseColor("#000000"));
+        tvText.setTextSize(20);
+        tvText.setLayoutParams(llParam);
+
+        ll.addView(progressBar);
+        ll.addView(tvText);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setView(ll);
+
+        dialog = builder.create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(dialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setAttributes(layoutParams);
         }
     }
 

@@ -9,9 +9,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.babyList.BabyModel;
+import com.caletateam.caletapp.app.md.models.ValueModel;
 import com.caletateam.caletapp.app.utils.Functions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -75,20 +77,38 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
     @Override
     public void RespuestaLlamadaServicio(String peticion, String data) {
         if(peticion.equals(Functions.GET_EVENTS_FILTER)){
-            ArrayList<Float> values = new ArrayList<>();
-            ArrayList<Long> times = new ArrayList<>();
+            try {
+                adapter.getLogmonitoring().getDialog().dismiss();
+            }catch(Exception e){
+                Log.e("ERROR",e.getMessage());
+            }
+            //ArrayList<Float> values = new ArrayList<>();
+            //ArrayList<Long> times = new ArrayList<>();
+            ArrayList<ValueModel> values = new ArrayList<>();
+            ValueModel aux;
             try {
                 JSONArray items = new JSONObject(data).getJSONArray("payload");
 
                 JSONObject obj;
                 for(int i=0; i < items.length();i++){
                    obj = items.getJSONObject(i);
+                   Log.e("DATA",items.getJSONObject(i).toString());
                     //Log.e("ELEMENT "+i,obj.toString() +"  "+obj.getString("value"));
                    JSONObject value = new JSONObject(obj.getString("value"));
                    //Log.e("AA","1");
-                   values.add((float) value.getInt("value"));
+                    aux = new ValueModel(event);
+                    if(event.equals(Functions.TYPE_ACTIVITY)){
+                        Float[] val = new Float[]{(float)value.getDouble("left"),(float)value.getDouble("right"),(float)value.getDouble("down")};
+                        aux.setValue(val);
+                    }
+                    else
+                        aux.setValue((float) value.getInt("value"));
+                   //values.add((float) value.getInt("value"));
+                    aux.setTimestamp(obj.getLong("time"));
+                    aux.setAnomaly(obj.getBoolean("anomaly"));
+                    values.add(aux);
                    // Log.e("AA","2");
-                   times.add(obj.getLong("time"));
+                   //times.add(obj.getLong("time"));
                    // Log.e("AA","3");
                 }
 
@@ -96,8 +116,9 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
                 Log.e("AA","ERKRPR:"+e.getMessage());
                 e.printStackTrace();
             }
-
-            adapter.getLogmonitoring().initChartActivity(event,values,times);
+            if(!values.isEmpty())
+                adapter.getLogmonitoring().initChartActivity(event,values);
+            else Toast.makeText(this,"No data available",Toast.LENGTH_LONG).show();
         }
 
     }

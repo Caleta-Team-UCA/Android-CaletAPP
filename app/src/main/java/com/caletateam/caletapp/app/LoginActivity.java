@@ -6,32 +6,27 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.text.InputType;
-import android.util.Log;
+import android.os.IBinder;
 import android.view.View;
-import android.view.inputmethod.InputMethodSession;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.caletateam.caletapp.R;
-import com.caletateam.caletapp.app.md.MainActivityMD;
 import com.caletateam.caletapp.app.md.Monitoring;
 import com.caletateam.caletapp.app.utils.Functions;
-
+import com.caletateam.caletapp.app.utils.MQTTService;
 
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity  {
    
     private Button loginButton;
     /**
@@ -149,6 +144,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Intent mymqttservice_intent = new Intent(this, MQTTService.class);
+        startService(mymqttservice_intent);
         // Set up the user interaction to manually show or hide the system UI.
        /* mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,6 +215,21 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //setServer();
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Intent intent= new Intent(this, MyIntentService.class);
+        //bindService(intent, this, Context.BIND_AUTO_CREATE);
+
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        unbindService(this);
     }
 }

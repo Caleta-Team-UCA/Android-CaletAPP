@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaletAPP"
         android:usesCleartextTraffic="true">
-        <activity android:name=".app.md.Monitoring"></activity>
+        <service
+            android:name=".app.utils.MQTTService"
+            android:exported="false"></service>
+        <!-- BroadcastReceiver that starts MqttConnectionManagerService on device boot -->
+        <activity android:name=".app.md.Monitoring" />
         <activity android:name=".app.md.MainActivityMD" />
         <activity android:name=".app.md.EventViewActivity" />
 

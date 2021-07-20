@@ -44,6 +44,7 @@ public class Functions {
     public static String GET_VIDEO_STREAMING="3";
     public static String GET_EVENTS_FILTER="4";
     public static String[] MQTT_TOPICS = {"caleta/"+TYPE_ACTIVITY,"caleta/"+TYPE_RESPIRATION,"caleta/"+TYPE_STRESS};
+    public static String MQTT_NOTIFICATION = "caleta/notification";
     public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
     public static final String USER_MQTT="caleta";
     public static final String PASSWORD_MQTT="caleta123";
