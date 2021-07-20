@@ -48,6 +48,9 @@ public class Functions {
     public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
     public static final String USER_MQTT="caleta";
     public static final String PASSWORD_MQTT="caleta123";
+    public static final String NOTIFICATION_PROFILE="profile";
+    public static final String NOTIFICATION_STREAMING="streaming";
+    public static final String NOTIFICATION_MONITORING="monitoring";
     public static String getClientID(){
         return UUID.randomUUID().toString();
     }

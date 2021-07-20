@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -128,6 +129,13 @@ public class LoginActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_login2);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.appcolor));
+        }
+        try {
+            int babyid=getIntent().getIntExtra("babyid",-1);
+            String type = getIntent().getStringExtra("type");
+            Log.e("AAAAAAAAAAAAAa",babyid+"    "+type);
+        }catch(Exception e){
+
         }
         mVisible = true;
         //mControlsView = findViewById(R.id.fullscreen_content_controls);

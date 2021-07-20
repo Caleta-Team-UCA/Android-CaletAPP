@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical" android:weightSum="0.6">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="0.3" android:weightSum="1" android:orientation="horizontal">
+        <ImageView
+            android:layout_width="0dp" android:layout_weight="0.3" android:scaleType="fitCenter"
+            android:layout_height="wrap_content" android:src="@drawable/logocaletapp" android:id="@+id/babyicon"></ImageView>
+        <LinearLayout android:layout_marginLeft="10dp" android:gravity="center_vertical" android:layout_gravity="center_vertical"
+            android:layout_width="0dp" android:layout_weight="0.7" android:orientation="vertical" android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent" android:textStyle="bold" android:textSize="20sp" android:textColor="#000000"
+                android:layout_height="wrap_content" android:id="@+id/msg" android:text="Baby 1asdfasdfasd" ></TextView>
+            <TextView
+                android:layout_width="match_parent" android:textStyle="bold" android:textSize="18sp" android:textColor="#595959" android:layout_marginTop="5dp"
+                android:layout_height="wrap_content" android:id="@+id/babyname" android:text="Baby 1"></TextView>
+
+            <TextView
+                android:layout_width="match_parent" android:textStyle="italic" android:textSize="16sp" android:textColor="#000000" android:layout_marginTop="5dp"
+                android:layout_height="wrap_content" android:id="@+id/time" android:text="las 12"></TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="0dp" android:background="@null"
+                android:layout_weight="0.7"
+                android:scaleType="fitCenter" android:id="@+id/profile"
+                android:src="@drawable/profile"></ImageButton>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:text="Profile"
+                android:textAlignment="center"
+                android:textColor="@color/appcolor"
+                android:textSize="18sp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="0dp" android:background="@null"
+                android:layout_weight="0.7" android:id="@+id/monitoring"
+                android:scaleType="fitCenter"
+                android:src="@drawable/monitoring"></ImageButton>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:text="Monitoring"
+                android:textAlignment="center"
+                android:textColor="@color/appcolor"
+                android:textSize="18sp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="0dp" android:background="@null"
+                android:layout_weight="0.7" android:id="@+id/streaming"
+                android:scaleType="fitCenter"
+                android:src="@drawable/streaming"></ImageButton>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:text="Streaming"
+                android:textAlignment="center"
+                android:textColor="@color/appcolor"
+                android:textSize="18sp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</LinearLayout>
