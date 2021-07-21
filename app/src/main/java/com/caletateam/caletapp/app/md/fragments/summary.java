@@ -1,5 +1,6 @@
 package com.caletateam.caletapp.app.md.fragments;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.caletateam.caletapp.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -39,8 +42,8 @@ public class summary extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    LineChart linechart;
-    Handler handler;
+    //LineChart linechart;
+
     public summary() {
         // Required empty public constructor
     }
@@ -72,21 +75,10 @@ public class summary extends Fragment {
         }
 
 
-        handler = new Handler() {
 
-
-            @Override
-
-            public void handleMessage(Message msg) {
-                Log.e("MSG HANDLER",msg.getData().getDouble("value")+"");
-                addEntry((float) msg.getData().getDouble("value"));
-
-            }
-
-        };
 
     }
-    private LineDataSet createSet() {
+    /*private LineDataSet createSet() {
 
         LineDataSet set = new LineDataSet(null, "DataSet 1");
         set.setLineWidth(2.5f);
@@ -135,15 +127,26 @@ public class summary extends Fragment {
         linechart.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
 
     }
-
+*/
 
     @Override
     public void onStart() {
         super.onStart();
 
+        for(int i=0; i < 30;i++){
+            addHeader("Header "+i);
+        }
+    }
+    public void addHeader(String text){
+        LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View view = inflater.inflate(R.layout.summary_header, null);
+            TextView header = view.findViewById(R.id.header);
+            linearcontent.addView(view);
+
     }
 
-   public void addChartValues(double value, long timestamp){
+  /* public void addChartValues(double value, long timestamp){
         Log.e("ADD CHART",value + " "+timestamp);
         Message msg = new Message();
         Bundle bld = new Bundle();
@@ -151,14 +154,14 @@ public class summary extends Fragment {
         bld.putLong("timestamp",timestamp);
         msg.setData(bld);
         handler.sendMessage(msg);
-    }
-
+    }*/
+    LinearLayout linearcontent;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_summary, container, false);
-        linechart = v.findViewById(R.id.lineChart);
+        //linechart = v.findViewById(R.id.lineChart);
         /*LineChart lineChart;
         LineData lineData;
         List<Entry> entryList = new ArrayList<>();
@@ -175,6 +178,7 @@ public class summary extends Fragment {
         lineChart.setData(lineData);
         lineChart.setVisibleXRangeMaximum(10);
         lineChart.invalidate();*/
+        linearcontent = v.findViewById(R.id.linearContent);
         return v;
     }
 }
