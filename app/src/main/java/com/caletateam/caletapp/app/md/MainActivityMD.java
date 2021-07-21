@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -20,7 +21,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.caletateam.caletapp.R;
-import com.caletateam.caletapp.app.EventList.EventModel;
 import com.caletateam.caletapp.app.babyList.BabyModel;
 import com.caletateam.caletapp.app.utils.Functions;
 import com.google.android.material.tabs.TabLayout;
@@ -55,9 +55,9 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_m_d);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.appcolor)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.caleta)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.appcolor));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.caleta));
         }
         babys = new ArrayList<>();
         babylist = findViewById(R.id.scrollBabys);
@@ -124,8 +124,16 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
             }
         });
-    }
 
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        getMenuInflater().inflate(R.menu.actionbar_md, menu);
+        return true;
+    }
 
     public void initMqttClient(String broker, String clienteID){
         clientMQTT = new MqttAndroidClient(this, broker, clienteID);
@@ -144,23 +152,31 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     }
 
+    AlertDialog dialog;
     @Override
     protected void onStart() {
         super.onStart();
+        dialog = Functions.setProgressDialog(this,"Loading data");
+        dialog.show();
         //addBabys(babys);
+
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
         Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",Functions.GET_BABYS_REQUEST);
 
     }
-
     /*private void initBabys(){
         for(int i=0; i < 10;i++) {
             babys.add(new BabyModel("Baby "+i, i,R.drawable.baby));
         }
     }*/
 
-
+    de.hdodenhof.circleimageview.CircleImageView[] imgs;
     public void addBabys(List<BabyModel> babys){
         linearbabys.removeAllViews();
+        imgs = new de.hdodenhof.circleimageview.CircleImageView[babys.size()];
         for(int i=0; i < babys.size();i++){
             View view;
             LayoutInflater inflater = (LayoutInflater)   this.getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -169,9 +185,10 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             //if(i%2==0)
             //content.setBackgroundColor(Color.parseColor("#ff0000"));
             //else content.setBackgroundColor(Color.parseColor("#00ff00"));
-            ImageView img = view.findViewById(R.id.babyimg);
+            imgs[i] = view.findViewById(R.id.babyimg);
+
             //img.setImageResource((Integer) babys.get(i).getPhoto());
-            Glide.with(this).load(babys.get(i).getPhoto()).into(img);
+            Glide.with(this).load(babys.get(i).getPhoto()).into(imgs[i]);
             TextView text = (TextView) view.findViewById(R.id.babyname);
             text.setText(babys.get(i).getName());
             linearbabys.addView(view);
@@ -186,12 +203,21 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     }
 
     public void selectedBaby(int position){
-        Log.e("SELECCIONADO",position+"");
+        //Log.e("SELECCIONADO",position+"");
+        for(int i=0; i < imgs.length;i++){
+            imgs[i].setBorderColor(getResources().getColor(R.color.caletagrey));
+            imgs[i].setBorderWidth(6);
+
+        }
+        imgs[position].setBorderColor(getResources().getColor(R.color.caleta));
+        imgs[position].setBorderWidth(10);
+
     }
 
     @Override
     public void RespuestaLlamadaServicio(String peticion, String data) {
         if(peticion.equals(Functions.GET_BABYS_REQUEST)){
+            dialog.dismiss();
             babys = new ArrayList<>();
             try {
                 JSONArray items = new JSONObject(data).getJSONArray("payload");

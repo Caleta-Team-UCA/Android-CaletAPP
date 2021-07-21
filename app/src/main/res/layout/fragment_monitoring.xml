@@ -14,107 +14,199 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.9"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:weightSum="1">
-
+            android:layout_height="0dp" android:layout_weight="0.3" android:weightSum="1" android:orientation="horizontal">
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" android:id="@+id/linearActivity"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.1"
-                        android:gravity="center"
-                        android:text="Activity Level"
-                        android:textColor="@color/activity"
-                        android:textSize="20sp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chartActivity"
-                        android:layout_width="180dp"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.9" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" android:id="@+id/linearRespiration"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.1"
-                        android:gravity="center"
-                        android:text="Respiration Level"
-                        android:textColor="@color/respiration"
-                        android:textSize="20sp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chartRespiration"
-                        android:layout_width="180dp"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.9" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
                 android:orientation="vertical"
-                android:weightSum="1">
+                android:weightSum="1" android:layout_gravity="center">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:text="Activity"
+                    android:textColor="@color/activity"
+                    android:textSize="26sp"
+                    android:textStyle="bold"></TextView>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chartActivity"
+                    android:layout_width="180dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp" android:layout_marginLeft="10dp"
+                android:layout_height="match_parent" android:layout_weight="0.6" android:weightSum="1" android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent" android:weightSum="1"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="0dp" android:layout_weight="0.6" android:textSize="18sp" android:textColor="@color/black" android:textStyle="bold"
+                    android:layout_height="match_parent" android:text="Last Update:"></TextView>
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.4" android:textSize="18sp"
+                        android:layout_height="match_parent" android:text="" android:id="@+id/lastupdateActivity"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent" android:weightSum="1"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:orientation="horizontal" >
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.6" android:textSize="18sp" android:textStyle="bold"
+                        android:layout_height="match_parent" android:text="Previous Value:"></TextView>
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.4" android:textSize="18sp"
+                        android:layout_height="match_parent" android:text="" android:id="@+id/lastvalueActivity"></TextView>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="center" android:id="@+id/linearStress"
-                    android:orientation="vertical"
-                    android:weightSum="1">
+                    android:layout_height="0dp" android:layout_weight="0.3">
+                    <Button
+                        android:layout_width="match_parent" android:layout_gravity="bottom" android:textColor="@color/caleta"
+                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon"
+                        android:text="Monitor Activity" android:backgroundTint="#dddddd" android:layout_marginRight="10dp"></Button>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.1"
-                        android:gravity="center"
-                        android:text="Pain Level"
-                        android:textColor="@color/pain"
-                        android:textSize="20sp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chartPain"
-                        android:layout_width="180dp"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.9" />
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
+
+
+    <!---->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="0.3" android:weightSum="1" android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:orientation="vertical"
+                android:weightSum="1" android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:text="Respiration"
+                    android:textColor="@color/respiration"
+                    android:textSize="26sp"
+                    android:textStyle="bold"></TextView>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chartRespiration"
+                    android:layout_width="180dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp" android:layout_marginLeft="10dp"
+                android:layout_height="match_parent" android:layout_weight="0.6" android:weightSum="1" android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent" android:weightSum="1"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:orientation="horizontal" >
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.6" android:textSize="18sp" android:textColor="@color/black" android:textStyle="bold"
+                        android:layout_height="match_parent" android:text="Last Update:"></TextView>
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.4" android:textSize="18sp"
+                        android:layout_height="match_parent" android:text="" android:id="@+id/lastupdateRespiration"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent" android:weightSum="1"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:orientation="horizontal" >
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.6" android:textSize="18sp" android:textStyle="bold"
+                        android:layout_height="match_parent" android:text="Previous Value:"></TextView>
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.4" android:textSize="18sp"
+                        android:layout_height="match_parent" android:text="" android:id="@+id/lastvalueRespiration"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.3">
+                    <Button
+                        android:layout_width="match_parent" android:layout_gravity="bottom" android:textColor="@color/caleta"
+                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon"
+                        android:text="Monitor Resp." android:backgroundTint="#dddddd" android:layout_marginRight="10dp"></Button>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    <!---->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="0.3" android:weightSum="1" android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:orientation="vertical"
+                android:weightSum="1" android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:text="Stress "
+                    android:textColor="@color/pain"
+                    android:textSize="26sp"
+                    android:textStyle="bold"></TextView>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chartStress"
+                    android:layout_width="180dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp" android:layout_marginLeft="10dp"
+                android:layout_height="match_parent" android:layout_weight="0.6" android:weightSum="1" android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent" android:weightSum="1"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:orientation="horizontal" >
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.6" android:textSize="18sp" android:textColor="@color/black" android:textStyle="bold"
+                        android:layout_height="match_parent" android:text="Last Update:"></TextView>
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.4" android:textSize="18sp"
+                        android:layout_height="match_parent" android:text="" android:id="@+id/lastupdateStress"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent" android:weightSum="1"
+                    android:layout_height="0dp" android:layout_weight="0.3" android:orientation="horizontal" >
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.6" android:textSize="18sp" android:textStyle="bold"
+                        android:layout_height="match_parent" android:text="Previous Value:"></TextView>
+                    <TextView
+                        android:layout_width="0dp" android:layout_weight="0.4" android:textSize="18sp"
+                        android:layout_height="match_parent" android:text="" android:id="@+id/lastvalueStress"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="0.3">
+                    <Button
+                        android:layout_width="match_parent" android:layout_gravity="bottom" android:textColor="@color/caleta"
+                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon"
+                        android:text="Monitor Stress" android:backgroundTint="#dddddd" android:layout_marginRight="10dp"></Button>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!---->
     </LinearLayout>
+
 </FrameLayout>

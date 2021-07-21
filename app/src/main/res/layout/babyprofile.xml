@@ -18,7 +18,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:src="@drawable/baby"
-        app:civ_border_color="@color/appcolor"
+        app:civ_border_color="@color/caletagrey"
         app:civ_border_width="2dp" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_gravity="center"
         android:gravity="center" android:textSize="16sp"
         android:text=""
-        android:textColor="@color/appcolor"
+        android:textColor="@color/caletagrey"
         android:textStyle="bold"></TextView>
 
 </LinearLayout>

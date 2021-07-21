@@ -82,10 +82,10 @@ public class monitoring extends Fragment {
         View v =inflater.inflate(R.layout.fragment_monitoring, container, false);
         activity = v.findViewById(R.id.chartActivity);
         respiration = v.findViewById(R.id.chartRespiration);
-        stress = v.findViewById(R.id.chartPain);
-        linearActivity = v.findViewById(R.id.linearActivity);
-        linearRespiration = v.findViewById(R.id.linearRespiration);
-        linearStress = v.findViewById(R.id.linearStress);
+        stress = v.findViewById(R.id.chartStress);
+        //linearActivity = v.findViewById(R.id.linearActivity);
+        //linearRespiration = v.findViewById(R.id.linearRespiration);
+        //linearStress = v.findViewById(R.id.linearStress);
 
         return v;
     }
@@ -111,7 +111,7 @@ public class monitoring extends Fragment {
 
         initChartActivity(stress,5,"Stress", colors);
 
-        linearActivity.setOnClickListener(new View.OnClickListener() {
+        /*linearActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("CLICK","activity");
@@ -130,7 +130,7 @@ public class monitoring extends Fragment {
             public void onClick(View v) {
                 Log.e("CLICK","stress");
             }
-        });
+        });*/
 
         activity.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
