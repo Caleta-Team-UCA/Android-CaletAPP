@@ -390,7 +390,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                         //do something
                     }
                     else
-                        valaux = (float) values.get(count).getValues();
+                        valaux = (float) values.get(count).getValue();
 
                     data.addEntry(new Entry(count, valaux),0);
                     if(values.get(count).isAnomaly()){

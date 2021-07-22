@@ -1,5 +1,7 @@
 package com.caletateam.caletapp.app.md.models;
 
+import androidx.annotation.NonNull;
+
 import com.caletateam.caletapp.app.utils.Functions;
 
 import java.util.List;
@@ -14,6 +16,7 @@ public class ValueModel {
     }
 
     public ValueModel(String type) {
+
         this.type = type;
         anomaly = false;
         if(type.equals(Functions.TYPE_ACTIVITY))
@@ -33,16 +36,21 @@ public class ValueModel {
         this.type = type;
     }
 
-    public Object getValues(){
-        if(type.equals(Functions.TYPE_ACTIVITY))
-            return getValuesF();
-        return getValue();
+
+    public Float[] getValues(){
+        /*if(type.equals(Functions.TYPE_ACTIVITY))
+            return getProcessedValueActivity();
+        return getValue();*/
+        return values;
     }
     private Float[] getValuesF() {
             return values;
 
     }
 
+    public float getProcessedValueActivity(){
+        return (float) ((values[0]+values[1]+values[2])/3.0);
+    }
     public boolean isAnomaly() {
         return anomaly;
     }
@@ -51,7 +59,7 @@ public class ValueModel {
         this.anomaly = anomaly;
     }
 
-    private Float getValue(){
+    public Float getValue(){
         return values[0];
     }
 
@@ -62,5 +70,11 @@ public class ValueModel {
     }
     public void setValues(Float[] values) {
         this.values = values;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Type:"+type+"   --- "+"Value:"+values[0] +"  Anomnaly: "+anomaly+"   - Timestamp:"+timestamp;
     }
 }

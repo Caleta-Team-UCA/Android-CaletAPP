@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.md.models.ValueModel;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,7 +49,11 @@ public class monitoring extends Fragment {
     private String mParam1;
     private String mParam2;
     private PieChart activity,respiration, stress;
-    private LinearLayout linearActivity, linearRespiration, linearStress;
+    private TextView lastActivity,lastStress,lastRespiration,previousActivity,previousStress,previousRespiration;
+
+    private int ACTIVITY_POS=0,RESP_POS=1,STRESS_POS=2;
+    private float[] previous_values = {0,0,0};
+    private long[] previous_times = {-1,-1,-1};
 
     public monitoring() {
         // Required empty public constructor
@@ -88,6 +94,12 @@ public class monitoring extends Fragment {
         activity = v.findViewById(R.id.chartActivity);
         respiration = v.findViewById(R.id.chartRespiration);
         stress = v.findViewById(R.id.chartStress);
+        lastActivity = v.findViewById(R.id.lastupdateActivity);
+        lastRespiration = v.findViewById(R.id.lastupdateRespiration);
+        lastStress = v.findViewById(R.id.lastupdateStress);
+        previousActivity = v.findViewById(R.id.lastvalueActivity);
+        previousRespiration = v.findViewById(R.id.lastvalueRespiration);
+        previousStress = v.findViewById(R.id.lastvalueStress);
         //linearActivity = v.findViewById(R.id.linearActivity);
         //linearRespiration = v.findViewById(R.id.linearRespiration);
         //linearStress = v.findViewById(R.id.linearStress);
@@ -96,54 +108,153 @@ public class monitoring extends Fragment {
     }
     public void updateChart(String event, String data){
         //if(event.contains(Functions.TYPE_STRESS)){
+        //Log.e("UPDATE CHART","AUI:"+data);
         ValueModel aux=null;
             try {
                 JSONObject json = new JSONObject(data);
                 JSONObject value = new JSONObject(json.getString("value"));
-                //Log.e("AA","1");
-                aux = new ValueModel(event);
-                if(event.contains(Functions.TYPE_ACTIVITY)){
+                //Log.e("AA VALUE  ", String.valueOf(value.getDouble("value")));
+                aux = new ValueModel(json.getString("type"));
+
+                if(json.getString("type").equals(Functions.TYPE_ACTIVITY)){
                     Float[] val = new Float[]{(float)value.getDouble("left"),(float)value.getDouble("right"),(float)value.getDouble("down")};
                     aux.setValue(val);
                 }
                 else
                     aux.setValue((float) value.getDouble("value"));
+
+                aux.setTimestamp(json.getLong("time"));
+               // Log.e("VALUEMODEL",aux.toString());
             } catch (JSONException e) {
-                e.printStackTrace();
+               Log.e("ERROR","ERROR PARSING");
             }
+            Log.e("VALUEMODEL",aux.toString());
+
             List<Integer> colors = new ArrayList<>();
 
-            if(event.contains(Functions.TYPE_STRESS) && aux!=null){
-                if((int)aux.getValues()<=Functions.THRESHOLD_STRESS_GOOD)
+            if(aux.getType().contains(Functions.TYPE_STRESS) && aux!=null){
+                int valuefinal = Math.round(aux.getValue());
+                if(valuefinal<=Functions.THRESHOLD_STRESS_GOOD)
                     colors.add(getResources().getColor(R.color.good));
-                else if ((int) aux.getValues()<=Functions.THRESHOLD_STRESS_NORMAL)
+                else if (valuefinal<=Functions.THRESHOLD_STRESS_NORMAL)
                     colors.add(getResources().getColor(R.color.normal));
                 else colors.add(getResources().getColor(R.color.bad));
                 colors.add(getResources().getColor(R.color.gray_400));
-                setChartActivity(stress,(int)aux.getValues(),"Stress", colors);
+                //Log.e("VALUE STRESS SETCHART",valuefinal+"");
+
+                //setChartActivity(stress,(float)aux.getValues(),"Stress", colors);
+                if(previous_values[STRESS_POS]==-1){
+                    previous_values[STRESS_POS]= valuefinal;
+                    previous_times[STRESS_POS] = aux.getTimestamp();
+                    previousStress.setText(valuefinal+"");
+                    lastStress.setText(Functions.getHourTimefromTimestamp(aux.getTimestamp()));
+                }
+                else{
+                    previousStress.setText(previous_values[STRESS_POS]+"");
+                    lastStress.setText(Functions.getHourTimefromTimestamp( previous_times[STRESS_POS]));
+                    previous_values[STRESS_POS]= valuefinal;
+                    previous_times[STRESS_POS] = aux.getTimestamp();
+                }
+                //Log.e("NULLS",(previousStress==null) +"  "+ (lastStress==null)+"");
+                //previousStress.setText("PRUEBA AAA");
+
+
+                updateChart(stress,valuefinal,colors);
+
             }
-            else if(event.contains(Functions.TYPE_RESPIRATION) && aux!=null){
-                if((int)aux.getValues()<=Functions.THRESHOLD_RESPIRATION_BAD)
+            else if(aux.getType().contains(Functions.TYPE_RESPIRATION) && aux!=null){
+
+                int valuefinal = Math.round(aux.getValue());
+                if(valuefinal<=Functions.THRESHOLD_RESPIRATION_BAD)
                     colors.add(getResources().getColor(R.color.bad));
-                else if ((int) aux.getValues()<=Functions.THRESHOLD_RESPIRATION_NORMAL)
+                else if (valuefinal<=Functions.THRESHOLD_RESPIRATION_NORMAL)
                     colors.add(getResources().getColor(R.color.normal));
                 else colors.add(getResources().getColor(R.color.good));
                 colors.add(getResources().getColor(R.color.gray_400));
-                setChartActivity(stress,(int)aux.getValues(),"Respiration", colors);
+                //Log.e("VALUE STRESS SETCHART",valuefinal+"");
+
+                //setChartActivity(stress,(float)aux.getValues(),"Stress", colors);
+                if(previous_values[RESP_POS]==-1){
+                    previous_values[RESP_POS]= valuefinal;
+                    previous_times[RESP_POS] = aux.getTimestamp();
+                    previousRespiration.setText(valuefinal+"");
+                    lastRespiration.setText(Functions.getHourTimefromTimestamp(aux.getTimestamp()));
+                }
+                else{
+                    previousRespiration.setText(previous_values[RESP_POS]+"");
+                    lastRespiration.setText(Functions.getHourTimefromTimestamp( previous_times[RESP_POS]));
+                    previous_values[RESP_POS]= valuefinal;
+                    previous_times[RESP_POS] = aux.getTimestamp();
+                }
+                updateChart(respiration,valuefinal,colors);
+
             }
-            else if(event.contains(Functions.TYPE_ACTIVITY) && aux!=null){
-                if((int)aux.getValues()<=Functions.THRESHOLD_ACTIVITY_BAD)
+            else if(aux.getType().contains(Functions.TYPE_ACTIVITY) && aux!=null){
+                /*if((int)aux.getValues()<=Functions.THRESHOLD_ACTIVITY_BAD)
                     colors.add(getResources().getColor(R.color.bad));
                 else if ((int) aux.getValues()<=Functions.THRESHOLD_ACTIVITY_NORMAL)
                     colors.add(getResources().getColor(R.color.normal));
                 else colors.add(getResources().getColor(R.color.good));
                 colors.add(getResources().getColor(R.color.gray_400));
-                setChartActivity(stress,(int)aux.getValues(),"Activity", colors);
+                setChartActivity(stress,(int)aux.getValues(),"Activity", colors);*/
+
+                int valuefinal = Math.round(aux.getProcessedValueActivity());
+                if(valuefinal<=Functions.THRESHOLD_ACTIVITY_BAD)
+                    colors.add(getResources().getColor(R.color.bad));
+                else if (valuefinal<=Functions.THRESHOLD_ACTIVITY_NORMAL)
+                    colors.add(getResources().getColor(R.color.normal));
+                else colors.add(getResources().getColor(R.color.good));
+
+                colors.add(getResources().getColor(R.color.gray_400));
+                //Log.e("VALUE STRESS SETCHART",valuefinal+"");
+
+                //setChartActivity(stress,(float)aux.getValues(),"Stress", colors);
+                if(previous_values[ACTIVITY_POS]==-1){
+                    previous_values[ACTIVITY_POS]= valuefinal;
+                    previous_times[ACTIVITY_POS] = aux.getTimestamp();
+                    previousActivity.setText(valuefinal+"");
+                    lastActivity.setText(Functions.getHourTimefromTimestamp(aux.getTimestamp()));
+                }
+                else{
+                    previousActivity.setText(previous_values[ACTIVITY_POS]+"");
+                    lastActivity.setText(Functions.getHourTimefromTimestamp( previous_times[ACTIVITY_POS]));
+                    previous_values[ACTIVITY_POS]= valuefinal;
+                    previous_times[ACTIVITY_POS] = aux.getTimestamp();
+                }
+                updateChart(activity,valuefinal,colors);
             }
         //}
     }
-    public void updateStressChart(int value){
+    public void updateChart(PieChart activity,float value, List<Integer> colors){
+        ArrayList<PieEntry> values = new ArrayList<>();
 
+        //for (int i = 0; i < 1; i++) {
+        values.add(new PieEntry(value));
+        values.add(new PieEntry(100-value));
+
+        //}
+
+        PieDataSet dataSet = new PieDataSet(values,value+"");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+
+
+        //dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+        dataSet.setColors(colors);
+
+        //dataSet.setSelectionShift(0f);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(30f);
+        data.setValueTextColor(Color.TRANSPARENT);
+        //ta.setValueTypeface(tfLight);
+        activity.setData(data);
+        activity.setCenterText((int)value+"");
+        activity.invalidate();
+
+       activity.animateY(1400, Easing.EaseInOutQuad);
     }
 
     @Override
@@ -191,7 +302,10 @@ public class monitoring extends Fragment {
 
     }
 
-    private void setChartActivity(PieChart activity, int value,String label, List<Integer> colors){
+
+
+    private void setChartActivity(PieChart activity, float value,String label, List<Integer> colors){
+
         activity.setBackgroundColor(Color.WHITE);
 
         activity.setUsePercentValues(true);
@@ -199,8 +313,8 @@ public class monitoring extends Fragment {
         Legend l = activity.getLegend();
         l.setEnabled(false);
         //chart.setCenterTextTypeface(tfLight);
-        activity.setCenterText(value+"%");
-        activity.setCenterTextSize(30);
+        activity.setCenterText(value+"");
+        activity.setCenterTextSize(25);
         activity.setDrawHoleEnabled(true);
         activity.setHoleColor(Color.WHITE);
         activity.setCenterTextColor(colors.get(0));

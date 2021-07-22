@@ -110,6 +110,27 @@ public class Functions {
         else return String.valueOf(n);
     }
 
+    public static String getDateFromTimestamp(long timestamp){
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            Date parsedDate = new Date(timestamp);
+            return dateFormat.format(parsedDate);
+        } catch(Exception e) { //this generic but you can control another types of exception
+            // look the origin of excption
+        }
+        return "";
+    }
+    public static String getHourTimefromTimestamp(long timestamp){
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            Date parsedDate = new Date(timestamp);
+            return dateFormat.format(parsedDate);
+        } catch(Exception e) { //this generic but you can control another types of exception
+            // look the origin of excption
+        }
+        return "";
+    }
+
     public static long getTimeStampFromDate(String date){
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
