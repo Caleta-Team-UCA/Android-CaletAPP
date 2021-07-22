@@ -162,12 +162,10 @@ public class LoginActivity extends AppCompatActivity  {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
+                Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
                 intent.putExtra("userid",userid);
                 startActivity(intent);
-                */Intent intent = new Intent(LoginActivity.this, Monitoring.class);
-                intent.putExtra("event",Functions.TYPE_STRESS);
-                startActivity(intent);
+
             }
         });
         Intent mymqttservice_intent = new Intent(this, MQTTService.class);

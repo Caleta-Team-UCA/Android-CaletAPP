@@ -40,14 +40,22 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoring);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.appcolor)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.appcolor));
+
         }
         try{
             event = getIntent().getStringExtra("event");
         }catch(Exception e){
             event = Functions.TYPE_RESPIRATION;
         }
+        if(event.equals(Functions.TYPE_ACTIVITY))
+            setTitle("Jon Doe - Activity Monitoring");
+        if(event.equals(Functions.TYPE_RESPIRATION))
+            setTitle("Jon Doe - Respiration Monitoring");
+        if(event.equals(Functions.TYPE_STRESS))
+            setTitle("Jon Doe - Stress Monitoring");
         viewPager2 = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tab_layout);
         adapter = new ViewPagerAdapterMonitoring(this,event);
@@ -73,7 +81,11 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
 
                 }).attach();
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
     @Override
     public void RespuestaLlamadaServicio(String peticion, String data) {
         if(peticion.equals(Functions.GET_EVENTS_FILTER)){
@@ -141,7 +153,8 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-
+        Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
+        adapter.getRealTimeMonitoring().updateRealTimeValues(topic,new String(message.getPayload()));
     }
 
     @Override

@@ -67,7 +67,7 @@
                     android:layout_height="0dp" android:layout_weight="0.3">
                     <Button
                         android:layout_width="match_parent" android:layout_gravity="bottom" android:textColor="@color/caleta"
-                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon"
+                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon" android:id="@+id/monitorActivity"
                         android:text="Monitor Activity" android:backgroundTint="#dddddd" android:layout_marginRight="10dp"></Button>
 
                 </LinearLayout>
@@ -134,7 +134,7 @@
                     android:layout_height="0dp" android:layout_weight="0.3">
                     <Button
                         android:layout_width="match_parent" android:layout_gravity="bottom" android:textColor="@color/caleta"
-                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon"
+                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon" android:id="@+id/monitorRespiration"
                         android:text="Monitor Resp." android:backgroundTint="#dddddd" android:layout_marginRight="10dp"></Button>
 
                 </LinearLayout>
@@ -198,7 +198,7 @@
                     android:layout_height="0dp" android:layout_weight="0.3">
                     <Button
                         android:layout_width="match_parent" android:layout_gravity="bottom" android:textColor="@color/caleta"
-                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon"
+                        android:layout_height="wrap_content"  android:drawableLeft="@drawable/realtimeicon" android:id="@+id/monitorStress"
                         android:text="Monitor Stress" android:backgroundTint="#dddddd" android:layout_marginRight="10dp"></Button>
 
                 </LinearLayout>

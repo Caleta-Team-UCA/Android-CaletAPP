@@ -1,5 +1,6 @@
 package com.caletateam.caletapp.app.md.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -9,10 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caletateam.caletapp.R;
+import com.caletateam.caletapp.app.LoginActivity;
+import com.caletateam.caletapp.app.md.Monitoring;
 import com.caletateam.caletapp.app.md.models.ValueModel;
 import com.caletateam.caletapp.app.utils.Functions;
 import com.github.mikephil.charting.animation.Easing;
@@ -54,7 +58,7 @@ public class monitoring extends Fragment {
     private int ACTIVITY_POS=0,RESP_POS=1,STRESS_POS=2;
     private float[] previous_values = {0,0,0};
     private long[] previous_times = {-1,-1,-1};
-
+    Button monitorRespiration, monitorActivity, monitorStress;
     public monitoring() {
         // Required empty public constructor
     }
@@ -100,9 +104,37 @@ public class monitoring extends Fragment {
         previousActivity = v.findViewById(R.id.lastvalueActivity);
         previousRespiration = v.findViewById(R.id.lastvalueRespiration);
         previousStress = v.findViewById(R.id.lastvalueStress);
-        //linearActivity = v.findViewById(R.id.linearActivity);
-        //linearRespiration = v.findViewById(R.id.linearRespiration);
-        //linearStress = v.findViewById(R.id.linearStress);
+        monitorActivity = v.findViewById(R.id.monitorActivity);
+        monitorRespiration = v.findViewById(R.id.monitorRespiration);
+        monitorStress = v.findViewById(R.id.monitorStress);
+        monitorActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Monitoring.class);
+                intent.putExtra("event",Functions.TYPE_ACTIVITY);
+                startActivity(intent);
+            }
+        });
+
+        monitorStress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Monitoring.class);
+                intent.putExtra("event",Functions.TYPE_STRESS);
+                startActivity(intent);
+            }
+        });
+
+        monitorRespiration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Monitoring.class);
+                intent.putExtra("event",Functions.TYPE_RESPIRATION);
+                startActivity(intent);
+            }
+        });
+
+
 
         return v;
     }
