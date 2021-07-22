@@ -57,7 +57,7 @@ public class Functions {
     public static String GET_BABYS_REQUEST="2";
     public static String GET_VIDEO_STREAMING="3";
     public static String GET_EVENTS_FILTER="4";
-    public static String[] MQTT_TOPICS = {"caleta/"+TYPE_ACTIVITY,"caleta/"+TYPE_RESPIRATION,"caleta/"+TYPE_STRESS};
+    public static String[] MQTT_TOPICS_EVENTS = {"caleta/"+TYPE_ACTIVITY,"caleta/"+TYPE_RESPIRATION,"caleta/"+TYPE_STRESS};
     public static String MQTT_NOTIFICATION = "caleta/notification";
     public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
     public static final String USER_MQTT="caleta";
@@ -74,6 +74,13 @@ public class Functions {
     public static String getClientID(){
         return UUID.randomUUID().toString();
     }
+
+    public static int THRESHOLD_STRESS_GOOD=20;
+    public static int THRESHOLD_STRESS_NORMAL=80;
+    public static int THRESHOLD_RESPIRATION_BAD=30;
+    public static int THRESHOLD_RESPIRATION_NORMAL=90;
+    public static int THRESHOLD_ACTIVITY_BAD=30;
+    public static int THRESHOLD_ACTIVITY_NORMAL=80;
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
     }
@@ -119,7 +126,7 @@ public class Functions {
         StringRequest mStringRequest;
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(ctx);
-        Log.e("VOLLEY",url+"   "+verbo);
+        //Log.e("VOLLEY",url+"   "+verbo);
         int verb=-1;
 
         switch(verbo.toUpperCase()){

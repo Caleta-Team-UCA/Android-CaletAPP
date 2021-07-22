@@ -16,24 +16,13 @@ import android.widget.ImageView;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.utils.Functions;
-import com.google.android.exoplayer2.ExoPlayerFactory;
+
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ext.rtmp.RtmpDataSource;
-import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+
 import com.google.android.exoplayer2.source.MediaSource;
-
-
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.source.rtsp.RtspMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 
 /**
@@ -58,7 +47,7 @@ public class streamming extends Fragment {
     SimpleExoPlayer exoPlayer;
 
     // url of video which we are loading.
-    String videoURL = "rtmp://vai.uca.es/vod/test1.mp4";
+    String videoURL = "rtsp://vai.uca.es:1935/mystream";
 
     public void setImage(byte[] buffer){
         Bitmap bmp = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
@@ -90,7 +79,7 @@ public class streamming extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //initRTMPPlayer();
+        initRTSPlayer();
     }
 
     @Override
@@ -110,7 +99,7 @@ public class streamming extends Fragment {
 
         View v= inflater.inflate(R.layout.fragment_streamming, container, false);
         //webview = v.findViewById(R.id.webview);
-        streaming = v.findViewById(R.id.textstreaming);
+       // streaming = v.findViewById(R.id.textstreaming);
         playerView = v.findViewById(R.id.simple_player);
         //webview.loadUrl(Functions.HOST_URL+"oak");
         //String data ="<!doctype html> <html lang='en'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <title>Caleta Live Streaming</title> </head> <body> <div style='width:100%; height:100%'> <img src='"+Functions.HOST_URL+"video_feed' width='100%'> </div> </body> </html>";
@@ -119,10 +108,10 @@ public class streamming extends Fragment {
         return v;
     }
 
-    public void initRTMPPlayer(){
+    public void initRTSPlayer(){
 
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        /*BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
@@ -139,9 +128,38 @@ public class streamming extends Fragment {
                 .createMediaSource(Uri.parse(videoURL));
 
         player.prepare(videoSource);
+        player.setPlayWhenReady(true);*/
+
+        MediaSource mediaSource =
+                new RtspMediaSource.Factory()
+                        .createMediaSource(MediaItem.fromUri(videoURL));
+// Create a player instance.
+        SimpleExoPlayer player = new SimpleExoPlayer.Builder(getActivity()).build();
+// Set the media source to be played.
+        player.setMediaSource(mediaSource);
+        //PlayerView playerView = findViewById(R.id.simple_player);
+
+        playerView.setPlayer(player);
+// Prepare the player.
+        player.prepare();
+        // Create RTMP Data Source
+        //RtmpDataSourceFactory rtmpDataSourceFactory = new RtmpDataSourceFactory();
+
+        /*MediaSource mediaSource =
+                new RtspMediaSource.Factory()
+                        .createMediaSource(MediaItem.fromUri("rtsp://192.168.0.17:8554/mystream"));
+// Create a player instance.
+        SimpleExoPlayer player = new SimpleExoPlayer.Builder(this).build();
+// Set the media source to be played.
+        player.setMediaSource(mediaSource);
+// Prepare the player.
+        player.prepare();*/
+
+
+
+
+
         player.setPlayWhenReady(true);
-
-
 
     }
 }

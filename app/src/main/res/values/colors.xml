@@ -12,7 +12,7 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
-    <color name="appcolor">#FF018786</color>
+    <color name="appcolor">#1687cf</color>
     <color name="caleta">#1687cf</color>
     <color name="caletagrey">#747479</color>
     <color name="light_blue_400">#FF29B6F6</color>
@@ -21,4 +21,7 @@
     <color name="activity">#FFD739</color>
     <color name="respiration">#f08080</color>
     <color name="pain">#6FFF38</color>
+    <color name="good">#6FFF38</color>
+    <color name="normal">#FFD739</color>
+    <color name="bad">#f08080</color>
 </resources>

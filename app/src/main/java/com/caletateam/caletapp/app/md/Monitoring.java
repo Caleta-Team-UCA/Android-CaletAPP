@@ -118,6 +118,7 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
             }
             if(!values.isEmpty())
                 adapter.getLogmonitoring().initChartActivity(event,values);
+
             else Toast.makeText(this,"No data available",Toast.LENGTH_LONG).show();
         }
 

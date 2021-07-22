@@ -47,8 +47,14 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
     implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.1.1')
 
-    implementation 'com.google.android.exoplayer:exoplayer:2.8.4'
-    implementation 'com.google.android.exoplayer:extension-rtmp:2.8.4'
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-rtsp:2.14.1'
 
 
 // for generating default ui of exoplayer

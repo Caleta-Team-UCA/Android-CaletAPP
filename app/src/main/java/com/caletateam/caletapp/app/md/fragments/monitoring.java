@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.caletateam.caletapp.R;
+import com.caletateam.caletapp.app.md.models.ValueModel;
+import com.caletateam.caletapp.app.utils.Functions;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -22,6 +24,9 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,27 +94,59 @@ public class monitoring extends Fragment {
 
         return v;
     }
+    public void updateChart(String event, String data){
+        //if(event.contains(Functions.TYPE_STRESS)){
+        ValueModel aux=null;
+            try {
+                JSONObject json = new JSONObject(data);
+                JSONObject value = new JSONObject(json.getString("value"));
+                //Log.e("AA","1");
+                aux = new ValueModel(event);
+                if(event.contains(Functions.TYPE_ACTIVITY)){
+                    Float[] val = new Float[]{(float)value.getDouble("left"),(float)value.getDouble("right"),(float)value.getDouble("down")};
+                    aux.setValue(val);
+                }
+                else
+                    aux.setValue((float) value.getDouble("value"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            List<Integer> colors = new ArrayList<>();
+
+            if(event.contains(Functions.TYPE_STRESS) && aux!=null){
+                if((int)aux.getValues()<=Functions.THRESHOLD_STRESS_GOOD)
+                    colors.add(getResources().getColor(R.color.good));
+                else if ((int) aux.getValues()<=Functions.THRESHOLD_STRESS_NORMAL)
+                    colors.add(getResources().getColor(R.color.normal));
+                else colors.add(getResources().getColor(R.color.bad));
+                colors.add(getResources().getColor(R.color.gray_400));
+                setChartActivity(stress,(int)aux.getValues(),"Stress", colors);
+            }
+        //}
+    }
+    public void updateStressChart(int value){
+
+    }
 
     @Override
     public void onStart() {
         super.onStart();
         List<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.activity));
-        colors.add(Color.parseColor("#dddddd"));
+        colors.add(getResources().getColor(R.color.gray_400));
+        colors.add(getResources().getColor(R.color.gray_600));
 
-        initChartActivity(activity,72,"Activity", colors);
-
-        colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.respiration));
-        colors.add(Color.parseColor("#dddddd"));
-
-        initChartActivity(respiration,98,"Respiration", colors);
+        setChartActivity(activity,0,"Activity", colors);
 
         colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.pain));
-        colors.add(Color.parseColor("#dddddd"));
+        colors.add(getResources().getColor(R.color.gray_400));
+        colors.add(getResources().getColor(R.color.gray_600));
 
-        initChartActivity(stress,5,"Stress", colors);
+        setChartActivity(respiration,0,"Respiration", colors);
+
+        colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.gray_400));
+        colors.add(getResources().getColor(R.color.gray_600));
+        setChartActivity(stress,0,"Stress", colors);
 
         /*linearActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,46 +169,11 @@ public class monitoring extends Fragment {
             }
         });*/
 
-        activity.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Log.e("CLICKADO ","NIVEL DE ACTIVIDAD");
-            }
 
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
-
-
-        respiration.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Log.e("CLICKADO ","NIVEL DE respiracion");
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
-
-        stress.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Log.e("CLICKADO ","NIVEL DE stress");
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
 
     }
 
-    private void initChartActivity(PieChart activity, int value,String label, List<Integer> colors){
+    private void setChartActivity(PieChart activity, int value,String label, List<Integer> colors){
         activity.setBackgroundColor(Color.WHITE);
 
         activity.setUsePercentValues(true);
@@ -229,12 +231,7 @@ public class monitoring extends Fragment {
 
         activity.animateY(1400, Easing.EaseInOutQuad);
 
-        activity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         /*Legend l = activity.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);

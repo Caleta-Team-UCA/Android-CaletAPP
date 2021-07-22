@@ -132,17 +132,57 @@ public class summary extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        for(int i=0; i < 30;i++){
-            addHeader("Header "+i);
-        }
+        //fill summary
+        //for(int i=0; i < 30;i++){
+        addHeader("Yesterday");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addContent("","",1,"");
+        addHeader("20/01/2021");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addContent("","",1,"");
+        addSpaceView();
+        addHeader("19/01/2021");
+        addSpaceView();
+        addContent("","",1,"");
+        //}
     }
     public void addHeader(String text){
         LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = inflater.inflate(R.layout.summary_header, null);
             TextView header = view.findViewById(R.id.header);
+            header.setText(text);
             linearcontent.addView(view);
+
+    }
+    public void addSpaceView(){
+        View view2 = new View(getContext());
+
+        view2.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                20));
+        view2.setBackgroundColor(Color.TRANSPARENT);
+        linearcontent.addView(view2);
+    }
+    public void addContent(String babyname,String photo, long timestamp, String problem){
+        LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.summary_content, null);
+
+        linearcontent.addView(view);
 
     }
 

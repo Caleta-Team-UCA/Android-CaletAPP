@@ -30,7 +30,7 @@
         <activity
             android:name=".app.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:icon="@drawable/logocaletapp"
+            android:icon="@drawable/logocaleta"
             android:label="@string/app_name"
             android:theme="@style/Theme.CaletAPP.Fullscreen">
             <intent-filter>

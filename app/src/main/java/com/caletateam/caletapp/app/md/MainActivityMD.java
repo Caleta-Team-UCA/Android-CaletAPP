@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivityMD extends AppCompatActivity implements Functions.DevolucionDatos, MqttCallback, IMqttActionListener {
@@ -98,6 +99,9 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition()==1){
+                    Log.e("AA","SELECCIONADO MONITORING");
+                }
                 if(tab.getPosition()==3){
                     try {
                         //Functions.consumeService(getApplication(),Functions.HOST_URL+"/video_feed","GET",GET_VIDEO_STREAMING);
@@ -121,7 +125,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                Log.e("AA","DES SELECCIONADO MONITORING");
             }
         });
 
@@ -231,7 +235,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             }
         }
         if(peticion.equals(Functions.GET_EVENTS_REQUEST)){
-            Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);
+           // Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);
            adapter.getLogs().processEvents(data);
         }
 
@@ -243,9 +247,9 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     @Override
     public void onSuccess(IMqttToken asyncActionToken) {
         //Log.e("SUCCESS","ESO");
-        for(int i=0; i < Functions.MQTT_TOPICS.length;i++) {
+        for(int i=0; i < Functions.MQTT_TOPICS_EVENTS.length;i++) {
             //Log.e("TEST1", (clientMQTT == null) + "");
-            Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS[i]);
+            Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[i]);
         }
     }
 
@@ -261,11 +265,14 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
+        //Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
 
         //JSONObject a = new JSONObject(new String(message.getPayload()));
         // adapter.getStreaming().setImage(message.getPayload());
         //adapter.getSummary().addChartValues(a.getDouble("value"),System.currentTimeMillis());
+        if(Arrays.asList(Functions.MQTT_TOPICS_EVENTS).contains(topic)){
+            adapter.getMonitoring().updateChart(topic,new String(message.getPayload()));
+        }
     }
 
     @Override

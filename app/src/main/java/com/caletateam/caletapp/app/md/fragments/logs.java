@@ -162,7 +162,7 @@ public class logs extends Fragment  {
         linearscroll.removeAllViews();
         try {
             JSONArray items = new JSONObject(data).getJSONArray("payload");
-            Log.e("LOGS","Aqui 1");
+            //Log.e("LOGS","Aqui 1");
             //int eventID, int type, String comments, int anomaly, String name, long creationtime
             for(int i=0; i < items.length();i++){
                 events.add(new EventModel(items.getJSONObject(i).getInt("idevent"),
@@ -171,7 +171,7 @@ public class logs extends Fragment  {
 
             }
             addEvents(events);
-            Log.e("LOGS","Aqui 2:"+events.size());
+            //Log.e("LOGS","Aqui 2:"+events.size());
 
         } catch (JSONException e) {
             e.printStackTrace();
