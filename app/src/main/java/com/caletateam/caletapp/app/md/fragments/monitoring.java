@@ -122,6 +122,24 @@ public class monitoring extends Fragment {
                 colors.add(getResources().getColor(R.color.gray_400));
                 setChartActivity(stress,(int)aux.getValues(),"Stress", colors);
             }
+            else if(event.contains(Functions.TYPE_RESPIRATION) && aux!=null){
+                if((int)aux.getValues()<=Functions.THRESHOLD_RESPIRATION_BAD)
+                    colors.add(getResources().getColor(R.color.bad));
+                else if ((int) aux.getValues()<=Functions.THRESHOLD_RESPIRATION_NORMAL)
+                    colors.add(getResources().getColor(R.color.normal));
+                else colors.add(getResources().getColor(R.color.good));
+                colors.add(getResources().getColor(R.color.gray_400));
+                setChartActivity(stress,(int)aux.getValues(),"Respiration", colors);
+            }
+            else if(event.contains(Functions.TYPE_ACTIVITY) && aux!=null){
+                if((int)aux.getValues()<=Functions.THRESHOLD_ACTIVITY_BAD)
+                    colors.add(getResources().getColor(R.color.bad));
+                else if ((int) aux.getValues()<=Functions.THRESHOLD_ACTIVITY_NORMAL)
+                    colors.add(getResources().getColor(R.color.normal));
+                else colors.add(getResources().getColor(R.color.good));
+                colors.add(getResources().getColor(R.color.gray_400));
+                setChartActivity(stress,(int)aux.getValues(),"Activity", colors);
+            }
         //}
     }
     public void updateStressChart(int value){
