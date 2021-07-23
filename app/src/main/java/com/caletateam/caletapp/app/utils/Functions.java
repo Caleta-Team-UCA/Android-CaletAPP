@@ -205,6 +205,14 @@ public class Functions {
             e.printStackTrace();
         }
     }
+
+    public static void unsubscribeMQTTChannel(MqttAndroidClient cliente,String topic){
+        try {
+            cliente.unsubscribe(topic);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Método para publicar un mensaje a través de un canal en MQTT
      *

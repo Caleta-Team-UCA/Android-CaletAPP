@@ -52,6 +52,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     public static int anInt=5;
     ViewPagerAdapter adapter;
     MqttAndroidClient clientMQTT;
+    boolean monitoringopened=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +170,12 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     protected void onResume(){
         super.onResume();
         Functions.consumeService(this,Functions.HOST_URL+"/baby","GET",Functions.GET_BABYS_REQUEST);
+        if(clientMQTT.isConnected()){
+            for(int i=0; i < Functions.MQTT_TOPICS_EVENTS.length;i++) {
+                //Log.e("TEST1", (clientMQTT == null) + "");
+                Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[i]);
+            }
+        }
 
     }
     /*private void initBabys(){
@@ -205,6 +212,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             });
         }
     }
+
 
     public void selectedBaby(int position){
         //Log.e("SELECCIONADO",position+"");
@@ -276,5 +284,14 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        for(int i=0; i < Functions.MQTT_TOPICS_EVENTS.length;i++) {
+            //Log.e("TEST1", (clientMQTT == null) + "");
+            Functions.unsubscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[i]);
+        }
     }
 }

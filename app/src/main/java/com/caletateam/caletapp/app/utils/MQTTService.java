@@ -66,7 +66,15 @@ public class MQTTService extends Service implements MqttCallback, IMqttActionLis
     private List<String> resultList = new ArrayList<String>();
     private int counter = 1;
     MqttAndroidClient clientMQTT;
+    private static MQTTService single_instance = null;
 
+    public static MQTTService getInstance()
+    {
+        if (single_instance == null)
+            single_instance = new MQTTService();
+
+        return single_instance;
+    }
     @Override
     public void onCreate() {
         super.onCreate();

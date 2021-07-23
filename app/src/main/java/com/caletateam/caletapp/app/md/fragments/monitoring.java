@@ -265,28 +265,34 @@ public class monitoring extends Fragment {
         values.add(new PieEntry(100-value));
 
         //}
+        PieData data0 = activity.getData();
+       // if(data0==null) {
+            PieDataSet dataSet = new PieDataSet(values, value + "");
+            dataSet.setSliceSpace(3f);
+            dataSet.setSelectionShift(5f);
+            dataSet.setColors(colors);
 
-        PieDataSet dataSet = new PieDataSet(values,value+"");
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
+            PieData data = new PieData(dataSet);
+            data.setValueFormatter(new PercentFormatter());
+            data.setValueTextSize(30f);
+            data.setValueTextColor(Color.TRANSPARENT);
+            //ta.setValueTypeface(tfLight);
+            activity.setData(data);
+            activity.setCenterText((int) value + "");
+        /*}
+        else{
+            Log.e("NO ES NULL","ESO");
+            //activity.getData().getDataSet().getEntryForIndex(0).setData(value);
+            //activity.getData().getDataSet().getEntryForIndex(0).setData(100-value);
+            activity.setCenterText((int) value + "");
+            activity.getData().notifyDataChanged();
 
-
-        //dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
-        dataSet.setColors(colors);
-
-        //dataSet.setSelectionShift(0f);
-
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(30f);
-        data.setValueTextColor(Color.TRANSPARENT);
-        //ta.setValueTypeface(tfLight);
-        activity.setData(data);
-        activity.setCenterText((int)value+"");
+        }*/
         activity.invalidate();
 
-       activity.animateY(1400, Easing.EaseInOutQuad);
+       //activity.animateY(1400, Easing.EaseInSine);
+        //activity.spin( 500,0,180f, Easing.EaseInOutQuad);
+
     }
 
     @Override

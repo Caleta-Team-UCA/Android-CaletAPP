@@ -15,13 +15,17 @@ import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.babyList.BabyModel;
 import com.caletateam.caletapp.app.md.models.ValueModel;
 import com.caletateam.caletapp.app.utils.Functions;
+import com.caletateam.caletapp.app.utils.MqttCaletaClient;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +38,7 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
     ViewPager2 viewPager2; //= findViewById(R.id.view_pager);
     ViewPagerAdapterMonitoring adapter;
     String event;
-
+    MqttAndroidClient clientMQTT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +84,20 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
 
 
                 }).attach();
+        initMqttClient(Functions.BROKER_MQTT,Functions.getClientID());
+        //clientMQTT = MqttCaletaClient.getInstance(this,Functions.BROKER_MQTT,Functions.getClientID(),this,this);
     }
     @Override
     public boolean onSupportNavigateUp() {
+        if(event.equals(Functions.TYPE_ACTIVITY)){
+            Functions.unsubscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[0]);
+        }
+        else if(event.equals(Functions.TYPE_STRESS)){
+            Functions.unsubscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[2]);
+        }
+        else if(event.equals(Functions.TYPE_RESPIRATION)){
+            Functions.unsubscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[1]);
+        }
         finish();
         return true;
     }
@@ -136,14 +151,40 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
 
     }
 
-    @Override
-    public void onSuccess(IMqttToken asyncActionToken) {
+    public void initMqttClient(String broker, String clienteID){
+        clientMQTT = new MqttAndroidClient(this, broker, clienteID);
+        clientMQTT.setCallback(this);
+        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setUserName(Functions.USER_MQTT);
+        mqttConnectOptions.setPassword(Functions.PASSWORD_MQTT.toCharArray());
+        try {
+
+            clientMQTT.connect(mqttConnectOptions, null, this);
+
+        } catch (MqttException ex){
+            Log.e("Error MQTT", "onCreate: ", ex);
+        }
 
     }
 
     @Override
-    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+    public void onSuccess(IMqttToken asyncActionToken) {
+        Log.e("CONECTADO MONITORING","CONECTADOO");
+        if(event.equals(Functions.TYPE_ACTIVITY)){
+            Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[0]);
+        }
+        else if(event.equals(Functions.TYPE_STRESS)){
+            Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[2]);
+        }
+        else if(event.equals(Functions.TYPE_RESPIRATION)){
+            Functions.subscribeMQTTChannel(clientMQTT, Functions.MQTT_TOPICS_EVENTS[1]);
+        }
+    }
 
+    @Override
+    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+        Log.e("NO CONECTADO MONITORING",exception.getMessage());
     }
 
     @Override
@@ -153,7 +194,7 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        Log.e("MQTT","Topic: "+topic +" ---- "+new String(message.getPayload()));
+        Log.e("MQTT v2","Topic: "+topic +" ---- "+new String(message.getPayload()));
         adapter.getRealTimeMonitoring().updateRealTimeValues(topic,new String(message.getPayload()));
     }
 
