@@ -235,7 +235,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
 
                 setProgressDialog();
-                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+type+"/"+endtimestamp+"/"+starttimestamp,"GET", Functions.GET_EVENTS_FILTER);
+                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+event+"/"+endtimestamp+"/"+starttimestamp,"GET", Functions.GET_EVENTS_FILTER);
             }
         });
         return v;
@@ -290,26 +290,246 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                 "Minute: " + myMinute);*/
     }
 
-    private LineDataSet createSet(String type) {
 
+    private LineDataSet createSet(String type,String color) {
         LineDataSet set = new LineDataSet(null, type);
         set.setLineWidth(2.5f);
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setDrawCircles(false);
-        set.setColor(Color.rgb(240, 99, 99));
-        set.setHighLightColor(Color.rgb(190, 190, 190));
+        set.setColor(Color.parseColor(color));
+        //set.setHighLightColor(Color.rgb(190, 190, 190));
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setValueTextSize(10f);
         set.setDrawValues(false);
-        set.setDrawFilled(true);
-        set.setFillColor(Color.rgb(250,175,175));
+        set.setDrawFilled(false);
+        //set.setFillColor(Color.rgb(250, 175, 175));
         set.setHighlightEnabled(true); // allow highlighting for DataSet
 
         // set this to false to disable the drawing of highlight indicator (lines)
         set.setDrawHighlightIndicators(true);
         set.setHighLightColor(Color.BLACK);
         return set;
+
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void fillChartRespiration(String label, ArrayList<ValueModel> values) {
+        try {
+            linechart.setBackgroundColor(Color.WHITE);
+            CustomMarkerView mv = new CustomMarkerView (getActivity(), R.layout.tvcontent);
+            linechart.setMarkerView(mv);
+            linechart.setVisibleXRangeMaximum(values.size());
+            linechart.setAutoScaleMinMaxEnabled(true);
+
+            linechart.setTouchEnabled(true);
+
+            LineDataSet setComp1 = createSet("Respiration",getActivity().getResources().getString(R.color.appcolor));// new LineDataSet(valsComp1, "Left");
+
+
+            ArrayList<ILineDataSet> datasets = new ArrayList<>();
+            datasets.add(setComp1);
+            LineData data = new LineData(datasets);
+            linechart.setData(data);
+            linechart.invalidate();
+
+            linechart.getDescription().setEnabled(false);
+            linechart.getLegend().setEnabled(false);
+
+            Long start = values.get(0).getTimestamp();//start
+            Long end = values.get(values.size()-1).getTimestamp();//end
+            List<Long> mList = new ArrayList<>(); //Decimal list which holds timestamps
+            int count = 0;
+
+            for (Long i = start; i <= end; i++) {
+                if (new Long(values.get(count).getTimestamp()).equals(i)) {
+                    mList.add(new Long(i));
+                    float valaux = values.get(count).getValue();
+                        data.addEntry(new Entry(count, valaux), 0);
+                        if (values.get(count).isAnomaly()) {
+                            //Log.e("ANOMALY","TRUE");
+                            linechart.highlightValue(count, 0);
+                            setComp1.getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+                            //linechart.highlightValue();
+                        }
+
+                    count++;
+                }
+
+            }
+
+            linechart.getDescription().setEnabled(false);
+            linechart.notifyDataSetChanged();
+            XAxis xAxis = linechart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setLabelRotationAngle(-90);
+            //xAxis.setGranularity(1f); // one hour
+            xAxis.setValueFormatter(new ValueFormatter() {
+
+                private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM HH:mm:ss", Locale.ENGLISH);
+
+                @Override
+                public String getFormattedValue(float value) {
+                    return mFormat.format(new Date(mList.get((int)value)));
+
+                }
+            });
+            linechart.animateX(4000);
+
+
+
+        }catch(Exception e){
+            Log.e("ERROR ACTIVITY",e.getMessage());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void fillChartStress(String label, ArrayList<ValueModel> values) {
+        try {
+            linechart.setBackgroundColor(Color.WHITE);
+            CustomMarkerView mv = new CustomMarkerView (getActivity(), R.layout.tvcontent);
+            linechart.setMarkerView(mv);
+            //linechart.setVisibleXRangeMaximum(20);
+            linechart.setAutoScaleMinMaxEnabled(true);
+            linechart.setTouchEnabled(true);
+
+            LineDataSet setComp1 = createSet("Stress",getActivity().getResources().getString(R.color.appcolor));// new LineDataSet(valsComp1, "Left");
+
+            ArrayList<ILineDataSet> datasets = new ArrayList<>();
+            datasets.add(setComp1);
+            LineData data = new LineData(datasets);
+            linechart.setData(data);
+            linechart.invalidate();
+
+            linechart.getDescription().setEnabled(false);
+            linechart.getLegend().setEnabled(false);
+            Long start = values.get(0).getTimestamp();//start
+            Long end = values.get(values.size()-1).getTimestamp();//end
+            List<Long> mList = new ArrayList<>(); //Decimal list which holds timestamps
+            int count = 0;
+
+            for (Long i = start; i <= end; i++) {
+                if (new Long(values.get(count).getTimestamp()).equals(i)) {
+                    mList.add(new Long(i));
+                    float valaux = (float) 1.0;
+
+                    valaux = (float) values.get(count).getValue();
+
+                    data.addEntry(new Entry(count, valaux), 0);
+                    if (values.get(count).isAnomaly()) {
+                        //Log.e("ANOMALY","TRUE");
+                        linechart.highlightValue(count, 0);
+                        setComp1.getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+                        //linechart.highlightValue();
+                    }
+
+                    count++;
+                }
+
+            }
+
+            linechart.getDescription().setEnabled(false);
+            linechart.notifyDataSetChanged();
+            XAxis xAxis = linechart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setLabelRotationAngle(-90);
+            //xAxis.setGranularity(1f); // one hour
+            xAxis.setValueFormatter(new ValueFormatter() {
+
+                private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM HH:mm:ss", Locale.ENGLISH);
+
+                @Override
+                public String getFormattedValue(float value) {
+
+                    return mFormat.format(new Date(mList.get((int)value)));
+
+                }
+
+
+
+
+            });
+            linechart.animateX(2000);
+        }catch(Exception e){
+            Log.e("ERROR ACTIVITY",e.getMessage());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void fillChartActivity(String label, ArrayList<ValueModel> values) {
+        try {
+            linechart.setBackgroundColor(Color.WHITE);
+            CustomMarkerView mv = new CustomMarkerView (getActivity(), R.layout.tvcontent);
+            linechart.setMarkerView(mv);
+            //linechart.setVisibleXRangeMaximum(20);
+            linechart.setAutoScaleMinMaxEnabled(true);
+            linechart.setTouchEnabled(true);
+
+            LineDataSet setComp1 = createSet("Left","#FF0000");// new LineDataSet(valsComp1, "Left");
+            LineDataSet setComp2 = createSet("Right","#00FF00");//new LineDataSet(valsComp2, "Right");
+            LineDataSet setComp3 = createSet("Down","#0000FF");//new LineDataSet(valsComp3, "Down");
+
+            ArrayList<ILineDataSet> datasets = new ArrayList<>();
+            datasets.add(setComp1);
+            datasets.add(setComp2);
+            datasets.add(setComp3);
+            LineData data = new LineData(datasets);
+            linechart.setData(data);
+            linechart.invalidate();
+            Long start = values.get(0).getTimestamp();//start
+            Long end = values.get(values.size()-1).getTimestamp();//end
+            List<Long> mList = new ArrayList<>(); //Decimal list which holds timestamps
+            int count = 0;
+
+            for (Long i = start; i <= end; i++) {
+                if (new Long(values.get(count).getTimestamp()).equals(i)) {
+                    mList.add(new Long(i));
+                    Float[] valaux = values.get(count).getValues();
+
+                    linechart.getData().getDataSetByLabel("Left", true).addEntry(new Entry(count, valaux[0]));
+                    linechart.getData().getDataSetByLabel("Right", true).addEntry(new Entry(count, valaux[1]));
+                    linechart.getData().getDataSetByLabel("Down", true).addEntry(new Entry(count, valaux[2]));
+                    if (values.get(count).isAnomaly()) {
+                        //Log.e("ANOMALY","TRUE");
+                        //linechart.highlightValue(count, 0);
+                        //setComp1.getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+                        linechart.highlightValue(count, 0);
+                        linechart.highlightValue(count, 1);
+                        linechart.highlightValue(count, 2);
+                        linechart.getLineData().getDataSetByIndex(0).getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+                        linechart.getLineData().getDataSetByIndex(1).getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+                        linechart.getLineData().getDataSetByIndex(2).getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+                        //linechart.highlightValue();
+                    }
+
+                    count++;
+                }
+
+            }
+
+            linechart.getDescription().setEnabled(false);
+            linechart.notifyDataSetChanged();
+            XAxis xAxis = linechart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setLabelRotationAngle(-90);
+            //xAxis.setGranularity(1f); // one hour
+            xAxis.setValueFormatter(new ValueFormatter() {
+
+                private final SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM HH:mm:ss", Locale.ENGLISH);
+
+                @Override
+                public String getFormattedValue(float value) {
+
+                    return mFormat.format(new Date(mList.get((int)value)));
+
+                }
+                            });
+            linechart.animateX(2000);
+
+        }catch(Exception e){
+            Log.e("ERROR ACTIVITY",e.getMessage());
+        }
+    }
+
 /*
     private void addEntry(float val) {
 
@@ -347,7 +567,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
     }*/
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void initChartActivity(String label, ArrayList<ValueModel> values) {
         try {
             linechart.setBackgroundColor(Color.WHITE);
@@ -388,18 +608,18 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                     float valaux = (float) 1.0;
                     if (event.equals(Functions.TYPE_ACTIVITY)) {
                         //do something
+                        Float[] vals = values.get(count).getValues();
                     }
-                    else
+                    else {
                         valaux = (float) values.get(count).getValue();
 
-                    data.addEntry(new Entry(count, valaux),0);
-                    if(values.get(count).isAnomaly()){
-                        Log.e("ANOMALY","TRUE");
-                        linechart.highlightValue(count,0);
-
-                        set.getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
-
-                        //linechart.highlightValue();
+                        data.addEntry(new Entry(count, valaux), 0);
+                        if (values.get(count).isAnomaly()) {
+                            //Log.e("ANOMALY","TRUE");
+                            linechart.highlightValue(count, 0);
+                            set.getEntryForIndex(count).setIcon(getActivity().getDrawable(R.drawable.dot));
+                            //linechart.highlightValue();
+                        }
                     }
                     count++;
                 }
@@ -408,19 +628,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
             //long starttimestamp = 0;//+times.get(0);
             //float to = times.get(0) + times.get(times.size()-1);
-            /*int i=0;
-            for (float x = times.get(0); x < to; x++) {
 
-                //float y = getRandom(range, 50);
-                data.addEntry(new Entry(x, values.get(i)),0); // add one entry per hour
-                i++;
-            }*/
-            /*SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
-            for (int i = 0; i < values.size(); i++) {
-                data.addEntry(new Entry(times.get(i)-starttimestamp, values.get(i)),0);
-                Log.e("TIME "+i,mFormat.format(new Date(times.get(i)-starttimestamp)));
-                data.notifyDataChanged();
-            }*/
 
             linechart.getDescription().setEnabled(false);
             linechart.notifyDataSetChanged();
@@ -452,7 +660,15 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         }catch(Exception e){
             e.printStackTrace();
         }
+
+        try {
+            getDialog().dismiss();
+        }catch(Exception e){
+            Log.e("ERROR",e.getMessage());
+        }
     }
+
+     */
     AlertDialog dialog;
     public AlertDialog getDialog(){
         return dialog;

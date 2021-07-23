@@ -66,7 +66,7 @@ public class MQTTService extends Service implements MqttCallback, IMqttActionLis
     private List<String> resultList = new ArrayList<String>();
     private int counter = 1;
     MqttAndroidClient clientMQTT;
-    private static MQTTService single_instance = null;
+    /*private static MQTTService single_instance = null;
 
     public static MQTTService getInstance()
     {
@@ -74,7 +74,7 @@ public class MQTTService extends Service implements MqttCallback, IMqttActionLis
             single_instance = new MQTTService();
 
         return single_instance;
-    }
+    }*/
     @Override
     public void onCreate() {
         super.onCreate();
@@ -276,7 +276,7 @@ public class MQTTService extends Service implements MqttCallback, IMqttActionLis
 
 // Apply the layouts to the notification
         Notification customNotification = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL_ID_INFO)
-                .setSmallIcon(R.drawable.logocaletapp)
+                .setSmallIcon(R.drawable.logocaleta)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 //.setCustomContentView(notificationLayout)
                 .setCustomBigContentView(notificationLayoutExpanded)

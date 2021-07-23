@@ -52,7 +52,7 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
         try{
             event = getIntent().getStringExtra("event");
         }catch(Exception e){
-            event = Functions.TYPE_RESPIRATION;
+
         }
         if(event.equals(Functions.TYPE_ACTIVITY))
             setTitle("Jon Doe - Activity Monitoring");
@@ -104,11 +104,7 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
     @Override
     public void RespuestaLlamadaServicio(String peticion, String data) {
         if(peticion.equals(Functions.GET_EVENTS_FILTER)){
-            try {
-                adapter.getLogmonitoring().getDialog().dismiss();
-            }catch(Exception e){
-                Log.e("ERROR",e.getMessage());
-            }
+
             //ArrayList<Float> values = new ArrayList<>();
             //ArrayList<Long> times = new ArrayList<>();
             ArrayList<ValueModel> values = new ArrayList<>();
@@ -121,19 +117,22 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
                    obj = items.getJSONObject(i);
                    Log.e("DATA",items.getJSONObject(i).toString());
                     //Log.e("ELEMENT "+i,obj.toString() +"  "+obj.getString("value"));
-                   JSONObject value = new JSONObject(obj.getString("value"));
-                   //Log.e("AA","1");
-                    aux = new ValueModel(event);
-                    if(event.equals(Functions.TYPE_ACTIVITY)){
-                        Float[] val = new Float[]{(float)value.getDouble("left"),(float)value.getDouble("right"),(float)value.getDouble("down")};
-                        aux.setValue(val);
+                    try {
+                        JSONObject value = new JSONObject(obj.getString("value"));
+                        //Log.e("AA","1");
+                        aux = new ValueModel(event);
+                        if (event.equals(Functions.TYPE_ACTIVITY)) {
+                            Float[] val = new Float[]{(float) value.getDouble("left"), (float) value.getDouble("right"), (float) value.getDouble("down")};
+                            aux.setValue(val);
+                        } else
+                            aux.setValue((float) value.getInt("value"));
+                        //values.add((float) value.getInt("value"));
+                        aux.setTimestamp(obj.getLong("time"));
+                        aux.setAnomaly(obj.getBoolean("anomaly"));
+                        values.add(aux);
+                    }catch(Exception e){
+
                     }
-                    else
-                        aux.setValue((float) value.getInt("value"));
-                   //values.add((float) value.getInt("value"));
-                    aux.setTimestamp(obj.getLong("time"));
-                    aux.setAnomaly(obj.getBoolean("anomaly"));
-                    values.add(aux);
                    // Log.e("AA","2");
                    //times.add(obj.getLong("time"));
                    // Log.e("AA","3");
@@ -143,10 +142,18 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
                 Log.e("AA","ERKRPR:"+e.getMessage());
                 e.printStackTrace();
             }
-            if(!values.isEmpty())
-                adapter.getLogmonitoring().initChartActivity(event,values);
+            if(!values.isEmpty()) {
+                if(event.equals(Functions.TYPE_RESPIRATION))
+                    adapter.getLogmonitoring().fillChartRespiration(event, values);
+                else if (event.equals(Functions.TYPE_STRESS))
+                    adapter.getLogmonitoring().fillChartStress(event,values);
+                else if (event.equals(Functions.TYPE_ACTIVITY))
+                    adapter.getLogmonitoring().fillChartActivity(event,values);
+            }
 
             else Toast.makeText(this,"No data available",Toast.LENGTH_LONG).show();
+
+            adapter.getLogmonitoring().getDialog().dismiss();
         }
 
     }

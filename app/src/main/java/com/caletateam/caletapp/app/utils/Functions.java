@@ -160,6 +160,7 @@ public class Functions {
             default:
                 verb = Method.GET;
         };
+        Log.e("WEB REQUEST",url+" "+verb+" ");
         mStringRequest = new StringRequest(verb, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
