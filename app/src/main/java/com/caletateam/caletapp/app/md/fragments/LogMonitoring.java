@@ -20,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,6 +29,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.md.models.ValueModel;
@@ -69,7 +71,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
     private Spinner list;
     // TODO: Rename and change types of parameters
     private String event;
-    private LinearLayout linearcustom;
+    private LinearLayout linearcustom,linearOptionActivity, linearOptionFilter;
     private EditText startdate,enddate;
     int day, month, year, hour, minute;
     int myday, myMonth, myYear, myHour, myMinute;
@@ -78,6 +80,8 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
     private LineChart linechart;
     private long starttimestamp,endtimestamp;
     int selectedOption=0;
+    ToggleButton left,right,down;
+    CheckBox average,anomalies,maxmins;
     public LogMonitoring() {
         // Required empty public constructor
     }
@@ -119,6 +123,14 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         enddate = v.findViewById(R.id.enddate);
         search = v.findViewById(R.id.search);
         linechart = v.findViewById(R.id.lineChart);
+        linearOptionActivity = v.findViewById(R.id.linearOptionActivity);
+        linearOptionFilter = v.findViewById(R.id.linearOptionFilter);
+        left = v.findViewById(R.id.toggleActivityLeft);
+        right = v.findViewById(R.id.toggleActivityRight);
+        down = v.findViewById(R.id.toggleActivityDown);
+        average = v.findViewById(R.id.checkAverage);
+        maxmins = v.findViewById(R.id.checkMaxMins);
+        anomalies = v.findViewById(R.id.anomaly);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.options_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
@@ -290,6 +302,17 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                 "Minute: " + myMinute);*/
     }
 
+    private void enableToggles(){
+        if(event.equals(Functions.TYPE_ACTIVITY)){
+            linearOptionActivity.setVisibility(View.VISIBLE);
+        }
+        else             linearOptionActivity.setVisibility(View.GONE);
+
+    }
+
+    private void enableFilter(){
+        linearOptionFilter.setVisibility(View.VISIBLE);
+    }
 
     private LineDataSet createSet(String type,String color) {
         LineDataSet set = new LineDataSet(null, type);

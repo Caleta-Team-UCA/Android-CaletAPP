@@ -14,9 +14,7 @@
                 android:id="@+id/optionspinner"
                 android:layout_width="0dp" android:layout_weight="0.6"
                 android:layout_height="match_parent" />
-            <ImageButton
-                android:layout_width="0dp" android:layout_weight="0.2"
-                android:layout_height="match_parent" android:src="@drawable/filter" android:id="@+id/filter"></ImageButton>
+
             <ImageButton
                 android:layout_width="0dp" android:layout_weight="0.2"
                 android:layout_height="match_parent" android:src="@drawable/search" android:id="@+id/search"></ImageButton>
@@ -29,7 +27,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             android:weightSum="1">
 
             <LinearLayout
@@ -100,7 +98,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.6" />
 
-        <LinearLayout
+        <LinearLayout android:visibility="gone"
             android:layout_width="match_parent" android:id="@+id/linearOptionActivity" android:gravity="center"
             android:layout_height="0dp" android:layout_weight="0.1" android:weightSum="1">
             <ToggleButton android:checked="true"
@@ -114,17 +112,17 @@
                 android:layout_height="wrap_content" android:textOff="Down Disabled" android:textOn="Down Enabled"/>
         </LinearLayout>
 
-        <LinearLayout
+        <LinearLayout android:visibility="gone"
             android:layout_width="match_parent" android:id="@+id/linearOptionFilter" android:gravity="center"
             android:layout_height="0dp" android:layout_weight="0.1" android:weightSum="1">
             <CheckBox
-                android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/toogleAverage"
+                android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/checkAverage"
                 android:layout_height="wrap_content" android:text="Average"/>
             <CheckBox
-                android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/toogleMaxMins"
+                android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/checkMaxMins"
                 android:layout_height="wrap_content" android:text="Max and Mins."/>
             <CheckBox
-                android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/toogleAnomalies"
+                android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/checkAnomalies"
                 android:layout_height="wrap_content" android:text="Anomalies"/>
         </LinearLayout>
     </LinearLayout>
