@@ -37,6 +37,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.Console;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,6 +109,19 @@ public class Functions {
         if(n<10)
             return "0"+n;
         else return String.valueOf(n);
+    }
+
+
+    public static String getDateDaysBack(long current,int daysback){
+        long back = current - (daysback*86400000L);
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date parsedDate = new Date(back);
+            return dateFormat.format(parsedDate);
+        } catch(Exception e) { //this generic but you can control another types of exception
+            // look the origin of excption
+        }
+        return "";
     }
 
     public static String getDateFromTimestamp(long timestamp){

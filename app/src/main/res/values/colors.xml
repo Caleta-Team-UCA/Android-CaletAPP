@@ -21,7 +21,7 @@
     <color name="activity">#FFD739</color>
     <color name="respiration">#f08080</color>
     <color name="pain">#6FFF38</color>
-    <color name="good">#6FFF38</color>
+    <color name="good">#B4FF97</color>
     <color name="normal">#FFD739</color>
     <color name="bad">#f08080</color>
 </resources>

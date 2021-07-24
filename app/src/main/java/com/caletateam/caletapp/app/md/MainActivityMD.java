@@ -5,11 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +44,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +52,7 @@ import java.util.List;
 
 public class MainActivityMD extends AppCompatActivity implements Functions.DevolucionDatos, MqttCallback, IMqttActionListener {
     HorizontalScrollView babylist;
-    List<BabyModel> babys;
+    public static List<BabyModel> babys;
     LinearLayout linearbabys;
     TabLayout tabLayout; //= findViewById(R.id.tabs);
     ViewPager2 viewPager2; //= findViewById(R.id.view_pager);
@@ -130,8 +138,9 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                 Log.e("AA","DES SELECCIONADO MONITORING");
             }
         });
-
+        //tabLayout.clearAnimation();
        tabLayout.setVisibility(View.GONE);
+        //tabLayout.animate().alpha(0.0f);
 
 
 
@@ -188,10 +197,12 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         }
     }*/
 
-    de.hdodenhof.circleimageview.CircleImageView[] imgs;
+    public static de.hdodenhof.circleimageview.CircleImageView[] imgs;
+    public static TextView[] names;
     public void addBabys(List<BabyModel> babys){
         linearbabys.removeAllViews();
         imgs = new de.hdodenhof.circleimageview.CircleImageView[babys.size()];
+        names = new TextView[babys.size()];
         for(int i=0; i < babys.size();i++){
             View view;
             LayoutInflater inflater = (LayoutInflater)   this.getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -201,11 +212,11 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             //content.setBackgroundColor(Color.parseColor("#ff0000"));
             //else content.setBackgroundColor(Color.parseColor("#00ff00"));
             imgs[i] = view.findViewById(R.id.babyimg);
-
+            names[i] = view.findViewById(R.id.babynameHeader);
             //img.setImageResource((Integer) babys.get(i).getPhoto());
             Glide.with(this).load(babys.get(i).getPhoto()).into(imgs[i]);
-            TextView text = (TextView) view.findViewById(R.id.babyname);
-            text.setText(babys.get(i).getName());
+            //TextView text = (TextView) view.findViewById(R.id.babynameHeader);
+            names[i].setText(babys.get(i).getName());
             linearbabys.addView(view);
             int finalI = i;
             content.setOnClickListener(new View.OnClickListener() {
@@ -223,11 +234,31 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         for(int i=0; i < imgs.length;i++){
             imgs[i].setBorderColor(getResources().getColor(R.color.caletagrey));
             imgs[i].setBorderWidth(6);
+            names[i].setTextColor(R.color.caletagrey);
+            names[i].setTypeface(Typeface.DEFAULT);
+
 
         }
         imgs[position].setBorderColor(getResources().getColor(R.color.caleta));
         imgs[position].setBorderWidth(20);
+        //names[position].setTextColor(R.color.caleta);
+        names[position].setTextColor(Color.parseColor(getResources().getString(R.color.caleta)));
+        names[position].setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        /*tabLayout.animate()
+                .alpha(1.0f)
+                .translationX(tabLayout.getHeight())
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        tabLayout.setVisibility(View.VISIBLE);
+                    }
+                });*/
         tabLayout.setVisibility(View.VISIBLE);
+
+        //tabLayout.setVisibility(View.VISIBLE);
+
 
     }
 
@@ -246,6 +277,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            adapter.getSummary().loadSummar();
         }
         if(peticion.equals(Functions.GET_EVENTS_REQUEST)){
            // Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);

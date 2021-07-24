@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:gravity="center"
+    android:layout_height="400dp" android:weightSum="1" android:orientation="horizontal">
+    <!--s-->
+    <LinearLayout android:id="@+id/linearContentBaby1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.48"
+        android:background="@drawable/cardviewbackground"
+        android:gravity="center" android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/streamingbackground"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/babyimg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:background="@drawable/streamingbackground"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/baby" />
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="10dp"
+                        app:cpb_background_progressbar_color="@color/caletagrey"
+                        app:cpb_background_progressbar_width="3dp"
+                        app:cpb_progress="65"
+                        app:cpb_progress_direction="to_right"
+                        app:cpb_progress_max="100"
+
+                        app:cpb_progressbar_color="#3f51b5"
+                        app:cpb_progressbar_width="7dp"
+                        app:cpb_round_border="false" />
+
+                    <TextView
+                        android:id="@+id/textProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/progressBar"
+                        android:layout_alignTop="@id/progressBar"
+                        android:layout_alignRight="@id/progressBar"
+                        android:layout_alignBottom="@id/progressBar"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="65"
+                        android:textAlignment="center"
+                        android:textColor="@color/caleta"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/babyname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Baby 1"
+            android:textAlignment="center"
+            android:textColor="@color/caleta"
+            android:textSize="26sp"
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/scoreStress"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="0.2"
+                        android:src="@drawable/notok" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:text="Stress"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/scoreActivity"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="0.2"
+                        android:src="@drawable/done" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:text="Act."
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/scoreRespiration"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="0.2"
+                        android:src="@drawable/done" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:text="Resp."
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView android:id="@+id/anomalies"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4 anomalies"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+<!--a-->
+    <LinearLayout
+        android:layout_width="0dp" android:id="@+id/linearContentBaby2"
+        android:layout_height="wrap_content" android:layout_weight="0.48"
+        android:background="@drawable/cardviewbackground"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5" android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/streamingbackground"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/babyimg2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:background="@drawable/streamingbackground"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/baby" />
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp" android:layout_weight="0.5"
+                android:layout_height="match_parent" android:orientation="vertical">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools" android:gravity="center"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" >
+
+                    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                        android:id="@+id/progressBar2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp" android:layout_marginTop="10dp"
+                        app:cpb_background_progressbar_color="@color/caletagrey"
+                        app:cpb_background_progressbar_width="3dp"
+                        app:cpb_progress_direction="to_right"
+                        app:cpb_progress_max="100"
+                        app:cpb_progress="65"
+
+                        app:cpb_progressbar_color="#3f51b5"
+                        app:cpb_progressbar_width="7dp"
+                        app:cpb_round_border="false" />
+
+                    <TextView
+                        android:id="@+id/myTextProgress2"
+                        android:layout_alignLeft="@id/progressBar2" android:layout_alignTop="@id/progressBar2" android:textStyle="bold" android:textSize="26sp"
+                        android:layout_alignRight="@id/progressBar2" android:layout_alignBottom="@id/progressBar2"  android:textColor="@color/caleta"
+                        android:background="@android:color/transparent" android:text="65" android:textAlignment="center" android:gravity="center"
+                        android:layout_height="wrap_content" android:layout_width="wrap_content" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/babyname2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Baby 1"
+            android:textAlignment="center"
+            android:textColor="@color/caleta"
+            android:textSize="26sp"
+            android:textStyle="bold"></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/scoreStress2"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="0.2"
+                        android:src="@drawable/notok" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:text="Stress"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/scoreActivity2"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="0.2"
+                        android:src="@drawable/done" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:text="Act."
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/scoreRespiration2"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="0.2"
+                        android:src="@drawable/done" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:text="Respiration"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/anomalies2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4 anomalies"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

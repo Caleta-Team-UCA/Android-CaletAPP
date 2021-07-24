@@ -267,7 +267,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
 
                 setProgressDialog();
-                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+event+"/"+endtimestamp+"/"+starttimestamp,"GET", Functions.GET_EVENTS_FILTER);
+                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+event+"/"+starttimestamp+"/"+endtimestamp,"GET", Functions.GET_EVENTS_FILTER);
             }
         });
 

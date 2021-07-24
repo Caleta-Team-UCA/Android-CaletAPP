@@ -2,15 +2,19 @@ package com.caletateam.caletapp.app.md.models;
 
 public class CardViewSummary {
     private String babyname;
-    private long timestamp;
     private String photo;
-    private String alert;
+    private boolean stressscore,actscore,respscore;
+    private int totalscore;
+    private int anomalies;
 
-    public CardViewSummary(String babyname, long timestamp, String photo, String alert) {
+    public CardViewSummary(String babyname, String photo, boolean stressscore, boolean actscore, boolean respscore, int totalscore, int anomalies) {
         this.babyname = babyname;
-        this.timestamp = timestamp;
         this.photo = photo;
-        this.alert = alert;
+        this.stressscore = stressscore;
+        this.actscore = actscore;
+        this.respscore = respscore;
+        this.totalscore = totalscore;
+        this.anomalies = anomalies;
     }
 
     public String getBabyname() {
@@ -21,14 +25,6 @@ public class CardViewSummary {
         this.babyname = babyname;
     }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public String getPhoto() {
         return photo;
     }
@@ -37,11 +33,43 @@ public class CardViewSummary {
         this.photo = photo;
     }
 
-    public String getAlert() {
-        return alert;
+    public boolean isStressscore() {
+        return stressscore;
     }
 
-    public void setAlert(String alert) {
-        this.alert = alert;
+    public void setStressscore(boolean stressscore) {
+        this.stressscore = stressscore;
+    }
+
+    public boolean isActscore() {
+        return actscore;
+    }
+
+    public void setActscore(boolean actscore) {
+        this.actscore = actscore;
+    }
+
+    public boolean isRespscore() {
+        return respscore;
+    }
+
+    public void setRespscore(boolean respscore) {
+        this.respscore = respscore;
+    }
+
+    public int getTotalscore() {
+        return totalscore;
+    }
+
+    public void setTotalscore(int totalscore) {
+        this.totalscore = totalscore;
+    }
+
+    public int getAnomalies() {
+        return anomalies;
+    }
+
+    public void setAnomalies(int anomalies) {
+        this.anomalies = anomalies;
     }
 }
