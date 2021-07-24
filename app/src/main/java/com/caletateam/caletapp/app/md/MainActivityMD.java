@@ -79,6 +79,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                         if (position==0) {
                             tab.setText("Summary");
                             tab.setIcon(R.drawable.summary);
+
                         }
                          if (position==1) {
                              tab.setText("Monitoring");
@@ -129,6 +130,9 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                 Log.e("AA","DES SELECCIONADO MONITORING");
             }
         });
+
+       tabLayout.setVisibility(View.GONE);
+
 
 
     }
@@ -222,8 +226,8 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
         }
         imgs[position].setBorderColor(getResources().getColor(R.color.caleta));
-        imgs[position].setBorderWidth(20
-        );
+        imgs[position].setBorderWidth(20);
+        tabLayout.setVisibility(View.VISIBLE);
 
     }
 
