@@ -78,56 +78,7 @@ public class summary extends Fragment {
 
 
     }
-    /*private LineDataSet createSet() {
 
-        LineDataSet set = new LineDataSet(null, "DataSet 1");
-        set.setLineWidth(2.5f);
-        set.setCircleRadius(4.5f);
-        set.setColor(Color.rgb(240, 99, 99));
-        set.setCircleColor(Color.rgb(240, 99, 99));
-        set.setHighLightColor(Color.rgb(190, 190, 190));
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setValueTextSize(10f);
-
-        return set;
-    }
-
-    private void addEntry(float val) {
-
-        LineData data = linechart.getData();
-
-        if (data == null) {
-            data = new LineData();
-            linechart.setData(data);
-        }
-
-        ILineDataSet set = data.getDataSetByIndex(0);
-        // set.addEntry(...); // can be called as well
-
-        if (set == null) {
-            set = createSet();
-            data.addDataSet(set);
-        }
-
-        // choose a random dataSet
-        int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
-        ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex);
-        //float value = (float) (Math.random() * 50) + 50f * (randomDataSetIndex + 1);
-
-        data.addEntry(new Entry(randomSet.getEntryCount(), val), randomDataSetIndex);
-        data.notifyDataChanged();
-
-        // let the chart know it's data has changed
-        linechart.notifyDataSetChanged();
-
-        linechart.setVisibleXRangeMaximum(6);
-        //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
-//
-//            // this automatically refreshes the chart (calls invalidate())
-        linechart.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
-
-    }
-*/
 
     @Override
     public void onStart() {
@@ -158,7 +109,6 @@ public class summary extends Fragment {
         addHeader("19/01/2021");
         addSpaceView();
         addContent("","",1,"");
-        //}
     }
     public void addHeader(String text){
         LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

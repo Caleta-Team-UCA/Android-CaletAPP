@@ -222,7 +222,8 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
         }
         imgs[position].setBorderColor(getResources().getColor(R.color.caleta));
-        imgs[position].setBorderWidth(10);
+        imgs[position].setBorderWidth(20
+        );
 
     }
 

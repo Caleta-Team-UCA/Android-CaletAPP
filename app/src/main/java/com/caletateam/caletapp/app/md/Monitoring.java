@@ -143,12 +143,17 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
                 e.printStackTrace();
             }
             if(!values.isEmpty()) {
-                if(event.equals(Functions.TYPE_RESPIRATION))
+                if(event.equals(Functions.TYPE_RESPIRATION)) {
                     adapter.getLogmonitoring().fillChartRespiration(event, values);
-                else if (event.equals(Functions.TYPE_STRESS))
-                    adapter.getLogmonitoring().fillChartStress(event,values);
-                else if (event.equals(Functions.TYPE_ACTIVITY))
-                    adapter.getLogmonitoring().fillChartActivity(event,values);
+
+                }else if (event.equals(Functions.TYPE_STRESS)) {
+                    adapter.getLogmonitoring().fillChartStress(event, values);
+                }else if (event.equals(Functions.TYPE_ACTIVITY)) {
+                    adapter.getLogmonitoring().fillChartActivity(event, values);
+                    adapter.getLogmonitoring().enableWhenActivity();
+                }
+               // adapter.getLogmonitoring().enableFilters();
+
             }
 
             else Toast.makeText(this,"No data available",Toast.LENGTH_LONG).show();

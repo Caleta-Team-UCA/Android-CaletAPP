@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -76,7 +77,7 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
     int day, month, year, hour, minute;
     int myday, myMonth, myYear, myHour, myMinute;
     ImageButton search, filters;
-    String type=Functions.TYPE_STRESS;
+    //String type=Functions.TYPE_STRESS;
     private LineChart linechart;
     private long starttimestamp,endtimestamp;
     int selectedOption=0;
@@ -112,6 +113,24 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         }
     }
     boolean start=false;
+
+    public void enableWhenActivity(){
+        linearOptionActivity.setVisibility(View.VISIBLE);
+        left.setChecked(true);
+        right.setChecked(true);
+        right.setChecked(true);
+    }
+    /*public void enableFilters(){
+        linearOptionFilter.setVisibility(View.VISIBLE);
+        average.setChecked(false);
+        maxmins.setChecked(false);
+        anomalies.setChecked(false);
+    }*/
+    public void disableFilters(){
+        linearOptionFilter.setVisibility(View.GONE);
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -124,13 +143,14 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
         search = v.findViewById(R.id.search);
         linechart = v.findViewById(R.id.lineChart);
         linearOptionActivity = v.findViewById(R.id.linearOptionActivity);
-        linearOptionFilter = v.findViewById(R.id.linearOptionFilter);
+        //linearOptionFilter = v.findViewById(R.id.linearOptionFilter);
+
         left = v.findViewById(R.id.toggleActivityLeft);
         right = v.findViewById(R.id.toggleActivityRight);
         down = v.findViewById(R.id.toggleActivityDown);
-        average = v.findViewById(R.id.checkAverage);
+        /*average = v.findViewById(R.id.checkAverage);
         maxmins = v.findViewById(R.id.checkMaxMins);
-        anomalies = v.findViewById(R.id.anomaly);
+        anomalies = v.findViewById(R.id.checkAnomalies);*/
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.options_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
@@ -250,6 +270,42 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                 Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+event+"/"+endtimestamp+"/"+starttimestamp,"GET", Functions.GET_EVENTS_FILTER);
             }
         });
+
+        left.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    linechart.getLineData().getDataSetByIndex(0).setVisible(false);
+                } else linechart.getLineData().getDataSetByIndex(0).setVisible(true);
+
+                //linechart.notifyDataSetChanged();
+                linechart.invalidate();
+            }
+        });
+        right.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    linechart.getLineData().getDataSetByIndex(1).setVisible(false);
+                } else linechart.getLineData().getDataSetByIndex(1).setVisible(true);
+                //linechart.notifyDataSetChanged();
+                linechart.invalidate();
+            }
+        });
+        down.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    linechart.getLineData().getDataSetByIndex(2).setVisible(false);
+                }
+                else linechart.getLineData().getDataSetByIndex(2).setVisible(true);
+                //linechart.notifyDataSetChanged();
+                linechart.invalidate();
+            }
+        });
+
+
+
         return v;
     }
 
