@@ -3,6 +3,7 @@ package com.caletateam.caletapp.app.utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -34,7 +35,16 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.io.BufferedReader;
 import java.io.Console;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -69,8 +79,8 @@ public class Functions {
     public static String TYPE_MD="MD";
     public static String TYPE_USER="USER";
 
-    public static String[] USER_MD={"userMD","123456789","John Hopkins MD"};
-    public static String[] USER_RELATIVE={"userRelative","123456789", "John Wick"};
+    public static String[] USER_MD={"userMD","1234","Gregory House M.D"};
+    public static String[] USER_RELATIVE={"userRelatives","1234", "John Wick"};
 
     public static String getClientID(){
         return UUID.randomUUID().toString();
@@ -82,6 +92,7 @@ public class Functions {
     public static int THRESHOLD_RESPIRATION_NORMAL=90;
     public static int THRESHOLD_ACTIVITY_BAD=30;
     public static int THRESHOLD_ACTIVITY_NORMAL=80;
+    public static String FILE_LOGIN="caletapp.txt";
     public interface DevolucionDatos {
         void RespuestaLlamadaServicio(String peticion,String data);
     }
@@ -295,5 +306,101 @@ public class Functions {
         }
         return dialog;
     }
+
+    public static boolean writeUserFile(Context ctx,String username,String password,String name){
+        /*try {
+            ContextWrapper contextWrapper = new ContextWrapper(ctx);
+            File directory = contextWrapper.getDir(ctx.getFilesDir().getName(), Context.MODE_PRIVATE);
+            File file =  new File(directory,FILE_LOGIN);
+            String data = username+":"+password+":"+name;
+            FileOutputStream fos = new FileOutputStream(file, false); // save
+            fos.write(data.getBytes());
+            fos.close();
+            Log.e("FILE PATH",file.getAbsolutePath());
+            return true;
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;*/
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(ctx.openFileOutput(FILE_LOGIN, Context.MODE_PRIVATE));
+            String data = username+":"+password+":"+name;
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+            return true;
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+        return false;
+    }
+
+    public static String[] readerUserFile(Context ctx){
+        /*try {
+            ContextWrapper contextWrapper = new ContextWrapper(ctx);
+            File directory = contextWrapper.getDir(ctx.getFilesDir().getName(), Context.MODE_PRIVATE);
+            File fl = new File(directory,Functions.FILE_LOGIN);
+            Log.e("ABSOLUTE PATH",fl.getAbsolutePath());
+            FileInputStream fin = new FileInputStream(fl);
+            String ret = convertStreamToString(fin);
+            Log.e("FILE READ",ret);
+            //Make sure you close all streams.
+            fin.close();
+            String[] res = ret.split(":");
+            return res;
+
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;*/
+        String[] ret=new String[]{"","",""};;
+
+        try {
+            InputStream inputStream = ctx.openFileInput(FILE_LOGIN);
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append("\n").append(receiveString);
+                }
+
+                inputStream.close();
+                String res=stringBuilder.toString();
+                if(res!=null && !res.isEmpty()) {
+                    ret = res.split(":");
+                }
+
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
+    }
+
+   public static boolean removeFileUser(Context ctx){
+       try {
+           OutputStreamWriter outputStreamWriter = new OutputStreamWriter(ctx.openFileOutput(FILE_LOGIN, Context.MODE_PRIVATE));
+           outputStreamWriter.write("");
+           outputStreamWriter.close();
+           return true;
+       }
+       catch (IOException e) {
+           Log.e("Exception", "File write failed: " + e.toString());
+       }
+       return false;
+   }
+
 
 }

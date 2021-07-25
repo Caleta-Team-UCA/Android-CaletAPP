@@ -1,12 +1,14 @@
 package com.caletateam.caletapp.app.md;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -20,6 +22,8 @@ import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -67,8 +71,10 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         setContentView(R.layout.activity_main_m_d);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.caleta)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.caleta));
+            //getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.caleta));
+
         }
+        setTitle(Functions.USER_MD[2]);
         babys = new ArrayList<>();
         babylist = findViewById(R.id.scrollBabys);
         linearbabys = findViewById(R.id.linearBabys);
@@ -148,8 +154,18 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.actionbar_md, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar_md, menu);
+        MenuItem logout=menu.findItem(R.id.logout);
+        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.e("CLICKADO","CLICKADO LOGOUT");
+                Functions.removeFileUser(getApplication());
+                finish();
+                return false;
+            }
+        });
         return true;
     }
 
@@ -229,12 +245,13 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     }
 
 
+    @SuppressLint("ResourceType")
     public void selectedBaby(int position){
         //Log.e("SELECCIONADO",position+"");
         for(int i=0; i < imgs.length;i++){
             imgs[i].setBorderColor(getResources().getColor(R.color.caletagrey));
             imgs[i].setBorderWidth(6);
-            names[i].setTextColor(R.color.caletagrey);
+            names[i].setTextColor(Color.parseColor(getResources().getString(R.color.caletagrey)));
             names[i].setTypeface(Typeface.DEFAULT);
 
 
@@ -262,6 +279,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void RespuestaLlamadaServicio(String peticion, String data) {
         if(peticion.equals(Functions.GET_BABYS_REQUEST)){

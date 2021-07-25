@@ -19,10 +19,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.md.MainActivityMD;
 import com.caletateam.caletapp.app.md.Monitoring;
+import com.caletateam.caletapp.app.relatives.MainActivity_Relatives;
 import com.caletateam.caletapp.app.utils.Functions;
 import com.caletateam.caletapp.app.utils.MQTTService;
 
@@ -130,7 +132,7 @@ public class LoginActivity extends AppCompatActivity  {
     private int userid = 1;
     int babyid;
     String type_notification;
-    String type_user;
+    String type_user="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,9 +148,9 @@ public class LoginActivity extends AppCompatActivity  {
                 type_notification = getIntent().getStringExtra("type");
             else type_notification=Functions.NOTIFICATION_PROFILE;
 
-            if(getIntent().getStringExtra("typeuser")!=null)
+            /*if(getIntent().getStringExtra("typeuser")!=null)
                 type_user = getIntent().getStringExtra("typeuser");
-            else type_user=Functions.TYPE_MD;
+            else type_user=Functions.TYPE_MD;*/
 
         }catch(Exception e){
 
@@ -162,9 +164,18 @@ public class LoginActivity extends AppCompatActivity  {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
+                if(username.getText().toString().equals(Functions.USER_MD[0])){
+                    type_user = Functions.TYPE_MD;
+                }
+                else if (username.getText().toString().equals(Functions.USER_RELATIVE[0])){
+                    type_user = Functions.TYPE_USER;
+                }
+                else type_user = "";
+
+                loginUser();
+                /*Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
                 intent.putExtra("userid",userid);
-                startActivity(intent);
+                startActivity(intent);*/
 
             }
         });
@@ -182,14 +193,40 @@ public class LoginActivity extends AppCompatActivity  {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-        if(type_user.equals(Functions.TYPE_MD)){
+        //boolean deleted=Functions.removeFileUser(this);
+        //Log.e("DELETED",deleted+"");
+        String[] resUser = Functions.readerUserFile(this);
+        if(resUser==null || resUser[0].isEmpty() || resUser[0]==""){
+            Log.e("FILE","NO HAY FICHERO");
+            Functions.writeUserFile(this,"","","");
+
+        }
+        else{
+            Log.e("FILE","SI HAY FICHERO:"+resUser[0]);
+            if(resUser[0].contains("MD"))
+                type_user = Functions.TYPE_MD;
+            else if(resUser[0].contains("Relatives"))
+                type_user = Functions.TYPE_USER;
+        }
+        if(type_user!=null && !type_user.isEmpty()){
+            if(type_user.equals(Functions.TYPE_MD)){
+                username.setText(Functions.USER_MD[0]);
+                password.setText(Functions.USER_MD[1]);
+            }
+            else{
+                username.setText(Functions.USER_RELATIVE[0]);
+                password.setText(Functions.USER_RELATIVE[1]);
+            }
+            loginUser();
+        }
+        /*if(type_user.equals(Functions.TYPE_MD)){
             username.setText(Functions.USER_MD[0]);
             password.setText(Functions.USER_MD[1]);
         }
         else{
             username.setText(Functions.USER_RELATIVE[0]);
             password.setText(Functions.USER_RELATIVE[1]);
-        }
+        }*/
     }
 
     @Override
@@ -202,13 +239,7 @@ public class LoginActivity extends AppCompatActivity  {
         delayedHide(100);
     }
 
-    private void toggle() {
-        if (mVisible) {
-            hide();
-        } else {
-            show();
-        }
-    }
+
 
     private void hide() {
         // Hide UI first
@@ -235,43 +266,67 @@ public class LoginActivity extends AppCompatActivity  {
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
     }
 
-    /**
-     * Schedules a call to hide() in delay milliseconds, canceling any
-     * previously scheduled calls.
-     */
+
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
+    public void loginUser(){
+       // if(type_user!=null && !type_user.isEmpty()) {
+
+            dialog = Functions.setProgressDialog(this, "Checking credentials...");
+            dialog.show();
+            new CountDownTimer(1500, 1000) {
+
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void onFinish() {
+                    // TODO Auto-generated method stub
+
+                    dialog.dismiss();
+                    if (type_user.equals(Functions.TYPE_MD)) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
+                        boolean res=Functions.writeUserFile(getApplication(),Functions.USER_MD[0],Functions.USER_MD[1],Functions.USER_MD[2]);
+                        //intent.putExtra("event", Functions.TYPE_STRESS);
+                        intent.putExtra("notification", type_notification);
+                        intent.putExtra("babyid", babyid);
+                        Log.e("RES FILE",res+"");
+                        if(res) {
+                            startActivity(intent);
+                            //finish();
+                        }
+                        username.setText("");
+                        password.setText("");
+                        //Log.e("USER MD","USER MD");
+                    }
+                    else if (type_user.equals(Functions.TYPE_USER)){
+                        Intent intent = new Intent(LoginActivity.this, MainActivity_Relatives.class);
+                        Functions.writeUserFile(getApplication(),Functions.USER_RELATIVE[0],Functions.USER_RELATIVE[1],Functions.USER_RELATIVE[2]);
+                        intent.putExtra("notification", type_notification);
+                        intent.putExtra("babyid", babyid);
+                        startActivity(intent);
+                        username.setText("");
+                        password.setText("");
+                        //finish();
+                    }
+                    else{
+                        Toast.makeText(getApplication(),"Invalid username/password",Toast.LENGTH_LONG).show();
+                    }
+                }
+            }.start();
+       // }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        dialog = Functions.setProgressDialog(this,"Checking credentials...");
-        dialog.show();
-        new CountDownTimer(1500, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onFinish() {
-                // TODO Auto-generated method stub
-
-                dialog.dismiss();
-                if(type_user.equals(Functions.TYPE_MD)){
-                    Intent intent = new Intent(LoginActivity.this, MainActivityMD.class);
-                    intent.putExtra("event",Functions.TYPE_STRESS);
-                    intent.putExtra("notification",type_notification);
-                    intent.putExtra("babyid",babyid);
-                    startActivity(intent);
-                }
-
-            }
-        }.start();
+        //loginUser();
     }
 
 

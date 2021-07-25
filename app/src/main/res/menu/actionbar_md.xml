@@ -4,8 +4,15 @@
 
     <item
         android:id="@+id/miProfile"
-        android:icon="@mipmap/ic_doctor_round"
+        android:icon="@mipmap/ic_doctor_house_round"
         app:showAsAction="ifRoom|withText"
         android:title="Profile">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/logout"
+                android:title="Log out"
+                />
+        </menu>
     </item>
 </menu>
