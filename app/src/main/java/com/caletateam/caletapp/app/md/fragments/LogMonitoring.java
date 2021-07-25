@@ -260,6 +260,10 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                 if(selectedOption==6) {
                     starttimestamp = Functions.getTimeStampFromDate(startdate.getText().toString());
                     endtimestamp = Functions.getTimeStampFromDate(enddate.getText().toString());
+                    Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+event+"/"+starttimestamp+"/"+endtimestamp,"GET", Functions.GET_EVENTS_FILTER);
+                }
+                else{
+                    Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+event+"/"+endtimestamp+"/"+starttimestamp,"GET", Functions.GET_EVENTS_FILTER);
                 }
                 Log.e("Startdate timestamp: ",""+starttimestamp + "  "+new Date(starttimestamp));
                 Log.e("Enddate timestamp: ",""+endtimestamp+"   "+new Date(endtimestamp));
@@ -267,7 +271,8 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
 
 
                 setProgressDialog();
-                Functions.consumeService(getActivity(),Functions.HOST_URL+"/events/"+event+"/"+starttimestamp+"/"+endtimestamp,"GET", Functions.GET_EVENTS_FILTER);
+
+
             }
         });
 

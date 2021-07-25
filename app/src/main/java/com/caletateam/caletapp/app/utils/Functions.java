@@ -68,6 +68,8 @@ public class Functions {
     public static String GET_BABYS_REQUEST="2";
     public static String GET_VIDEO_STREAMING="3";
     public static String GET_EVENTS_FILTER="4";
+    public static String GET_BABY_INFO="5";
+
     public static String[] MQTT_TOPICS_EVENTS = {"caleta/"+TYPE_ACTIVITY,"caleta/"+TYPE_RESPIRATION,"caleta/"+TYPE_STRESS};
     public static String MQTT_NOTIFICATION = "caleta/notification";
     public static final String BROKER_MQTT = "tcp://vai.uca.es:1883";
@@ -81,7 +83,7 @@ public class Functions {
 
     public static String[] USER_MD={"userMD","1234","Gregory House M.D"};
     public static String[] USER_RELATIVE={"userRelatives","1234", "John Wick"};
-
+    public static String videoURL = "rtsp://vai.uca.es:1935/mystream";
     public static String getClientID(){
         return UUID.randomUUID().toString();
     }
@@ -189,11 +191,8 @@ public class Functions {
         mStringRequest = new StringRequest(verb, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Utils.imprimirenConsola(response +"   "+idpeticion);
-                //((DevolucionDatos)ctx)
-                //Log.e("AUX",response + "   " +idpeticion);
+
                 ((DevolucionDatos)ctx).RespuestaLlamadaServicio(idpeticion,response);
-                //((DevolucionDatos)ctx).RespuestaLlamadaServicio(idpeticion,response); // This will make a callback to activity.
             }
         }, new Response.ErrorListener() {
             @Override

@@ -1,9 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.relatives.MainActivity_Relatives">
+    tools:context=".app.relatives.MainActivity_Relatives" android:orientation="vertical" android:weightSum="1">
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_margin="10dp"
+        android:background="@drawable/cardviewbackgroundrelatives" android:orientation="vertical"
+        android:gravity="center" android:layout_gravity="center"
+        android:layout_height="0dp" android:layout_weight="0.25">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/babyimg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/baby"
+            app:civ_border_color="@color/caletagrey"
+            app:civ_border_width="2dp" />
+        <TextView
+            android:layout_width="match_parent" android:textAlignment="center" android:layout_marginTop="10dp" android:id="@+id/babyname"
+            android:layout_height="wrap_content" android:textSize="34sp" android:textColor="@color/caleta" android:textStyle="bold" android:text=""/>
+
+        <TextView
+            android:id="@+id/babysince" android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Monitored since "
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp" android:layout_marginBottom="10dp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="0.3"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/overall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Overall Evaluation"
+                android:textAlignment="center"
+                android:textColor="@color/caleta"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    app:cpb_background_progressbar_color="@color/caletagrey"
+                    app:cpb_background_progressbar_width="3dp"
+                    app:cpb_progress="0"
+                    app:cpb_progress_direction="to_right"
+                    app:cpb_progress_max="100"
+                    app:cpb_progressbar_color="#3f51b5"
+                    app:cpb_progressbar_width="7dp"
+                    app:cpb_round_border="false" />
+
+                <TextView
+                    android:id="@+id/textProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/progressBar"
+                    android:layout_alignTop="@id/progressBar"
+                    android:layout_alignRight="@id/progressBar"
+                    android:layout_alignBottom="@id/progressBar"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="-"
+                    android:textAlignment="center"
+                    android:textColor="@color/caleta"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearActivity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Activity"
+                android:textAlignment="textStart"
+                android:textColor="@color/caleta"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/progressActivity"
+                    style="@style/CustomProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:max="100"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/textActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/progressActivity"
+                    android:layout_alignTop="@id/progressActivity"
+                    android:layout_alignRight="@id/progressActivity"
+                    android:layout_alignBottom="@id/progressActivity"
+                    android:background="#00000000"
+                    android:text="-"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <!-- -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Respiration"
+                android:textAlignment="textStart"
+                android:textColor="@color/caleta"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/progressRespiration"
+                    style="@style/CustomProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:max="100"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/textRespiration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/progressRespiration"
+                    android:layout_alignTop="@id/progressRespiration"
+                    android:layout_alignRight="@id/progressRespiration"
+                    android:layout_alignBottom="@id/progressRespiration"
+                    android:background="#00000000"
+                    android:text="-"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Stress"
+                android:textAlignment="textStart"
+                android:textColor="@color/caleta"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/progressStress"
+                    style="@style/CustomProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:max="100"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/textStress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/progressStress"
+                    android:layout_alignTop="@id/progressStress"
+                    android:layout_alignRight="@id/progressStress"
+                    android:layout_alignBottom="@id/progressStress"
+                    android:background="#00000000"
+                    android:text="-"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_margin="10dp"   android:background="@drawable/streamingbackground"
+        android:layout_height="0dp" android:layout_weight="0.45">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="8dp"
+            android:layout_margin="5dp" android:background="@drawable/streamingbackground"
+            >
+
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:id="@+id/simple_player"/>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -65,13 +65,22 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
     ViewPagerAdapter adapter;
     MqttAndroidClient clientMQTT;
     boolean monitoringopened=false;
+    int babyid;
+    String notification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_m_d);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.caleta)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.caleta));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.caleta));
+
+        }
+        try{
+            babyid = getIntent().getIntExtra("babyid",-1);
+            notification = getIntent().getStringExtra("notification");
+            Log.e("BABY ID and NOT",babyid+"   "+notification);
+        }catch (Exception e){
 
         }
         setTitle(Functions.USER_MD[2]);
@@ -91,7 +100,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                         //tab.setText("Tab " + (position + 1));
                         //Log.e("POSITION",position+"");
                         if (position==0) {
-                            tab.setText("Summary");
+                            tab.setText("Wall");
                             tab.setIcon(R.drawable.summary);
 
                         }
@@ -100,7 +109,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                              tab.setIcon(R.drawable.monitoring);
                          }
                         if (position==2) {
-                            tab.setText("Logs");
+                            tab.setText("Summary");
                             tab.setIcon(R.drawable.logs);
                         }
                         if(position ==3) {
@@ -195,6 +204,19 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
         //addBabys(babys);
 
     }
+    public void changeViewsFromParameters(){
+
+        if(babyid!=-1){
+            selectedBaby(0);
+        }
+        if(notification.equals(Functions.NOTIFICATION_MONITORING)){
+            tabLayout.selectTab(tabLayout.getTabAt(1));
+        }
+        else if(notification.equals(Functions.NOTIFICATION_STREAMING)){
+            tabLayout.selectTab(tabLayout.getTabAt(3));
+        }
+    }
+
     @Override
     protected void onResume(){
         super.onResume();
@@ -296,6 +318,7 @@ public class MainActivityMD extends AppCompatActivity implements Functions.Devol
                 e.printStackTrace();
             }
             adapter.getSummary().loadSummar();
+            changeViewsFromParameters();
         }
         if(peticion.equals(Functions.GET_EVENTS_REQUEST)){
            // Log.e("LOGS","!SERVICIO DATOS RECIBIDO:"+data);

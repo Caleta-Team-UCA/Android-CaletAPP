@@ -47,7 +47,7 @@ public class streamming extends Fragment {
     SimpleExoPlayer exoPlayer;
 
     // url of video which we are loading.
-    String videoURL = "rtsp://vai.uca.es:1935/mystream";
+   // String videoURL = "rtsp://vai.uca.es:1935/mystream";
 
     public void setImage(byte[] buffer){
         Bitmap bmp = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
@@ -132,7 +132,7 @@ public class streamming extends Fragment {
 
         MediaSource mediaSource =
                 new RtspMediaSource.Factory()
-                        .createMediaSource(MediaItem.fromUri(videoURL));
+                        .createMediaSource(MediaItem.fromUri(Functions.videoURL));
 // Create a player instance.
         SimpleExoPlayer player = new SimpleExoPlayer.Builder(getActivity()).build();
 // Set the media source to be played.

@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity  {
 
             babyid=getIntent().getIntExtra("babyid",-1);
             if(getIntent().getStringExtra("notification")!=null)
-                type_notification = getIntent().getStringExtra("type");
+                type_notification = getIntent().getStringExtra("notification");
             else type_notification=Functions.NOTIFICATION_PROFILE;
 
             /*if(getIntent().getStringExtra("typeuser")!=null)
@@ -301,18 +301,19 @@ public class LoginActivity extends AppCompatActivity  {
                             startActivity(intent);
                             //finish();
                         }
-                        username.setText("");
-                        password.setText("");
+                       // username.setText("");
+                        //password.setText("");
                         //Log.e("USER MD","USER MD");
                     }
                     else if (type_user.equals(Functions.TYPE_USER)){
                         Intent intent = new Intent(LoginActivity.this, MainActivity_Relatives.class);
                         Functions.writeUserFile(getApplication(),Functions.USER_RELATIVE[0],Functions.USER_RELATIVE[1],Functions.USER_RELATIVE[2]);
                         intent.putExtra("notification", type_notification);
+                        babyid=1;
                         intent.putExtra("babyid", babyid);
                         startActivity(intent);
-                        username.setText("");
-                        password.setText("");
+                        //username.setText("");
+                        //password.setText("");
                         //finish();
                     }
                     else{

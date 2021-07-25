@@ -5,4 +5,10 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="x1">1px</dimen>
+    <dimen name="x2">2px</dimen>
+    <dimen name="x3">3px</dimen>
+    <dimen name="x5">5px</dimen>
+    <dimen name="x20">20px</dimen>
+
 </resources>
