@@ -103,13 +103,13 @@
             android:layout_height="0dp" android:layout_weight="0.1" android:weightSum="1">
             <ToggleButton android:checked="true"
                 android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/toggleActivityLeft"
-                android:layout_height="wrap_content" android:textOff="Left Disabled" android:textOn="Left Enabled"/>
+                android:layout_height="wrap_content" android:textOff="Left Arm Disabled" android:textOn="Left Arm Enabled"/>
             <ToggleButton android:checked="true"
                 android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/toggleActivityRight"
-                android:layout_height="wrap_content" android:textOff="Right Disabled" android:textOn="Right Enabled"/>
+                android:layout_height="wrap_content" android:textOff="Right Arm Disabled" android:textOn="Right Arm Enabled"/>
             <ToggleButton android:checked="true"
                 android:layout_width="0dp" android:layout_weight="0.3" android:id="@+id/toggleActivityDown"
-                android:layout_height="wrap_content" android:textOff="Down Disabled" android:textOn="Down Enabled"/>
+                android:layout_height="wrap_content" android:textOff="Legs Disabled" android:textOn="Legs Enabled"/>
         </LinearLayout>
 
       <!--  <LinearLayout android:visibility="gone"

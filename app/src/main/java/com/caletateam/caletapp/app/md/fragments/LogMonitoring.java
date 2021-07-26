@@ -548,9 +548,9 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
             linechart.setAutoScaleMinMaxEnabled(true);
             linechart.setTouchEnabled(true);
 
-            LineDataSet setComp1 = createSet("Left","#FF0000");// new LineDataSet(valsComp1, "Left");
-            LineDataSet setComp2 = createSet("Right","#00FF00");//new LineDataSet(valsComp2, "Right");
-            LineDataSet setComp3 = createSet("Down","#0000FF");//new LineDataSet(valsComp3, "Down");
+            LineDataSet setComp1 = createSet("Left Arm","#FF0000");// new LineDataSet(valsComp1, "Left");
+            LineDataSet setComp2 = createSet("Right Arm","#00FF00");//new LineDataSet(valsComp2, "Right");
+            LineDataSet setComp3 = createSet("Legs","#0000FF");//new LineDataSet(valsComp3, "Down");
 
             ArrayList<ILineDataSet> datasets = new ArrayList<>();
             datasets.add(setComp1);
@@ -569,9 +569,9 @@ public class LogMonitoring extends Fragment  implements DatePickerDialog.OnDateS
                     mList.add(new Long(i));
                     Float[] valaux = values.get(count).getValues();
 
-                    linechart.getData().getDataSetByLabel("Left", true).addEntry(new Entry(count, valaux[0]));
-                    linechart.getData().getDataSetByLabel("Right", true).addEntry(new Entry(count, valaux[1]));
-                    linechart.getData().getDataSetByLabel("Down", true).addEntry(new Entry(count, valaux[2]));
+                    linechart.getData().getDataSetByLabel("Left Arm", true).addEntry(new Entry(count, valaux[0]));
+                    linechart.getData().getDataSetByLabel("Right Arm", true).addEntry(new Entry(count, valaux[1]));
+                    linechart.getData().getDataSetByLabel("Legs", true).addEntry(new Entry(count, valaux[2]));
                     if (values.get(count).isAnomaly()) {
                         //Log.e("ANOMALY","TRUE");
                         //linechart.highlightValue(count, 0);

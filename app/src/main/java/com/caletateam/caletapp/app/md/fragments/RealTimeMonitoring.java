@@ -167,9 +167,9 @@ public class RealTimeMonitoring extends Fragment {
             mList.add(new Long(current));
 
             //Log.e("VALUES ENTRY",value.getValues()[0]+"    "+value.getValues()[1]+"    "+value.getValues()[2]);
-            linechart.getData().getDataSetByLabel("Left", true).addEntry(new Entry(countvalues, value.getValues()[0]));
-            linechart.getData().getDataSetByLabel("Right", true).addEntry(new Entry(countvalues, value.getValues()[1]));
-            linechart.getData().getDataSetByLabel("Down", true).addEntry(new Entry(countvalues, value.getValues()[2]));
+            linechart.getData().getDataSetByLabel("Left Arm", true).addEntry(new Entry(countvalues, value.getValues()[0]));
+            linechart.getData().getDataSetByLabel("Right Arm", true).addEntry(new Entry(countvalues, value.getValues()[1]));
+            linechart.getData().getDataSetByLabel("Legs", true).addEntry(new Entry(countvalues, value.getValues()[2]));
             if (value.isAnomaly()) {
 
                 Log.e("ANOMALY", "TRUE");
@@ -417,9 +417,9 @@ public class RealTimeMonitoring extends Fragment {
             linechart.setAutoScaleMinMaxEnabled(true);
             linechart.setTouchEnabled(true);
 
-            LineDataSet setComp1 = createSet("Left","#FF0000");// new LineDataSet(valsComp1, "Left");
-            LineDataSet setComp2 = createSet("Right","#00FF00");//new LineDataSet(valsComp2, "Right");
-            LineDataSet setComp3 = createSet("Down","#0000FF");//new LineDataSet(valsComp3, "Down");
+            LineDataSet setComp1 = createSet("Left Arm","#FF0000");// new LineDataSet(valsComp1, "Left");
+            LineDataSet setComp2 = createSet("Right Arm","#00FF00");//new LineDataSet(valsComp2, "Right");
+            LineDataSet setComp3 = createSet("Legs","#0000FF");//new LineDataSet(valsComp3, "Down");
             /*setComp1.addEntry((new Entry(10,10)));
             setComp1.addEntry((new Entry(20,20)));
             setComp2.addEntry((new Entry(15,15)));
