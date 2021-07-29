@@ -129,10 +129,12 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
                         //values.add((float) value.getInt("value"));
                         aux.setTimestamp(obj.getLong("time"));
                         aux.setAnomaly(obj.getBoolean("anomaly"));
-                        values.add(aux);
+                        if(Functions.checkValues(aux,100))
+                            values.add(aux);
                     }catch(Exception e){
 
                     }
+
                    // Log.e("AA","2");
                    //times.add(obj.getLong("time"));
                    // Log.e("AA","3");
@@ -142,7 +144,9 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
                 Log.e("AA","ERKRPR:"+e.getMessage());
                 e.printStackTrace();
             }
+
             if(!values.isEmpty()) {
+
                 if(event.equals(Functions.TYPE_RESPIRATION)) {
                     adapter.getLogmonitoring().fillChartRespiration(event, values);
 

@@ -160,6 +160,10 @@ public class monitoring extends Fragment {
             } catch (JSONException e) {
                Log.e("ERROR","ERROR PARSING");
             }
+
+            if(!Functions.checkValues(aux,100))
+                return;
+
             Log.e("VALUEMODEL",aux.toString());
 
             List<Integer> colors = new ArrayList<>();

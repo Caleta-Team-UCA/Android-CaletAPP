@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.caletateam.caletapp.app.md.models.ValueModel;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -118,6 +119,28 @@ public class Functions {
         canvas.drawBitmap(bitmapimg, rect, rect, paint);
         return output;
     }
+
+    public static boolean checkValues(ValueModel aux, int maxthreshold){
+        try{
+            if(aux.getType().equals(TYPE_STRESS) || aux.getType().equals(TYPE_RESPIRATION)){
+                if(aux.getValue()<=100)
+                    return true;
+                else return false;
+
+            }
+            else if(aux.getType().equals(TYPE_ACTIVITY)){
+                if(aux.getValues().length==3){
+                    if((aux.getValues()[0]+aux.getValues()[1]+aux.getValues()[2])/3<=100)
+                        return true;
+                    else return false;
+                }
+            }
+        }catch(Exception e){
+
+        }
+        return false;
+    }
+
     public static String getDatePart(int n){
         if(n<10)
             return "0"+n;

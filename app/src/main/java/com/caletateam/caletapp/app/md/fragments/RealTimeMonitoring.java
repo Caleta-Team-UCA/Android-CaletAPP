@@ -122,7 +122,8 @@ public class RealTimeMonitoring extends Fragment {
             Log.e("ERROR","ERROR PARSING");
         }
         Log.e("VALUEMODEL","EVENT:"+event+" ---  "+aux.toString());
-
+        if(!Functions.checkValues(aux,100))
+            return;
         if(event.equals(Functions.TYPE_ACTIVITY)){
             updateChartActivity(aux);
         }

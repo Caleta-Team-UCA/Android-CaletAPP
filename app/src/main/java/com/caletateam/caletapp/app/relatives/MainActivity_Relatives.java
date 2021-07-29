@@ -195,7 +195,8 @@ public class MainActivity_Relatives extends AppCompatActivity implements Functio
                 Log.e("ERROR","ERROR PARSING: "+e.getMessage());
             }
             if(aux!=null){
-
+                if(!Functions.checkValues(aux,100))
+                    return;
                 if(aux.getType().equals(Functions.TYPE_STRESS)){
 
                     int resfinal = aux.getValue().intValue();
