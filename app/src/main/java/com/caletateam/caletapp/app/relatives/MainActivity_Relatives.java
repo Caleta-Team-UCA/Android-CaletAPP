@@ -1,12 +1,15 @@
 package com.caletateam.caletapp.app.relatives;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.caletateam.caletapp.R;
@@ -42,6 +46,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity_Relatives extends AppCompatActivity implements Functions.DevolucionDatos, MqttCallback, IMqttActionListener {
     MqttAndroidClient clientMQTT;
@@ -54,6 +59,7 @@ public class MainActivity_Relatives extends AppCompatActivity implements Functio
     TextView since;
     TextView textprogress;
     PlayerView playerView;
+    //VideoView playerView;
     int babyid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +91,19 @@ public class MainActivity_Relatives extends AppCompatActivity implements Functio
         initMqttClient(Functions.BROKER_MQTT,Functions.getClientID());
 
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            public void run() {
+                // yourMethod();
+               // playAssetVideo();
+                initRTSPlayer();
+            }
+        }, 3000);   //5 seconds
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -238,30 +256,13 @@ public class MainActivity_Relatives extends AppCompatActivity implements Functio
         super.onStart();
         dialog = Functions.setProgressDialog(this,"Loading data");
         dialog.show();
-        initRTSPlayer();
+//        initRTSPlayer();
         Functions.consumeService(this,Functions.HOST_URL+"/baby/"+babyid,"GET",Functions.GET_BABY_INFO);
     }
     public void initRTSPlayer(){
 
 
-        /*BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
 
-       // PlayerView playerView = findViewById(R.id.simple_player);
-
-        playerView.setPlayer(player);
-
-        // Create RTMP Data Source
-        RtmpDataSourceFactory rtmpDataSourceFactory = new RtmpDataSourceFactory();
-
-        MediaSource videoSource = new ExtractorMediaSource
-                .Factory(rtmpDataSourceFactory)
-                .createMediaSource(Uri.parse(videoURL));
-
-        player.prepare(videoSource);
-        player.setPlayWhenReady(true);*/
 
         MediaSource mediaSource =
                 new RtspMediaSource.Factory()
@@ -282,4 +283,21 @@ public class MainActivity_Relatives extends AppCompatActivity implements Functio
         player.setPlayWhenReady(true);
 
     }
+
+    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void playAssetVideo(){
+
+
+        //vid.setMediaController(m);
+
+        String path = "android.resource://"+this.getPackageName()+"/"+R.raw.videobaby;
+
+        Uri u = Uri.parse(path);
+
+        playerView.setVideoURI(u);
+
+        playerView.start();
+        int randomNum = ThreadLocalRandom.current().nextInt(100000, 200000 + 1);
+        playerView.seekTo(randomNum);
+    }*/
 }

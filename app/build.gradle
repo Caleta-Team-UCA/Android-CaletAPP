@@ -5,7 +5,9 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
     defaultConfig {
         applicationId "com.caletateam.caletapp"
         minSdkVersion 20

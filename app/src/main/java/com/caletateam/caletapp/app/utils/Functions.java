@@ -84,7 +84,7 @@ public class Functions {
 
     public static String[] USER_MD={"userMD","1234","Gregory House M.D"};
     public static String[] USER_RELATIVE={"userRelatives","1234", "John Wick"};
-    public static String videoURL = "rtsp://vai.uca.es:1935/mystream";
+    public static String videoURL =  "rtsp://192.168.0.17:11000/live";//"rtsp://vai.uca.es:1935/mystream";
     public static String getClientID(){
         return UUID.randomUUID().toString();
     }

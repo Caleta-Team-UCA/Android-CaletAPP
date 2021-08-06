@@ -3,16 +3,22 @@ package com.caletateam.caletapp.app.md.fragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.caletateam.caletapp.R;
 import com.caletateam.caletapp.app.utils.Functions;
@@ -23,6 +29,9 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.rtsp.RtspMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
+
+import java.io.File;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -42,6 +51,7 @@ public class streamming extends Fragment {
     private String mParam2;
     // creating a variable for exoplayerview.
     PlayerView playerView;
+    //VideoView playerView;
 
     // creating a variable for exoplayer
     SimpleExoPlayer exoPlayer;
@@ -80,8 +90,30 @@ public class streamming extends Fragment {
     public void onStart() {
         super.onStart();
         initRTSPlayer();
+        //playAssetVideo();
+        /*Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            public void run() {
+                // yourMethod();
+                playAssetVideo();
+            }
+        }, 3000);   //5 seconds*/
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            public void run() {
+                // yourMethod();
+               // playAssetVideo();
+                initRTSPlayer();
+            }
+        }, 3000);   //5 seconds
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +133,8 @@ public class streamming extends Fragment {
         //webview = v.findViewById(R.id.webview);
        // streaming = v.findViewById(R.id.textstreaming);
         playerView = v.findViewById(R.id.simple_player);
+        MediaController m = new MediaController(getActivity());
+
         //webview.loadUrl(Functions.HOST_URL+"oak");
         //String data ="<!doctype html> <html lang='en'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <title>Caleta Live Streaming</title> </head> <body> <div style='width:100%; height:100%'> <img src='"+Functions.HOST_URL+"video_feed' width='100%'> </div> </body> </html>";
         //webview.loadData(data, "text/html", null);
@@ -109,26 +143,6 @@ public class streamming extends Fragment {
     }
 
     public void initRTSPlayer(){
-
-
-        /*BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
-
-       // PlayerView playerView = findViewById(R.id.simple_player);
-
-        playerView.setPlayer(player);
-
-        // Create RTMP Data Source
-        RtmpDataSourceFactory rtmpDataSourceFactory = new RtmpDataSourceFactory();
-
-        MediaSource videoSource = new ExtractorMediaSource
-                .Factory(rtmpDataSourceFactory)
-                .createMediaSource(Uri.parse(videoURL));
-
-        player.prepare(videoSource);
-        player.setPlayWhenReady(true);*/
 
         MediaSource mediaSource =
                 new RtspMediaSource.Factory()
@@ -145,21 +159,26 @@ public class streamming extends Fragment {
         // Create RTMP Data Source
         //RtmpDataSourceFactory rtmpDataSourceFactory = new RtmpDataSourceFactory();
 
-        /*MediaSource mediaSource =
-                new RtspMediaSource.Factory()
-                        .createMediaSource(MediaItem.fromUri("rtsp://192.168.0.17:8554/mystream"));
-// Create a player instance.
-        SimpleExoPlayer player = new SimpleExoPlayer.Builder(this).build();
-// Set the media source to be played.
-        player.setMediaSource(mediaSource);
-// Prepare the player.
-        player.prepare();*/
-
-
-
 
 
         player.setPlayWhenReady(true);
 
     }
+
+    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void playAssetVideo(){
+
+
+        //vid.setMediaController(m);
+
+        String path = "android.resource://"+getActivity().getPackageName()+"/"+R.raw.videobaby;
+
+        Uri u = Uri.parse(path);
+
+        playerView.setVideoURI(u);
+
+        playerView.start();
+        int randomNum = ThreadLocalRandom.current().nextInt(10000, 100000 + 1);
+        playerView.seekTo(randomNum);
+    }*/
 }

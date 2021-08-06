@@ -55,11 +55,11 @@ public class Monitoring extends AppCompatActivity implements Functions.Devolucio
 
         }
         if(event.equals(Functions.TYPE_ACTIVITY))
-            setTitle("Jon Doe - Activity Monitoring");
+            setTitle("David. - Activity Monitoring");
         if(event.equals(Functions.TYPE_RESPIRATION))
-            setTitle("Jon Doe - Respiration Monitoring");
+            setTitle("David. - Respiration Monitoring");
         if(event.equals(Functions.TYPE_STRESS))
-            setTitle("Jon Doe - Stress Monitoring");
+            setTitle("David. - Stress Monitoring");
         viewPager2 = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tab_layout);
         adapter = new ViewPagerAdapterMonitoring(this,event);

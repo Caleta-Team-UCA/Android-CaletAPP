@@ -5,35 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".app.md.fragments.streamming">
-
-    <!-- TODO: Update blank fragment layout -->
+<!--
     <LinearLayout
         android:layout_width="match_parent" android:background="@drawable/streamingbackground"
-        android:layout_height="match_parent"
+        android:layout_height="280dp"
         android:orientation="vertical" android:layout_margin="20dp">
 
-        <!--<WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
-            />-->
 
-
-      <!--  <com.google.android.exoplayer2.ui.PlayerView android:id="@+id/exoplayerView"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_height="300dp"
+            app:cardCornerRadius="8dp"
+            android:layout_margin="5dp" android:background="@drawable/streamingbackground"
             >
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="invisible" />
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        </com.google.android.exoplayer2.ui.PlayerView>-->
+                <VideoView android:id="@+id/simple_player"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </VideoView>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+-->
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_margin="10dp"   android:background="@drawable/streamingbackground"
+        android:layout_height="300dp">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,88 +47,23 @@
             android:layout_margin="5dp" android:background="@drawable/streamingbackground"
             >
 
-       <!-- <ImageView
-            android:id="@+id/roundedImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/baby"
-            android:background="@drawable/cardviewbackground"
-            android:scaleType="centerCrop"
-            />-->
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+                <com.google.android.exoplayer2.ui.PlayerView android:id="@+id/simple_player"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </com.google.android.exoplayer2.ui.PlayerView>
 
-
-            android:id="@+id/simple_player"/>
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-<!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.6"
-            android:orientation="horizontal" android:weightSum="1" android:gravity="center">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.33"
-                android:layout_height="match_parent" android:orientation="vertical" android:weightSum="1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="0.3" android:textSize="32sp"
-                    android:textColor="#535353" android:textStyle="bold" android:text="Heart Rate" android:gravity="center"></TextView>
-                <ImageView
-                    android:layout_width="match_parent" android:id="@+id/textstreaming"
-                    android:layout_height="0dp" android:scaleType="fitCenter"
-                    android:layout_weight="0.5" android:src="@drawable/heart"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="0.2" android:textSize="44sp"
-                    android:textColor="@color/appcolor" android:textStyle="bold" android:text="96" android:gravity="center"></TextView>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.33"
-                android:layout_height="match_parent" android:orientation="vertical" android:weightSum="1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="0.3" android:textSize="32sp"
-                    android:textColor="#535353" android:textStyle="bold" android:text="Resp. Rate" android:gravity="center"></TextView>
-                <ImageView
-                    android:layout_width="match_parent" android:scaleType="fitCenter"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5" android:src="@drawable/lungs"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="0.2" android:textSize="44sp"
-                    android:textColor="@color/appcolor" android:textStyle="bold" android:text="30" android:gravity="center"></TextView>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.33"
-                android:layout_height="match_parent" android:orientation="vertical" android:weightSum="1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="0.3" android:textSize="32sp"
-                    android:textColor="#535353" android:textStyle="bold" android:text="Oxy. Sat." android:gravity="center"></TextView>
-                <ImageView
-                    android:layout_width="match_parent" android:scaleType="fitCenter"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5" android:src="@drawable/o2"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="0.2" android:textSize="44sp"
-                    android:textColor="@color/appcolor" android:textStyle="bold" android:text="98" android:gravity="center"></TextView>
-
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-    -->
-    
 
 
 </FrameLayout>

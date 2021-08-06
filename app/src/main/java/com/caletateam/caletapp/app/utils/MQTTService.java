@@ -164,7 +164,7 @@ public class MQTTService extends Service implements MqttCallback, IMqttActionLis
     public void RespuestaLlamadaServicio(String peticion, String data) {
         if (peticion.equals(Functions.GET_BABY_INFO)) {
             //dialog.dismiss();
-
+            Log.e("BABY INFO NOTIFICATION",data);
             try {
                 JSONObject item = new JSONObject(data).getJSONObject("payload");
                 //Log.e("DATOS NOTIFICATION:",item.getInt("idbaby") +"   "+item.getString("name")+" "+item.getString("lastname")+"  "+item.getString("photo"));
